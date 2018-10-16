@@ -1,9 +1,13 @@
+require.context('../public/', true);
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/App';
+import 'bootstrap/dist/css/bootstrap.css';
+import './styles/index.css';
+import 'babel-core/register';
+import 'babel-polyfill';
+import { TomatoChat } from './components/TomatoChat.tsx';
 
 ReactDOM.render(
-    <App />,
+    <TomatoChat />,
     document.getElementById('react-container')
 );

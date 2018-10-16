@@ -3,7 +3,7 @@ import '../styles/index.css';
 import { LoginForm } from './LoginForm';
 import * as React from 'react';
 
-export class App extends Component {
+export class TomatoChat extends Component {
   constructor(props: any) {
     super(props);
     this.state = {
