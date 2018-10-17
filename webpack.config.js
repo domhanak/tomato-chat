@@ -59,6 +59,13 @@ module.exports = {
           path.resolve(__dirname, './src')
         ]
       },
+      { test: /\.s[ac]ss$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+          { loader: "sass-loader" }
+        ]
+      },
       {
         test: /\.(eot|svg|ttf|woff|woff2)/,
         use: [

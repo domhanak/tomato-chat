@@ -15,9 +15,4 @@ dist
 .env
 npm-debug.log
 
-*.idea/*.xml
-!.idea/codeStyleSettings.xml
-!.idea/codeStyles
-!.idea/libraries
-!.idea/inspectionProfiles
-!.idea/*.xml
+*.idea/*
