@@ -23,11 +23,11 @@ export class TomatoChat extends Component {
                             <h1>Tomato Chat Application </h1>
                         </div>
                         <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 special-img">
-                            <img src="../tomato-779329_960_720.jpg" alt="logo"/>
+                            <img src="../tomato.jpg" alt="logo"/>
                         </div>
                     </div>
                     <Router>
-                        <div>
+                        <div className="container">
                             <ul className="list-inline">
                                 <li>
                                     <Link to="/">Home</Link>
