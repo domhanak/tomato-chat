@@ -36,7 +36,7 @@ export class Profile extends React.Component {
                 </div>
                 <div className="profile-info col-lg-5 col-md-10 col-sm-10">
                     <div className="profile-name row">
-                        <input type="text" className="form-control" id="name" defaultValue="Name" onChange={this.nameChanged}/>
+                        <input type="text" className="form-control" id="name" placeholder="Name" onChange={this.nameChanged}/>
                     </div>
                     <div className="profile-email row">
                         <h4>E-mail</h4>
