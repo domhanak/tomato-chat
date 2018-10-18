@@ -19,11 +19,11 @@ export class TomatoChat extends Component {
             <div className="app">
                 <header className="page-nav">
                     <div className="container">
-                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div className="col-lg-5 col-md-6 col-sm-6 col-xs-6">
                             <h1>Tomato Chat Application </h1>
                         </div>
-                        <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 special-img">
-                            <img src="../tomato.jpg" alt="logo"/>
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 img">
+                            <img src={require('../tomato.jpg')} alt="logo"/>
                         </div>
                     </div>
                     <Router>
