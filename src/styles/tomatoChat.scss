@@ -13,6 +13,43 @@ code {
   monospace;
 }
 
+.page-nav {
+
+  & div  {
+
+  padding: 0;
+
+    & div img {
+      width: 35%;
+      max-width: 100%;
+      vertical-align: middle;
+      margin: 0 auto;
+      text-align: center;
+    }
+  }
+
+  & li {
+    margin-top: 10px;
+    font-size: 1.3em;
+
+    & a {
+      color: $tomato-chat-items-colour;
+      padding: 10px;
+    }
+
+    & a:hover {
+      text-decoration: none;
+      background: $tomato-chat-items-colour;
+      border-radius: 4px;
+      color: $tomato-chat-items-hover-colour;
+    }
+  }
+
+  & li + li {
+    margin-left: 50px;
+  }
+}
+
 .app {
   max-width: 1000px;
   margin: auto;

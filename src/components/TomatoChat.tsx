@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import '../styles/base.scss';
 import { LoginForm } from './LoginForm';
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
@@ -18,11 +17,18 @@ export class TomatoChat extends Component {
     render(): JSX.Element {
         return (
             <div className="app">
-                <header>
-                    <h1 className="page-header"> Tomato Chat Application </h1>
+                <header className="page-nav">
+                    <div className="container">
+                        <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h1>Tomato Chat Application </h1>
+                        </div>
+                        <div className="col-lg-1 col-md-1 col-sm-1 col-xs-1 special-img">
+                            <img src="../tomato-779329_960_720.jpg" alt="logo"/>
+                        </div>
+                    </div>
                     <Router>
                         <div>
-                            <ul>
+                            <ul className="list-inline">
                                 <li>
                                     <Link to="/">Home</Link>
                                 </li>
