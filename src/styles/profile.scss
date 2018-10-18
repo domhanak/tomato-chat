@@ -1,0 +1,50 @@
+.profile-view {
+  background: $profile-background-colour;
+  margin: 25px auto;
+  width: 70%;
+
+  & .avatar {
+    margin: 15px 0px 15px 15px;
+    text-align: center;
+
+    & .profile-avatar-btn {
+      text-align: center;
+      margin-top: 20px;
+    }
+  }
+
+  & .profile-info {
+    margin: 15px 15px 0 0;
+
+    & .profile-name input {
+      border: solid 2px $profile-border-colour;
+      font-size: 1.8em;
+      border-radius: 10px;
+      padding-left: 5px;
+    }
+
+    & .profile-email {
+      padding-left: 10px;
+    }
+
+    & .profile-submit-btn {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+  }
+
+
+}
+
+@media only screen and (max-width: 992px) {
+  .profile-view .profile-info .profile-submit-btn {
+    margin-left: 5px;
+  }
+}
+
+
+@media only screen and (max-width: 992px) {
+  .profile-view .profile-info {
+    margin-left: 30px;
+  }
+}
