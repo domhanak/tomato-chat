@@ -1,0 +1,28 @@
+
+
+.message:nth-child(2n) {
+  background-color: #dddddd;
+}
+
+
+.message__author {
+  display: inline-block;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+
+.message__author:after {
+  content: ':';
+}
+
+
+.message__text {
+  display: inline-block;
+}
+
+
+.message-list {
+  padding: 8px;
+  border-bottom: #444444 solid 1px;
+}
