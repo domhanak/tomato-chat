@@ -26,6 +26,11 @@ export class TomatoChat extends Component {
                             <img src={require('../tomato.jpg')} alt="logo"/>
                         </div>
                     </div>
+                    <div>
+                        <p>
+                            Chat application so you can chat like true tomato.
+                        </p>
+                    </div>
                     <Router>
                         <div className="container">
                             <ul className="list-inline">
@@ -55,11 +60,7 @@ export class TomatoChat extends Component {
                         </div>
                     </Router>
                 </header>
-                <div>
-                    <p>
-                        Chat application so you can chat like true tomato.
-                    </p>
-                </div>
+
             </div>
         );
     }
