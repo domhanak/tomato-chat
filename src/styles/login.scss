@@ -1,31 +1,42 @@
 .login-form {
-  width: 50%;
+  width: 100%;
   height: 100px;
-  background: aqua;
+  background: $background-colour;
   padding: 8px;
   display: flex;
   align-items: center;
-  background: aqua;
+  flex: 1;
 
-  & .login-form__login {
-    width: 100px;
-    margin-right: 8px;
-    margin-left: 4px;
+  & label, input, button {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: flex-start;
   }
 
-  & .login-form__password {
-    flex: 1;
-    margin-left: 4px;
-    margin-right: 8px;
+  & label {
+    width: 10%;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 
+  & input {
+    width: 30%;
 
-  & .login-form button {
-    padding: 4px 16px;
-    border-radius: 4px;
+    border: solid 2px $profile-border-colour;
+    font-size: 1.2em;
+    border-radius: 10px;
+    padding-left: 10px;
+  }
+
+  & button {
+    width: 10%;
+    margin-left: 30px;
+    text-align: center;
   }
 }
-
 
 
 
