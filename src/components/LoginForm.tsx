@@ -21,7 +21,7 @@ export class LoginForm extends React.Component {
                     <input type="text"
                            id="login"
                            className="login-form__login"/>
-                    <button type="submit"> Login </button>
+                    <button type="submit" className="btn btn-primary">Login </button>
                 </form>
         );
     }
