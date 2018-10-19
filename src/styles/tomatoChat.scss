@@ -42,13 +42,13 @@ code {
     font-size: 1.3em;
 
     & a {
-      color: $tomato-chat-items-colour;
+      color: $tomato-items-colour;
       padding: 10px;
     }
 
     & a:hover {
       text-decoration: none;
-      background: $tomato-chat-items-colour;
+      background: $tomato-items-colour;
       border-radius: 4px;
       color: $tomato-chat-items-hover-colour;
     }

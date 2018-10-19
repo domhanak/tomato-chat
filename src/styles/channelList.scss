@@ -1,0 +1,70 @@
+.channels {
+
+  margin-left: 20px;
+
+  & .channel-list {
+
+    width: 30%;
+
+    & ul {
+      list-style: none;
+    }
+
+    & ul li {
+      width: 100%;
+      margin-top: 15px;
+      text-align: center;
+      border-bottom: 1px solid $tomato-items-colour;
+
+      & .visible {
+        visibility: visible;
+      }
+
+      & .not-visible {
+        visibility: hidden;
+      }
+
+      & div, h6 {
+        display: inline;
+      }
+
+      & .settings {
+        margin-left: 10px;
+      }
+
+      & .arrowDown {
+        margin-left: 0px;
+      }
+
+      & .arrowUp {
+        margin-left: 10px;
+      }
+
+      & a {
+        color: $tomato-items-colour;
+      }
+
+      & a:hover {
+        text-decoration: none;
+        color: $channel-li-hover-colour;
+        cursor: pointer;
+      }
+
+      & .channel-name {
+        color: $channel-name-colour;
+      }
+
+    }
+  }
+
+  .channel-creation {
+
+    & input {
+      margin-top: 20px;
+      padding: 5px;
+      border: 2px solid $profile-border-colour;
+      border-radius: 4px;
+    }
+
+  }
+}
