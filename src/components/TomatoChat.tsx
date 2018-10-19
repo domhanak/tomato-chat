@@ -4,6 +4,7 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {Profile} from './Profile';
 import {ChatWindow} from './ChatWindow';
+import {Channel} from './Channel';
 
 export class TomatoChat extends Component {
     constructor(props: any) {
@@ -60,7 +61,7 @@ export class TomatoChat extends Component {
                         </div>
                     </Router>
                 </header>
-
+<Channel/>
             </div>
         );
     }

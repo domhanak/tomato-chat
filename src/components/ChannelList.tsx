@@ -4,6 +4,7 @@ import {ChangeEvent} from 'react';
 import {IChannel} from '../models/IChannel';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {ChatWindow} from './ChatWindow';
+import {Channel} from './Channel';
 
 export class ChannelList extends React.Component {
     constructor(props: any) {
@@ -52,13 +53,13 @@ export class ChannelList extends React.Component {
                                 <div>
                                     <h6><Link className="channel-name" to="/todo">Channel 1</Link></h6>
                                     <div className="channel-options visible">
-                                        <Link to="/Channel" className="settings glyphicon glyphicon-cog" />
+                                        <Link to="/channel" className="settings glyphicon glyphicon-cog" />
                                         <a onClick={this.moveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                                         <a onClick={this.moveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
                                     </div>
 
                                     <Route path="/messages" component={ChatWindow}/>
-                                    <Route path="/messages" component={ChatWindow}/>
+                                    <Route path="/channel" component={Channel}/>
                                 </div>
                             </Router>
                         </li>
@@ -67,13 +68,13 @@ export class ChannelList extends React.Component {
                                 <div>
                                     <h6><Link className="channel-name" to="/todo">Channel 1</Link></h6>
                                     <div className="channel-options visible">
-                                        <Link to="/Channel" className="settings glyphicon glyphicon-cog" />
+                                        <Link to="/channel" className="settings glyphicon glyphicon-cog" />
                                         <a onClick={this.moveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                                         <a onClick={this.moveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
                                     </div>
 
                                     <Route path="/messages" component={ChatWindow}/>
-                                    <Route path="/messages" component={ChatWindow}/>
+                                    <Route path="/channel" component={Channel}/>
                                 </div>
                             </Router>
                         </li>
@@ -82,13 +83,13 @@ export class ChannelList extends React.Component {
                                 <div>
                                     <h6><Link className="channel-name" to="/todo">Channel 3</Link></h6>
                                     <div className="channel-options visible">
-                                        <Link to="/Channel" className="settings glyphicon glyphicon-cog" />
+                                        <Link to="/channel" className="settings glyphicon glyphicon-cog" />
                                         <a onClick={this.moveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                                         <a onClick={this.moveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
                                     </div>
 
                                     <Route path="/messages" component={ChatWindow}/>
-                                    <Route path="/messages" component={ChatWindow}/>
+                                    <Route path="/channel" component={Channel}/>
                                 </div>
                             </Router>
                         </li>
