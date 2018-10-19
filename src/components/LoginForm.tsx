@@ -1,28 +1,71 @@
 import * as React from 'react';
+import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
 import '../styles/base.scss';
+import {ChatWindow} from "./ChatWindow";
+import {Route} from "react-router";
 
-export class LoginForm extends React.Component {
+interface ILoginState {
+    readonly login: string;
+    readonly password: string;
+}
+
+export class LoginForm extends React.Component<{}, ILoginState> {
     constructor(props: any) {
         super(props);
+
+        this.state = {
+            login: '',
+            password: '',
+        };
     }
+
+    handleLoginChange = (event: any) => {
+        this.setState({ login: event.target.value });
+    };
+
+    handlePasswordChange = (event: any) => {
+        this.setState({ password: event.target.value });
+    };
+
+    handleSubmit = (event: any) => {
+        event.preventDefault();
+
+        return ChatWindow;
+    };
 
     // Add methods handling inputs
 
     render(): JSX.Element {
         return (
-                <form className="login-form">
-                    <label className="message-form__login-label"
-                           htmlFor="login" > Username: </label>
-                    <input type="text"
-                           id="login"
-                           className="login-form__login" />
-                    <label className="message-form__password-label"
-                           htmlFor="login"> Password: </label>
-                    <input type="text"
-                           id="login"
-                           className="login-form__login"/>
-                    <button type="submit" className="btn btn-primary">Login </button>
-                </form>
+          <form>
+              <FormGroup controlId="formBasicText">
+                  <ControlLabel> Username </ControlLabel>
+                  <FormControl
+                    type="text"
+                    value={this.state.login}
+                    placeholder="Enter Login"
+                    onChange={this.handleLoginChange}
+                  />
+              <FormControl.Feedback />
+              </FormGroup>
+              <FormGroup controlId="formBasicText">
+                  <ControlLabel> Password </ControlLabel>
+                  <FormControl
+                      type="text"
+                      value={this.state.password}
+                      placeholder="Enter Password"
+                      onChange={this.handlePasswordChange}
+                  />
+              </FormGroup>
+              <Route render={({ history }) => (
+                  <button
+                      type='button'
+                      onClick={() => { history.push('/messages') }}
+                  >
+                      Login
+                  </button>
+              )} />
+          </form>
         );
     }
 }
