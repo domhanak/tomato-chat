@@ -1,30 +1,25 @@
-
+.message-list {
+  background-color: tomato;
+  align-items: start;
+  border: solid 2px #b10a2c;
+  height: 100px;
+  margin: 10px;
+}
 
 .message:nth-child(2n) {
-  background-color: #dddddd;
+  background-color: salmon;
 }
 
-
-.message__author {
-  display: inline-block;
-  margin-right: 8px;
-  font-weight: bold;
+.message-form {
+  margin: 10px;
 }
 
-
-.message__author:after {
-  content: ':';
+.message-author {
+  align-content: start;
 }
 
-
-.message__text {
-  display: inline-block;
-}
-
-
-.message-list {
-  padding: 8px;
-  border-bottom: #444444 solid 1px;
+.message-text {
+  alignment: left;
 }
 
 #chat-container .new-message {
