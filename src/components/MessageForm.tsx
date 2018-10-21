@@ -27,15 +27,18 @@ export class MessageForm extends React.PureComponent<IMessageFormDataProps & IMe
 
     handleSubmit = (event: any) => {
         event.preventDefault();
+        if (event.target.value === null || event.target.value === '') {
+            return;
+        }
         this.props.onSend({
             id: uuidv4(),
-            from: this.props.username,
+            from: 'Anonym',
             text: event.target.value,
         });
     };
     render(): JSX.Element {
         return (
-                <form className="message-form" onSubmit={this.handleSubmit}>
+                <form className="message-form">
                     <FormGroup controlId="formBasicText">
                         <ControlLabel> Message </ControlLabel>
                         <FormControl
