@@ -1,3 +1,16 @@
+.list-group {
+  max-height: 400px;
+  margin-bottom: 10px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.list-group-item {
+  background: tomato;
+  border: inset crimson 1px;
+  margin-right: 10px;
+}
+
 .message-list {
   background-color: tomato;
   text-align: left;
@@ -5,7 +18,7 @@
 }
 
 .message-container {
-  border: inset 1px crimson;
+  border: 0;
   box-shadow: grey;
 }
 
