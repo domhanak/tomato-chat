@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { MessageForm } from './MessageForm';
-import {MessageList} from './MessageList';
-import {IMessage} from '../models/IMessage';
+import { MessageList } from './MessageList';
+import { IMessage } from '../models/IMessage';
 
-interface IChatWindow {
+interface IChatState {
+    readonly username: string;
+    readonly message: string;
     readonly messages: IMessage[];
 }
 
-export class ChatWindow extends React.Component<{}, IChatWindow> {
+export class ChatWindow extends React.Component<{}, IChatState> {
     constructor(props: any) {
         super(props);
         this.state = {
+            username: '',
+            message: '',
             messages: [
                 {
                     id: 'hello',
@@ -20,6 +24,16 @@ export class ChatWindow extends React.Component<{}, IChatWindow> {
             ],
         };
     }
+    updateMessage = (message: string) => {
+        this.setState({ message });
+    };
+
+    sendMessage = (message: IMessage): void => {
+        this.setState(previousState => ({
+            messages: [...previousState.messages, message]
+        }));
+        this.updateMessage('');
+    };
 
     render(): JSX.Element {
         return (
@@ -37,7 +51,7 @@ export class ChatWindow extends React.Component<{}, IChatWindow> {
                 </div>
                 <div className="row">
                     <div className="col-lg-12 col-md-12 col-sm-12">
-                        <MessageForm/>
+                        <MessageForm message={this.state.message} username={this.state.username} onMessageChange={this.updateMessage} onSend={this.sendMessage}/>
                     </div>
                 </div>
             </div>
