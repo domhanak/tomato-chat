@@ -38,14 +38,18 @@ export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowSta
             <div id="chat-container">
                 <div className="row">
                     <div className="col-lg-4 col-md-4 col-sm-4">
-                        <span> Channel List </span>
+                        <h2> Channel List </h2>
                     </div>
                     <div className="col-lg-8 col-md-8 col-sm-8">
+                        <h2> Channel Name </h2>
                         <MessageList messages={this.state.messages}/>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-12 col-md-12 col-sm-12">
+                    <div className="col-lg-4 col-md-4">
+                        <img src={require('../tomato.jpg')} alt="logo"/>
+                    </div>
+                    <div className="col-lg-8 col-md-8 col-sm-8">
                         <MessageForm message={this.state.message} username={this.state.username} onMessageChange={this.updateMessage} onSend={this.sendMessage}/>
                     </div>
                 </div>
