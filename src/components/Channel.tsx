@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
+import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {List} from 'immutable';
 
 interface IChannelState {
@@ -19,25 +19,25 @@ export class Channel extends React.Component<{}, IChannelState> {
         };
     }
 
-    onSubmit = () => {
-
-    }
+    onSubmit = (event: any) => {
+       event.preventDefault();
+    };
 
     onChannelNameChange = (event: any) => {
         this.setState(() => ({channelName: event.target.value }));
-    }
+    };
 
     onNewParticipantNameChange = (event: any) => {
         this.setState(() => ({newParticipantName: event.target.value }));
-    }
+    };
 
     addParticipant = () => {
         return;
-    }
+    };
 
     removeParticipant = () => {
-
-    }
+        return;
+    };
 
     render(): JSX.Element {
         return (
@@ -56,7 +56,7 @@ export class Channel extends React.Component<{}, IChannelState> {
                 <div className="participants">
                     <h4>Participants</h4>
                     <ul>
-                       <li><h6>Participant name </h6><a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"></a></li>
+                       <li><h6>Participant name </h6><a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/></li>
                     </ul>
                     <form onSubmit={this.addParticipant}>
                         <FormGroup>

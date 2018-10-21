@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
+import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import '../styles/base.scss';
-import {ChatWindow} from "./ChatWindow";
-import {Route} from "react-router";
+import {Route} from 'react-router';
 
 interface ILoginState {
     readonly login: string;
@@ -26,15 +25,6 @@ export class LoginForm extends React.Component<{}, ILoginState> {
     handlePasswordChange = (event: any) => {
         this.setState({ password: event.target.value });
     };
-
-    handleSubmit = (event: any) => {
-        event.preventDefault();
-
-        return ChatWindow;
-    };
-
-    // Add methods handling inputs
-
     render(): JSX.Element {
         return (
           <form>
@@ -59,8 +49,8 @@ export class LoginForm extends React.Component<{}, ILoginState> {
               </FormGroup>
               <Route render={({ history }) => (
                   <button
-                      type='button'
-                      onClick={() => { history.push('/messages') }}
+                      type="button"
+                      onClick={() => { history.push('/messages'); }}
                   >
                       Login
                   </button>

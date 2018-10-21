@@ -101,6 +101,7 @@ module.exports = {
   devtool: mode === 'development' ? 'eval-source-map' : null,
   devServer: {
     contentBase: path.resolve(__dirname, './build'),
+    historyApiFallback: true,
     port: 3000,
     open: true,
   }

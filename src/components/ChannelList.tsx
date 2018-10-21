@@ -17,7 +17,7 @@ export class ChannelList extends React.Component {
 
     displaySettings = (event: any) => {
         return event;
-    }
+    };
 
     onChannelCreation = () => {
         this.setState((prevState: any) => ({
@@ -25,7 +25,7 @@ export class ChannelList extends React.Component {
             newChannelName: ''
         }));
 
-    }
+    };
 
     onNewChannelNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState(() => ({newChannelName: event.target.value}));
