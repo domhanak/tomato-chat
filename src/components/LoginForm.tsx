@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap'
+import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import '../styles/base.scss';
 import {Route} from 'react-router';
 
@@ -25,7 +25,6 @@ export class LoginForm extends React.Component<{}, ILoginState> {
     handlePasswordChange = (event: any) => {
         this.setState({ password: event.target.value });
     };
-
     render(): JSX.Element {
         return (
           <form>

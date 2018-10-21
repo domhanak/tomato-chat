@@ -3,29 +3,27 @@ import { MessageForm } from './MessageForm';
 import { MessageList } from './MessageList';
 import { IMessage } from '../models/IMessage';
 
-interface IChatState {
+interface IChatWindowState {
     readonly username: string;
     readonly message: string;
     readonly messages: IMessage[];
 }
 
-export class ChatWindow extends React.Component<{}, IChatState> {
+interface IChatWindowProps {
+    readonly username: string;
+}
+
+export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            username: '',
+            username: this.props.username,
             message: '',
-            messages: [
-                {
-                    id: 'hello',
-                    from: 'Janko',
-                    text: 'Ahojte',
-                }
-            ],
+            messages: [],
         };
     }
     updateMessage = (message: string) => {
-        this.setState({ message });
+        this.setState(() => ({ message }));
     };
 
     sendMessage = (message: IMessage): void => {
@@ -42,11 +40,8 @@ export class ChatWindow extends React.Component<{}, IChatState> {
                     <div className="col-lg-4 col-md-4 col-sm-4">
                         <span> Channel List </span>
                     </div>
-                    <div className="col-lg-4 col-md-4 col-sm-4">
+                    <div className="col-lg-8 col-md-8 col-sm-8">
                         <MessageList messages={this.state.messages}/>
-                    </div>
-                    <div className="col-lg-4 col-md-4 col-sm-4">
-                        <span> Participants List </span>
                     </div>
                 </div>
                 <div className="row">
