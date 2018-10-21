@@ -30,3 +30,12 @@
     transform: rotate(360deg);
   }
 }
+
+.hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 2px solid crimson;
+  margin: 1em 0;
+  padding: 0;
+}

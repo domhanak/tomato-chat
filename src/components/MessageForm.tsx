@@ -36,7 +36,7 @@ export class MessageForm extends React.PureComponent<IMessageFormDataProps & IMe
     };
     render(): JSX.Element {
         return (
-                <form>
+                <form className="message-form">
                     <FormGroup controlId="formBasicText">
                         <ControlLabel> Message </ControlLabel>
                         <FormControl

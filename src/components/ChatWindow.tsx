@@ -47,7 +47,7 @@ export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowSta
                     </div>
                 </div>
                 <div className="new-message row">
-                    <div className="col-lg-8 col-md-8 col-sm-8">
+                    <div className="col-lg-8 col-md-8 col-sm-8 col-md-offset-4">
                         <MessageForm message={this.state.message} username={this.state.username} onMessageChange={this.updateMessage} onSend={this.sendMessage}/>
                     </div>
                 </div>

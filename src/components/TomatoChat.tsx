@@ -34,7 +34,7 @@ export class TomatoChat extends Component {
                     </div>
                     <Router>
                         <div className="container">
-                            <ul className="list-inline">
+                            <ul className="nav-container-list list-inline">
                                 <li>
                                     <Link to="/">Home</Link>
                                 </li>
@@ -52,7 +52,7 @@ export class TomatoChat extends Component {
                                 </li>
                             </ul>
 
-                            <hr />
+                            <hr className="hr"/>
 
                             <Route path="/"/>
                             <Route path="/login" component={LoginForm}/>
