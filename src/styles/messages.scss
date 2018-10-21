@@ -1,39 +1,32 @@
-.list-group {
-  max-height: 400px;
-  margin-bottom: 10px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+
+
+.message:nth-child(2n) {
+  background-color: #dddddd;
 }
 
-.list-group-item {
-  background: tomato;
-  border: inset crimson 1px;
-  margin-right: 10px;
-}
 
-.message-list {
-  background-color: tomato;
-  text-align: left;
-  height: auto;
-}
-
-.message-container {
-  border: 0;
-  box-shadow: grey;
-}
-
-.message-text {
-  alignment: left;
-  margin-left: 20px;
-}
-
-.message-author {
-  alignment: left;
-  margin-left: 20px;
+.message__author {
+  display: inline-block;
+  margin-right: 8px;
   font-weight: bold;
 }
 
-.message {
-  box-shadow: black;
+
+.message__author:after {
+  content: ':';
 }
 
+
+.message__text {
+  display: inline-block;
+}
+
+
+.message-list {
+  padding: 8px;
+  border-bottom: #444444 solid 1px;
+}
+
+#chat-container .new-message {
+  margin-top: 50px;
+}

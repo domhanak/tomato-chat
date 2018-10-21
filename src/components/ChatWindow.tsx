@@ -3,7 +3,6 @@ import { MessageForm } from './MessageForm';
 import { MessageList } from './MessageList';
 import { IMessage } from '../models/IMessage';
 import {ChannelList} from './ChannelList';
-import '../styles/messages.scss';
 
 interface IChatWindowState {
     readonly username: string;
@@ -39,16 +38,17 @@ export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowSta
         return (
             <div id="chat-container">
                 <div className="row">
-                    <div className="col-lg-4 col-md-4 col-sm-4 channel-container">
+                    <div className="col-lg-4 col-md-4 col-sm-4">
+                        <h2> Channel List </h2>
                         <ChannelList/>
                     </div>
-                    <div className="col-lg-8 col-md-8 col-sm-8 message-container">
-                        <h4> Channel Name </h4>
+                    <div className="col-lg-8 col-md-8 col-sm-8">
+                        <h2> Channel Name </h2>
                         <MessageList messages={this.state.messages}/>
                     </div>
                 </div>
-                <div className="new-message-container">
-                    <div className="col-lg-8 col-md-8 col-sm-8 col-md-offset-4">
+                <div className="new-message row">
+                    <div className="col-lg-8 col-md-8 col-sm-8">
                         <MessageForm message={this.state.message} username={this.state.username} onMessageChange={this.updateMessage} onSend={this.sendMessage}/>
                     </div>
                 </div>
