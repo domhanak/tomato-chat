@@ -1,11 +1,17 @@
 .message-list {
   background-color: tomato;
   align-items: start;
-  border: solid 4px #b10a2c;
+  border: solid 2px #b10a2c;
+  height: 100px;
+  margin: 10px;
 }
 
 .message:nth-child(2n) {
   background-color: salmon;
+}
+
+.message-form {
+  margin: 10px;
 }
 
 .message-author {
@@ -13,5 +19,5 @@
 }
 
 .message-text {
-
+  alignment: left;
 }
