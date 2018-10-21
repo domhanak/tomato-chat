@@ -1,7 +1,9 @@
 .profile-view {
-  background: $background-colour;
   margin: 25px auto;
   width: 70%;
+
+  border: 4px solid $channel-li-hover-colour;
+  border-radius: 7px;
 
   & .avatar {
     margin: 15px 0px 15px 15px;

@@ -39,9 +39,6 @@ export class TomatoChat extends Component {
                                     <Link to="/">Home</Link>
                                 </li>
                                 <li>
-                                    <Link to="/login">Login</Link>
-                                </li>
-                                <li>
                                     <Link to="/profile">Profile</Link>
                                 </li>
                                 <li>
@@ -55,9 +52,9 @@ export class TomatoChat extends Component {
                             <hr className="hr"/>
 
                             <Route path="/"/>
-                            <Route path="/login" component={LoginForm}/>
                             <Route path="/profile" component={Profile}/>
                             <Route path="/messages" component={ChatWindow}/>
+                            <LoginForm/>
                         </div>
                     </Router>
                     <div className="panel-footer">
