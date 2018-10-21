@@ -28,7 +28,6 @@ export class Message extends React.PureComponent<IProps, IState> {
             <div key={id} id="message-container" className={`message`}>
                 <div className="row">
                     <div className="message">
-                        <hr className="hr"/>
                         <div className="message-author">
                             {from}
                         </div>

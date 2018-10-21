@@ -60,6 +60,9 @@ export class TomatoChat extends Component {
                             <Route path="/messages" component={ChatWindow}/>
                         </div>
                     </Router>
+                    <div className="panel-footer">
+                        <h4> Footer </h4>
+                    </div>
                 </header>
             </div>
         );
