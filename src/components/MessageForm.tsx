@@ -3,7 +3,6 @@ import * as PropTypes from 'prop-types';
 import {ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
 import {IMessage} from '../models/IMessage';
 
-
 interface IMessageFormDataProps {
     readonly username: string;
     readonly message: string;
@@ -28,26 +27,30 @@ export class MessageForm extends React.PureComponent<IMessageFormDataProps & IMe
 
     handleSubmit = (event: any) => {
         event.preventDefault();
+        if (event.target.value === null || event.target.value === '') {
+            return;
+        }
         this.props.onSend({
             id: uuidv4(),
-            from: this.props.username,
+            from: 'Anonym',
             text: event.target.value,
         });
     };
     render(): JSX.Element {
         return (
-                <form>
+                <form className="message-form">
                     <FormGroup controlId="formBasicText">
                         <ControlLabel> Message </ControlLabel>
                         <FormControl
                             componentClass="textarea"
                             value={this.props.message}
-                            placeholder="Start typing..."
+                            placeholder="Click here to start typing..."
                             onChange={this.handleMessageChange}
                         />
                     </FormGroup>
                     <button
                         type="submit"
+                        className="btn btn-primary"
                         value={this.props.message}
                         onClick={this.handleSubmit}
                     >

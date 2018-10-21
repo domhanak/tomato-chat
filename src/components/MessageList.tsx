@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import {IMessage} from '../models/IMessage';
+import '../styles/messages.scss';
+import {Message} from './Message';
 
 interface IMessageListProps {
     readonly messages: IMessage[];
@@ -17,16 +19,9 @@ export class MessageList extends React.Component<IMessageListProps> {
 
     render(): JSX.Element {
         return (
-            <div className="list-group">
+            <div className="message-list list-group" >
                 {this.props.messages && this.props.messages.map(message => (
-                    <div className="message" key={message.id}>
-                        <div className="message__author">
-                            {message.from}
-                        </div>
-                        <div className="message__text">
-                            {message.text}
-                        </div>
-                    </div>
+                   <Message key={message.id} id={message.id} text={message.text} from={message.from}  />
                 ))}
             </div>
         );
