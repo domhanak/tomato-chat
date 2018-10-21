@@ -41,3 +41,11 @@
   box-shadow: black;
 }
 
+#chat-container {
+  width: 90%;
+
+  & .message-container {
+    width: 50%;
+  }
+}
+
