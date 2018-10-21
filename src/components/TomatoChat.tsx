@@ -4,6 +4,7 @@ import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {Profile} from './Profile';
 import {ChatWindow} from './ChatWindow';
+import '../styles/App.scss';
 
 export class TomatoChat extends Component {
     constructor(props: any) {
@@ -16,20 +17,20 @@ export class TomatoChat extends Component {
 
     render(): JSX.Element {
         return (
-            <div className="app">
+            <div className="App">
                 <header className="page-nav">
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-md-offset-3">
+                        <h1>Tomato Chat Application </h1>
+                    </div>
                     <div className="container">
-                        <div className="col-lg-5 col-md-6 col-sm-6 col-xs-6">
-                            <h1>Tomato Chat Application </h1>
-                        </div>
-                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 img">
+                        <div className="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-md-offset-5 img">
                             <img src={require('../tomato.jpg')} alt="logo"/>
                         </div>
                     </div>
                     <div>
-                        <p>
+                        <h4>
                             Chat application so you can chat like true tomato.
-                        </p>
+                        </h4>
                     </div>
                     <Router>
                         <div className="container">
