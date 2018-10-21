@@ -23,8 +23,12 @@
 .message {
   box-shadow: black;
 }
+<<<<<<< HEAD
 
-.message {
-  box-shadow: black;
+#chat-container .new-message {
+  margin-top: 50px;
 }
+||||||| merged common ancestors
+=======
 
+>>>>>>> 1089d56aa8f9700a2d703b7e1cd96ffbffb5d5f8
