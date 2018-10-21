@@ -37,3 +37,9 @@
   box-shadow: black;
 }
 
+#chat-container {
+
+  & .new-message-container {
+    margin: 50px 0 50px 0;
+  }
+}
