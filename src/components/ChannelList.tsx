@@ -29,7 +29,6 @@ export class ChannelList extends React.Component<IChannelListState & IChannelCal
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
-        console.log(event);
 
         this.props.onChannelCreation({name: this.props.newChannelName, id: 'xx', order: 4});
     };
