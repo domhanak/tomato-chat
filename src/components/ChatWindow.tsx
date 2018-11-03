@@ -2,9 +2,9 @@ import * as React from 'react';
 import { MessageForm } from './MessageForm';
 import { MessageList } from './MessageList';
 import { IMessage } from '../models/IMessage';
-import {ChannelList} from './ChannelList';
 import '../styles/messages.scss';
 import {IChannel} from '../models/IChannel';
+import {Channels} from './Channel/Channels';
 
 interface IChatWindowState {
     readonly username: string;
@@ -57,7 +57,7 @@ export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowSta
             <div id="chat-container">
                 <div className="col-lg-4 col-md-4 col-sm-4">
                     <div className="channel-container">
-                        <ChannelList channelList={this.state.channels}
+                        <Channels channelList={this.state.channels}
                                      newChannelName={this.state.newChannelName}
                                      onNewChannelNameChange={this.updateChannelName}
                                      onChannelCreation={this.createNewChannel} />
