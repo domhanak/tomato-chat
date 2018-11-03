@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import {ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
-import {IMessage} from '../models/IMessage';
+import {IMessage} from '../../models/IMessage';
 
 interface IMessageFormDataProps {
     readonly username: string;

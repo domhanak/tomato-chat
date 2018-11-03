@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { MessageForm } from './MessageForm';
-import { MessageList } from './MessageList';
+import { MessageForm } from './Message/MessageForm';
+import { MessageList } from './Message/MessageList';
 import { IMessage } from '../models/IMessage';
-import '../styles/messages.scss';
 import {IChannel} from '../models/IChannel';
 import {Channels} from './Channel/Channels';
 
