@@ -1,42 +1,34 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
-import {List} from 'immutable';
+// import {List} from 'immutable';
+import * as PropTypes from 'prop-types';
+// import {IChannel} from '../../models/IChannel';
 
-interface IChannelState {
+interface IChannelStateProps {
     readonly channelName: string;
-    readonly newParticipantName: string;
-    readonly participants: List<Uuid>;
+    readonly id: string;
+    // readonly newParticipantName: string;
+    // readonly participants: List<Uuid>;
 }
 
-export class Channel extends React.Component<{}, IChannelState> {
-    constructor(props: any) {
-        super(props);
+interface IChannelCallBackProps {
+     readonly onChannelNameChange: (channelName: string, id: string) => void;
+    // readonly onParticipantNameChange: (participantName: string) => void;
+}
 
-        this.state = {
-            channelName: '',
-            newParticipantName: '',
-            participants: List<Uuid>()
-        };
+export class Channel extends React.Component<IChannelStateProps & IChannelCallBackProps> {
+
+    static propTypes = {
+        channelName: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+    };
+
+    handleChannelNameChange = (event: any) => {
+        this.props.onChannelNameChange(event.target.value, this.props.id);
     }
 
     onSubmit = (event: any) => {
        event.preventDefault();
-    };
-
-    onChannelNameChange = (event: any) => {
-        this.setState(() => ({channelName: event.target.value }));
-    };
-
-    onNewParticipantNameChange = (event: any) => {
-        this.setState(() => ({newParticipantName: event.target.value }));
-    };
-
-    addParticipant = () => {
-        return;
-    };
-
-    removeParticipant = () => {
-        return;
     };
 
     render(): JSX.Element {
@@ -44,32 +36,32 @@ export class Channel extends React.Component<{}, IChannelState> {
             <div className="channel">
                 <form onSubmit={this.onSubmit}>
                     <FormGroup>
-                        <ControlLabel> Channel name </ControlLabel>
+                        <ControlLabel>{this.props.channelName}</ControlLabel>
                         <FormControl
                             type="text"
-                            value={this.state.channelName}
+                            value={this.props.channelName}
                             placeholder="Channel name"
-                            onChange={this.onChannelNameChange}
+                            onChange={this.handleChannelNameChange}
                         />
                     </FormGroup>
                 </form>
-                <div className="participants">
-                    <h4>Participants</h4>
-                    <ul>
-                       <li><h6>Participant name </h6><a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/></li>
-                    </ul>
-                    <form onSubmit={this.addParticipant}>
-                        <FormGroup>
-                            <ControlLabel> New participant </ControlLabel>
-                            <FormControl
-                                type="text"
-                                value={this.state.newParticipantName}
-                                placeholder="Participant name"
-                                onChange={this.onNewParticipantNameChange}
-                            />
-                        </FormGroup>
-                    </form>
-                </div>
+                {/*<div className="participants">*/}
+                    {/*<h4>Participants</h4>*/}
+                    {/*<ul>*/}
+                       {/*<li><h6>Participant name </h6><a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/></li>*/}
+                    {/*</ul>*/}
+                    {/*<form onSubmit={this.addParticipant}>*/}
+                        {/*<FormGroup>*/}
+                            {/*<ControlLabel> New participant </ControlLabel>*/}
+                            {/*<FormControl*/}
+                                {/*type="text"*/}
+                                {/*value={this.props.newParticipantName}*/}
+                                {/*placeholder="Participant name"*/}
+                                {/*onChange={this.onNewParticipantNameChange}*/}
+                            {/*/>*/}
+                        {/*</FormGroup>*/}
+                    {/*</form>*/}
+                {/*</div>*/}
             </div>
         );
     }

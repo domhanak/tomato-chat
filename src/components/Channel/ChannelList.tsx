@@ -26,6 +26,9 @@ export class ChannelList extends React.Component<IChannelListState> {
         return;
     };
 
+    onChannelNameChange = (channelName: string, id: string) => {
+        console.log(channelName + ' ' + id);
+    }
 
     render(): JSX.Element {
         return (
@@ -37,12 +40,13 @@ export class ChannelList extends React.Component<IChannelListState> {
                                 <div>
                                     <h6><Link className="channel-name" to="/todo" >{channel!.name}</Link></h6>
                                     <div className="channel-options visible">
+                                        {/*<a onClick={this.x} className="settings glyphicon glyphicon-cog"/>*/}
                                         <Link to="/channel" className="settings glyphicon glyphicon-cog" />
                                         <a onClick={this.moveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                                         <a onClick={this.moveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
                                     </div>
 
-                                    <Route path="/channel" component={Channel}/>
+                                    <Route path="/channel" render={() => <Channel onChannelNameChange={this.onChannelNameChange} id={channel!.id} channelName={channel!.name}/>}/>
                                 </div>
                             </Router>
                         </li>
