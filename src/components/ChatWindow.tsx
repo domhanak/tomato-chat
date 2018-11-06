@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { MessageForm } from './MessageForm';
-import { MessageList } from './MessageList';
+import { MessageForm } from './Message/MessageForm';
+import { MessageList } from './Message/MessageList';
 import { IMessage } from '../models/IMessage';
-import {ChannelList} from './ChannelList';
-import '../styles/messages.scss';
+import {IChannel} from '../models/IChannel';
+import {Channels} from './Channel/Channels';
 
 interface IChatWindowState {
     readonly username: string;
     readonly message: string;
     readonly messages: IMessage[];
+    readonly channels: IChannel[];
+    readonly newChannelName: string;
 }
 
 interface IChatWindowProps {
@@ -22,8 +24,22 @@ export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowSta
             username: this.props.username,
             message: '',
             messages: [],
+            newChannelName: '',
+            channels: [],
         };
     }
+
+    updateChannelName = (channelName: string) => {
+        this.setState(() => ({newChannelName: channelName}));
+    }
+
+    createNewChannel = (channel: IChannel) => {
+        this.setState(prevState => ({
+            channels: [...prevState.channels, channel]
+        }));
+        this.updateChannelName('');
+    }
+
     updateMessage = (message: string) => {
         this.setState(() => ({ message }));
     };
@@ -40,7 +56,10 @@ export class ChatWindow extends React.Component<IChatWindowProps, IChatWindowSta
             <div id="chat-container">
                 <div className="col-lg-4 col-md-4 col-sm-4">
                     <div className="channel-container">
-                        <ChannelList/>
+                        <Channels channelList={this.state.channels}
+                                     newChannelName={this.state.newChannelName}
+                                     onNewChannelNameChange={this.updateChannelName}
+                                     onChannelCreation={this.createNewChannel} />
                     </div>
                 </div>
                 <div className="col-lg-8 col-md-8 col-sm-8 new-message-container">

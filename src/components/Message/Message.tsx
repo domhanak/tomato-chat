@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../styles/App.scss';
+import '../../styles/App.scss';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;

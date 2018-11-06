@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {IMessage} from '../models/IMessage';
-import '../styles/messages.scss';
+import {IMessage} from '../../models/IMessage';
+import '../../styles/messages.scss';
 import {Message} from './Message';
 
 interface IMessageListProps {

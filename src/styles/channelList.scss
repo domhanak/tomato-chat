@@ -9,11 +9,14 @@
     width: 100%;
 
     & ul {
+      width: 100%;
+      padding: 0;
       list-style: none;
     }
 
     & ul li {
       width: 80%;
+      margin: 0 auto;
       margin-top: 15px;
       text-align: center;
       border-bottom: 1px solid $tomato-items-colour;
