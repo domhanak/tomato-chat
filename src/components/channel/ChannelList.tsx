@@ -28,7 +28,7 @@ export class ChannelList extends React.Component<IChannelListState> {
 
     onChannelNameChange = (channelName: string, id: string) => {
         console.log(channelName + ' ' + id);
-    }
+    };
 
     render(): JSX.Element {
         return (

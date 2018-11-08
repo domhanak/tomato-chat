@@ -1,12 +1,12 @@
+import { App } from './App.tsx';
 require.context('../public/', true);
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/base.scss';
 import 'babel-core/register';
 import 'babel-polyfill';
-import { TomatoChat } from './components/TomatoChat.tsx';
 
 ReactDOM.render(
-    <TomatoChat />,
+    <App />,
     document.getElementById('react-container')
 );

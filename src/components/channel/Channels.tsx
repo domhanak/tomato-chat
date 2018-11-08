@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IChannel} from '../../models/IChannel';
-import * as PropTypes from 'prop-types';
 import {ChannelList} from './ChannelList';
+import {List} from "immutable";
 
 interface IChannelListState {
     readonly newChannelName: string;
@@ -15,21 +15,10 @@ interface IChannelCallbackProps {
 
 export class Channels extends React.Component<IChannelListState & IChannelCallbackProps> {
 
-    static propTypes = {
-        onChannelCreation: PropTypes.func.isRequired,
-        onNewChannelNameChange: PropTypes.func.isRequired,
-        newChannelName: PropTypes.string.isRequired,
-        channelList: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            order: PropTypes.number.isRequired,
-        })),
-    };
-
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelCreation({name: this.props.newChannelName, id: 'xx', order: 4});
+        this.props.onChannelCreation({name: this.props.newChannelName, id: 'xx', order: 4, messages: List()});
     };
 
     handleNewChannelNameChange = (event: any) => {

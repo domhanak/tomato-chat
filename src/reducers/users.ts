@@ -1,0 +1,30 @@
+import * as Immutable from 'immutable';
+import { combineReducers} from 'redux';
+import { IUsers } from '../models/ITomatoApp';
+import {TOMATO_APP_LOADING_STARTED, TOMATO_APP_LOADING_SUCCESS} from "../constants/actionTypes";
+import {IUser} from "../models/IUser";
+
+const usersById = (prevState = Immutable.Map<Uuid, IUser>(), action: Action): Immutable.Map<Uuid, IUser> => {
+    switch (action.type) {
+        case TOMATO_APP_LOADING_STARTED:
+        case TOMATO_APP_LOADING_SUCCESS:
+            return Immutable.Map(action.payload.users.map((user: IUser) => [user.id, user]));
+        default:
+            return prevState;
+    }
+};
+
+const allUserIds = (prevState: Immutable.List<Uuid> = Immutable.List(), action: Action): Immutable.List<Uuid> => {
+    switch (action.type) {
+        case TOMATO_APP_LOADING_STARTED:
+        case TOMATO_APP_LOADING_SUCCESS:
+            return Immutable.List(action.payload.users.map((user: IUser) => user.id));
+        default:
+            return prevState;
+    }
+};
+
+export const users = combineReducers<IUsers>({
+    allUserIds,
+    usersById,
+});

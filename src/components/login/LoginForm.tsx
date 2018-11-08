@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
-import '../styles/base.scss';
-import '../styles/login.scss';
+import '../../styles/base.scss';
+import '../../styles/login.scss';
 import {Route} from 'react-router';
 
 interface ILoginState {
