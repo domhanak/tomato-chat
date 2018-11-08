@@ -1,21 +1,24 @@
 import * as React from 'react';
 import '../styles/App.scss';
-import {IUser} from "../models/IUser";
 import {Navigation} from "./navigation/Navigation";
 
 export interface ITomatoAppStateProps {
     readonly isTyping: boolean;
     readonly isEditing: boolean;
-    readonly loggedUser: IUser | null;
+    readonly loggedUser: Uuid | null;
 }
 
 export interface ITomatoAppDispatchProps {
     readonly loadUsers: () => void;
+    readonly loadChannels: () => void;
+    readonly loadMessages: () => void;
 }
 
 export class TomatoApp extends React.PureComponent<ITomatoAppDispatchProps & ITomatoAppStateProps> {
     componentDidMount() {
         this.props.loadUsers();
+        this.props.loadMessages();
+        this.props.loadChannels();
     }
 
     render(): JSX.Element {

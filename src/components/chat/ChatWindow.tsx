@@ -11,14 +11,10 @@ export interface IChatWindowStateProps {
 export interface IChatWindowDispatchProps {
     readonly loadChannels: () => void;
     readonly loadMessages: () => void;
+    readonly loadUsers: () => void;
 }
 
-
 export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChatWindowStateProps> {
-    componentDidMount() {
-        this.props.loadMessages();
-        this.props.loadChannels();
-    }
     render(): JSX.Element {
         return (
             <div id="chat-container">
