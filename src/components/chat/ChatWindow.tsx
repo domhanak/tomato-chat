@@ -5,16 +5,16 @@ import {MessageFormContainer} from "../../containers/MessageFormContainer";
 export interface IChatWindowStateProps {
     readonly isTyping: boolean;
     readonly isEditing: boolean;
-    readonly loggedUser: Uuid | null;
 }
 
 export interface IChatWindowDispatchProps {
-    readonly loadChannels: () => void;
-    readonly loadMessages: () => void;
     readonly loadUsers: () => void;
 }
 
 export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChatWindowStateProps> {
+    componentDidMount() {
+        this.props.loadUsers();
+    }
     render(): JSX.Element {
         return (
             <div id="chat-container">

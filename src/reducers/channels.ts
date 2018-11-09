@@ -9,6 +9,7 @@ import {
 const channelsById = (prevState = Immutable.Map<Uuid, IChannel>(), action: Action): Immutable.Map<Uuid, IChannel> => {
     switch (action.type) {
         case TOMATO_APP_LOADING_CHANNELS_STARTED:
+            return prevState;
         case TOMATO_APP_LOADING_CHANNELS_SUCCESS:
             return Immutable.Map(action.payload.channels.map((channel: IChannel) => [channel.id, channel]));
         default:
@@ -19,6 +20,7 @@ const channelsById = (prevState = Immutable.Map<Uuid, IChannel>(), action: Actio
 const allChannelIds = (prevState: Immutable.List<Uuid> = Immutable.List(), action: Action): Immutable.List<Uuid> => {
     switch (action.type) {
         case TOMATO_APP_LOADING_CHANNELS_STARTED:
+            return prevState;
         case TOMATO_APP_LOADING_CHANNELS_SUCCESS:
             return Immutable.List(action.payload.channels.map((channel: IChannel) => channel.id));
         default:

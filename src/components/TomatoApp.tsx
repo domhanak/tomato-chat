@@ -3,15 +3,13 @@ import '../styles/App.scss';
 import {Navigation} from "./navigation/Navigation";
 
 export interface ITomatoAppStateProps {
-    readonly isTyping: boolean;
-    readonly isEditing: boolean;
     readonly loggedUser: Uuid | null;
 }
 
 export interface ITomatoAppDispatchProps {
     readonly loadUsers: () => void;
-    readonly loadChannels: () => void;
     readonly loadMessages: () => void;
+    readonly loadChannels: () => void;
 }
 
 export class TomatoApp extends React.PureComponent<ITomatoAppDispatchProps & ITomatoAppStateProps> {

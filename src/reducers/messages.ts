@@ -9,6 +9,7 @@ import {
 const messagesById = (prevState = Immutable.Map<Uuid, IMessage>(), action: Action): Immutable.Map<Uuid, IMessage> => {
     switch (action.type) {
         case TOMATO_APP_LOADING_MESSAGES_STARTED:
+            return prevState;
         case TOMATO_APP_LOADING_MESSAGES_SUCCESS:
             return Immutable.Map(action.payload.messages.map((message: IMessage) => [message.id, message]));
         default:
@@ -19,6 +20,7 @@ const messagesById = (prevState = Immutable.Map<Uuid, IMessage>(), action: Actio
 const allMessagesByIds = (prevState: Immutable.List<Uuid> = Immutable.List(), action: Action): Immutable.List<Uuid> => {
     switch (action.type) {
         case TOMATO_APP_LOADING_MESSAGES_STARTED:
+            return prevState;
         case TOMATO_APP_LOADING_MESSAGES_SUCCESS:
             return Immutable.List(action.payload.messages.map((message: IMessage) => message.id));
         default:

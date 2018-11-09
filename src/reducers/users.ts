@@ -9,6 +9,7 @@ import {IUser} from "../models/IUser";
 const usersById = (prevState = Immutable.Map<Uuid, IUser>(), action: Action): Immutable.Map<Uuid, IUser> => {
     switch (action.type) {
         case TOMATO_APP_LOADING_USERS_STARTED:
+            return prevState;
         case TOMATO_APP_LOADING_USERS_SUCCESS:
             return Immutable.Map(action.payload.users.map((user: IUser) => [user.id, user]));
         default:
@@ -19,6 +20,7 @@ const usersById = (prevState = Immutable.Map<Uuid, IUser>(), action: Action): Im
 const allUserIds = (prevState: Immutable.List<Uuid> = Immutable.List(), action: Action): Immutable.List<Uuid> => {
     switch (action.type) {
         case TOMATO_APP_LOADING_USERS_STARTED:
+            return prevState;
         case TOMATO_APP_LOADING_USERS_SUCCESS:
             return Immutable.List(action.payload.users.map((user: IUser) => user.id));
         default:

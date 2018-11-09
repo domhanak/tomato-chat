@@ -3,13 +3,11 @@ import { Dispatch } from 'redux';
 import { IState } from '../common/IState';
 import { loadUsers } from '../actions/loadUsers';
 import { ITomatoAppDispatchProps, ITomatoAppStateProps, TomatoApp } from '../components/TomatoApp';
-import {loadChannels} from "../actions/loadChannels";
 import {loadMessages} from "../actions/loadMessages";
+import {loadChannels} from "../actions/loadChannels";
 
 const mapStateToProps = (state: IState) => {
     return {
-        isEditing: state.tomatoApp.isEditing,
-        isTyping: state.tomatoApp.isTyping,
         loggedUser: state.tomatoApp.loggedUser,
     };
 };
@@ -17,8 +15,8 @@ const mapStateToProps = (state: IState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         loadUsers: () => dispatch(loadUsers()),
-        loadChannels: () => dispatch(loadChannels()),
         loadMessages: () => dispatch(loadMessages()),
+        loadChannels: () => dispatch(loadChannels()),
     };
 };
 

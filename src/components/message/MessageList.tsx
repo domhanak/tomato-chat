@@ -14,7 +14,7 @@ export class MessageList extends React.PureComponent<IMessageListProps> {
                 {
                     this.props.messageIds.map((id: Uuid, index: number) => {
                             return (
-                                <div className="list-group-item">
+                                <div key={id} className="list-group-item">
                                     <MessageContainer
                                         key={id}
                                         id={id}

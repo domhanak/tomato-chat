@@ -49,19 +49,19 @@ let messages: Immutable.List<IMessage> = getInitialMessages();
 
 // ===================== API ==========================
 export const getUsers = async (): Promise<IUser[]> => {
-    // await delay(500);
+    await delay(500);
 
     return users.toArray();
 };
 
 export const getChannels = async (): Promise<IChannel[]> => {
-    // await delay(500);
+    await delay(500);
 
     return channels.toArray();
 };
 
 export const getMessages = async (): Promise<IMessage[]> => {
-    // await delay(500);
+    await delay(500);
 
     return messages.toArray();
 };
