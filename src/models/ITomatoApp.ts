@@ -1,9 +1,9 @@
 import * as Immutable from 'immutable';
 import { MessageFilter } from '../constants/MessageFilter';
 import {IChannel} from './IChannel';
-import {IMessage} from "./IMessage";
-import {ChannelFilter} from "../constants/ChannelFilter";
-import {IUser} from "./IUser";
+import {IMessage} from './IMessage';
+import {ChannelFilter} from '../constants/ChannelFilter';
+import {IUser} from './IUser';
 
 export interface IUsers {
     allUserIds: Immutable.List<Uuid>;
@@ -12,7 +12,7 @@ export interface IUsers {
 
 export interface IMessages {
     allMessagesByIds: Immutable.List<Uuid>;
-    messagesById: Immutable.Map<Uuid, IMessage>
+    messagesById: Immutable.Map<Uuid, IMessage>;
 }
 
 export interface IChannels {

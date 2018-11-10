@@ -1,11 +1,11 @@
 import delay from 'delay';
 import * as Immutable from 'immutable';
 import { IUser } from '../models/IUser';
-import { IChannel } from "../models/IChannel";
-import { IMessage } from "../models/IMessage";
+import { IChannel } from '../models/IChannel';
+import { IMessage } from '../models/IMessage';
 import { getInitialKnownUsers } from '../common/utils/getInitialUsers';
-import { getInitialKnownMessages } from "../common/utils/getInitialMessages";
-import { getInitialKnownChannels } from "../common/utils/getInitialChannels";
+import { getInitialKnownMessages } from '../common/utils/getInitialMessages';
+import { getInitialKnownChannels } from '../common/utils/getInitialChannels';
 
 const userLocalStorageKey = 'tomatoApp.users';
 const channelLocalStorageKey = 'tomatoApp.channels';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '../../styles/App.scss';
-import {IMessage} from "../../models/IMessage";
+import {IMessage} from '../../models/IMessage';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;

@@ -20,11 +20,11 @@ export class LoginForm extends React.Component<{}, ILoginState> {
     }
 
     handleLoginChange = (event: any) => {
-        this.setState({ username: event.target.value });
+        this.setState(() => ({ username: event.target.value }));
     };
 
     handlePasswordChange = (event: any) => {
-        this.setState({ password: event.target.value });
+        this.setState(() => ({ password: event.target.value }));
     };
     handleSubmit = (event: any) => {
         event.preventDefault();

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {MessageListContainer} from "../../containers/MessageListContainer";
-import {MessageFormContainer} from "../../containers/MessageFormContainer";
+import {MessageListContainer} from '../../containers/MessageListContainer';
+import {MessageFormContainer} from '../../containers/MessageFormContainer';
 
 export interface IChatWindowStateProps {
     readonly isTyping: boolean;
@@ -12,7 +12,7 @@ export interface IChatWindowDispatchProps {
 }
 
 export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChatWindowStateProps> {
-    componentDidMount() {
+    componentDidMount(): void {
         this.props.loadUsers();
     }
     render(): JSX.Element {

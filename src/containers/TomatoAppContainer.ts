@@ -3,8 +3,8 @@ import { Dispatch } from 'redux';
 import { IState } from '../common/IState';
 import { loadUsers } from '../actions/loadUsers';
 import { ITomatoAppDispatchProps, ITomatoAppStateProps, TomatoApp } from '../components/TomatoApp';
-import {loadMessages} from "../actions/loadMessages";
-import {loadChannels} from "../actions/loadChannels";
+import {loadMessages} from '../actions/loadMessages';
+import {loadChannels} from '../actions/loadChannels';
 
 const mapStateToProps = (state: IState) => {
     return {

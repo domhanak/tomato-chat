@@ -1,8 +1,8 @@
 import * as uuid from 'uuid';
 import * as Immutable from 'immutable';
-import { IUser } from "../../models/IUser";
-import { List } from "immutable";
-import { IChannel } from "../../models/IChannel";
+import { IUser } from '../../models/IUser';
+import { List } from 'immutable';
+import { IChannel } from '../../models/IChannel';
 
 export const getInitialKnownUsers = (): Immutable.List<IUser> => Immutable.List([
     { id: uuid(), isLoggedIn: true, nickname: 'Make a coffee', channels: List<IChannel>() },

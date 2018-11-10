@@ -1,8 +1,8 @@
-import {BrowserRouter as Router, Link, Route} from "react-router-dom";
-import {LoginForm} from "../login/LoginForm";
-import {Profile} from "../profile/Profile";
-import * as React from "react";
-import {ChatWindowContainer} from "../../containers/ChatWindowContainer";
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
+import {LoginForm} from '../login/LoginForm';
+import {Profile} from '../profile/Profile';
+import * as React from 'react';
+import {ChatWindowContainer} from '../../containers/ChatWindowContainer';
 
 export const Navigation = () => (
     <Router>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IChannel} from '../../models/IChannel';
 import {ChannelList} from './ChannelList';
-import {List} from "immutable";
+import {List} from 'immutable';
 
 interface IChannelListState {
     readonly newChannelName: string;

@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { updateMessage as updateMessageApi } from '../api/chatRepository';
-import { IState } from '../common/IState'
+import { IState } from '../common/IState';
 import {
     TOMATO_APP_MESSAGE_EDITING_STARTED, TOMATO_APP_MESSAGE_EDITING_SUCCESS
 } from '../constants/actionTypes';
