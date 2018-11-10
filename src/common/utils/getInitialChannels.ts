@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import * as Immutable from 'immutable';;
+import * as Immutable from 'immutable';
 import {IChannel} from '../../models/IChannel';
 import {List} from 'immutable';
 import {IMessage} from '../../models/IMessage';
