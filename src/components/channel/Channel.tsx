@@ -25,7 +25,7 @@ export class Channel extends React.Component<IChannelStateProps & IChannelCallBa
 
     handleChannelNameChange = (event: any) => {
         this.props.onChannelNameChange(event.target.value, this.props.id);
-    }
+    };
 
     onSubmit = (event: any) => {
        event.preventDefault();

@@ -2,6 +2,8 @@
   "name": "tomato-chat",
   "version": "0.0.1",
   "main": "src/index.jsx",
+  "repository": "https://github.com/domhanak/tomato-chat",
+  "license": "MIT",
   "scripts": {
     "build": "webpack --mode=development",
     "start": "webpack-dev-server --mode=development",
@@ -28,6 +30,7 @@
     "@types/react-bootstrap": "^0.32.14",
     "@types/react-redux": "^6.0.9",
     "@types/react-router": "^4.0.32",
+    "@types/uuid": "^3.4.4",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.5",
@@ -64,6 +67,8 @@
     "uuid": "^3.3.2",
     "webpack": "^4.14.0",
     "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "delay": "latest",
+    "reselect": "latest"
   }
 }
