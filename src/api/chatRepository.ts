@@ -42,24 +42,49 @@ const updateMessages = (messagesToBeSaved: Immutable.List<IMessage>) => {
     localStorage.setItem(messageLocalStorageKey, JSON.stringify(messages.toJS()));
 };
 
+const updateChannels = (channelsToBeSaved: Immutable.List<IChannel>) => {
+    channels = channelsToBeSaved;
+    localStorage.setItem(channelLocalStorageKey, JSON.stringify(channels.toJS()));
+};
+
 let users: Immutable.List<IUser> = getInitialUsers();
 let channels: Immutable.List<IChannel> = getInitialChannels();
 let messages: Immutable.List<IMessage> = getInitialMessages();
 
 
 // ===================== API ==========================
+// ********************* USERS ************************
 export const getUsers = async (): Promise<IUser[]> => {
     await delay(500);
 
     return users.toArray();
 };
 
+// ********************* CHANNELS *********************
 export const getChannels = async (): Promise<IChannel[]> => {
     await delay(500);
 
     return channels.toArray();
 };
 
+export const updateChannel = async (channel: IChannel): Promise<IChannel> => {
+    await delay(500);
+
+    const index = channels.findIndex((item: IChannel) => item.id === channel.id);
+    updateChannels(channels.set(index, channel));
+
+    return channel;
+};
+
+export const createChannel = async (channel: IChannel): Promise<IChannel> => {
+    await delay(500);
+
+    updateChannels(channels.push(channel));
+
+    return channel;
+};
+
+// ********************* MESSAGES *********************
 export const getMessages = async (): Promise<IMessage[]> => {
     await delay(500);
 
