@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
-// import {List} from 'immutable';
-// import * as PropTypes from 'prop-types';
 import {IChannel} from '../../models/IChannel';
 
 
@@ -18,23 +16,33 @@ export interface IChannelOwnProps {
 
 export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
-    // readonly onParticipantNameChange: (participantName: string) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
 }
 
-export interface IState {}
+export interface IState {
+    readonly channelName: string;
+}
 
 type IProps = IChannelOwnProps & IChannelStateProps & IChannelCallBackProps;
 
 export class Channel extends React.PureComponent<IProps, IState> {
 
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            channelName: this.props.channel.name,
+        };
+    }
+
     handleChannelNameChange = (event: any) => {
-        this.props.onChannelNameChange(event.target.value);
+        const { value } = event.currentTarget;
+        this.setState(_ => ({ channelName: value }));
     };
 
     onSubmit = (event: any) => {
        event.preventDefault();
+       this.props.onChannelNameChange(this.state.channelName);
     };
 
     render(): JSX.Element {
@@ -45,7 +53,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                         <ControlLabel>{this.props.channel.name}</ControlLabel>
                         <FormControl
                             type="text"
-                            value={this.props.channel.name}
+                            value={this.state.channelName}
                             placeholder="Channel name"
                             onChange={this.handleChannelNameChange}
                         />

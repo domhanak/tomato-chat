@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {IChannel} from '../../models/IChannel';
-// import * as PropTypes from 'prop-types';
 import {ChannelContainer} from '../../containers/ChannelContainer';
 import * as Immutable from 'immutable';
 
@@ -16,10 +15,6 @@ export class ChannelList extends React.Component<IChannelListProps> {
 
     moveDown = () => {
         return;
-    };
-
-    onChannelNameChange = (channelName: string) => {
-        console.log(channelName);
     };
 
     render(): JSX.Element {
