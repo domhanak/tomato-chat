@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {MessageListContainer} from '../../containers/MessageListContainer';
 import {MessageFormContainer} from '../../containers/MessageFormContainer';
+import {ChannelsContainer} from '../../containers/ChannelsContainer';
 
 export interface IChatWindowStateProps {
     readonly isTyping: boolean;
@@ -20,6 +21,7 @@ export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChat
             <div id="chat-container">
                 <div className="col-lg-4 col-md-4 col-sm-4">
                     <div className="channel-container">
+                        <ChannelsContainer />
                     </div>
                 </div>
                 <div className="col-lg-8 col-md-8 col-sm-8 new-message-container">

@@ -16,6 +16,7 @@ export interface IMessages {
 }
 
 export interface IChannels {
+    allChannels: Immutable.List<IChannel>;
     allChannelIds: Immutable.List<Uuid>;
     channelsById: Immutable.Map<Uuid, IChannel>;
 }
@@ -26,6 +27,7 @@ export interface ITomatoApp {
   messages: IMessages;
   loggedUser: Uuid | null;
   editedMessageId: Uuid | null;
+  editedChannelId: Uuid | null;
   messageFilter: MessageFilter;
   channelFilter: ChannelFilter;
   isEditing: boolean;

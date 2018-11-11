@@ -1,30 +1,36 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 // import {List} from 'immutable';
-import * as PropTypes from 'prop-types';
-// import {IChannel} from '../../models/IChannel';
+// import * as PropTypes from 'prop-types';
+import {IChannel} from '../../models/IChannel';
 
-interface IChannelStateProps {
-    readonly channelName: string;
-    readonly id: string;
+
+export interface IChannelStateProps {
+    readonly channel: IChannel;
+    readonly isBeingEdited: boolean;
     // readonly newParticipantName: string;
     // readonly participants: List<Uuid>;
 }
 
-interface IChannelCallBackProps {
-     readonly onChannelNameChange: (channelName: string, id: string) => void;
-    // readonly onParticipantNameChange: (participantName: string) => void;
+export interface IChannelOwnProps {
+    readonly id: Uuid;
 }
 
-export class Channel extends React.Component<IChannelStateProps & IChannelCallBackProps> {
+export interface IChannelCallBackProps {
+    readonly onChannelNameChange: (channelName: string) => void;
+    // readonly onParticipantNameChange: (participantName: string) => void;
+    readonly onStartEditing: () => void;
+    readonly onCancelEditing: () => void;
+}
 
-    static propTypes = {
-        channelName: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-    };
+export interface IState {}
+
+type IProps = IChannelOwnProps & IChannelStateProps & IChannelCallBackProps;
+
+export class Channel extends React.PureComponent<IProps, IState> {
 
     handleChannelNameChange = (event: any) => {
-        this.props.onChannelNameChange(event.target.value, this.props.id);
+        this.props.onChannelNameChange(event.target.value);
     };
 
     onSubmit = (event: any) => {
@@ -36,10 +42,10 @@ export class Channel extends React.Component<IChannelStateProps & IChannelCallBa
             <div className="channel">
                 <form onSubmit={this.onSubmit}>
                     <FormGroup>
-                        <ControlLabel>{this.props.channelName}</ControlLabel>
+                        <ControlLabel>{this.props.channel.name}</ControlLabel>
                         <FormControl
                             type="text"
-                            value={this.props.channelName}
+                            value={this.props.channel.name}
                             placeholder="Channel name"
                             onChange={this.handleChannelNameChange}
                         />
