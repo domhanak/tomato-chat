@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {IChannel} from '../../models/IChannel';
-import {ChannelContainer} from '../../containers/ChannelContainer';
+import {ChannelContainer} from '../../containers/channel/ChannelContainer';
 import * as Immutable from 'immutable';
 
 export interface IChannelListProps {

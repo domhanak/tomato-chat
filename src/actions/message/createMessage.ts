@@ -1,11 +1,11 @@
 import * as uuid from 'uuid';
 import { Dispatch } from 'redux';
-import { createMessage as createMessageApi } from '../api/chatRepository';
+import { createMessage as createMessageApi } from '../../api/chatRepository';
 import {
     TOMATO_APP_MESSAGE_CREATE_STARTED,
     TOMATO_APP_MESSAGE_CREATE_SUCCESS
-} from '../constants/actionTypes';
-import {IMessage} from '../models/IMessage';
+} from '../../constants/actionTypes';
+import {IMessage} from '../../models/IMessage';
 
 const createMessageStarted = (): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_STARTED,

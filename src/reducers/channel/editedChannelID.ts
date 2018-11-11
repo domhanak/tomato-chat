@@ -2,7 +2,7 @@ import {
     TOMATO_APP_CHANNEL_EDITING_STARTED,
     TOMATO_APP_CHANNEL_EDITING_CANCELLED,
     TOMATO_APP_CHANNEL_EDITING_SUCCESS
-} from '../constants/actionTypes';
+} from '../../constants/actionTypes';
 
 export const editedChannelId = (prevState: Uuid | null = null, action: Action): Uuid | null => {
     switch (action.type) {

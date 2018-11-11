@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {MessageListContainer} from '../../containers/MessageListContainer';
-import {MessageFormContainer} from '../../containers/MessageFormContainer';
-import {ChannelsContainer} from '../../containers/ChannelsContainer';
+import {MessageListContainer} from '../../containers/message/MessageListContainer';
+import {MessageFormContainer} from '../../containers/message/MessageFormContainer';
+import {ChannelsContainer} from '../../containers/channel/ChannelsContainer';
 
 export interface IChatWindowStateProps {
     readonly isTyping: boolean;

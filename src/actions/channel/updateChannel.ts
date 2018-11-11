@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux';
-import { updateChannel as updateChannelApi } from '../api/chatRepository';
-import { IState } from '../common/IState';
+import { updateChannel as updateChannelApi } from '../../api/chatRepository';
+import { IState } from '../../common/IState';
 import {
     TOMATO_APP_CHANNEL_EDITING_STARTED, TOMATO_APP_CHANNEL_EDITING_SUCCESS
-} from '../constants/actionTypes';
-import {IChannel} from '../models/IChannel';
+} from '../../constants/actionTypes';
+import {IChannel} from '../../models/IChannel';
 
 const updateChannelStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_STARTED,

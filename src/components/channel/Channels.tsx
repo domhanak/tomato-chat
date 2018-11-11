@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {List} from 'immutable';
-import {ChannelListContainer} from '../../containers/ChannelListContainer';
+import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
 import {IMessage} from '../../models/IMessage';
 
 export interface IChannelsDispatchProps {

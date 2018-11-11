@@ -1,13 +1,13 @@
 import * as uuid from 'uuid';
 import { Dispatch } from 'redux';
-import { createChannel as createChannelApi } from '../api/chatRepository';
+import { createChannel as createChannelApi } from '../../api/chatRepository';
 import {
     TOMATO_APP_CHANNEL_CREATE_STARTED,
     TOMATO_APP_CHANNEL_CREATE_SUCCESS
-} from '../constants/actionTypes';
-import {IChannel} from '../models/IChannel';
+} from '../../constants/actionTypes';
+import {IChannel} from '../../models/IChannel';
 import {List} from 'immutable';
-import {IMessage} from '../models/IMessage';
+import {IMessage} from '../../models/IMessage';
 
 const createChannelStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,

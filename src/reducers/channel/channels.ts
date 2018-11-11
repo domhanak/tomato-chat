@@ -1,10 +1,10 @@
 import * as Immutable from 'immutable';
 import { combineReducers } from 'redux';
-import { IChannels } from '../models/ITomatoApp';
-import { IChannel } from '../models/IChannel';
+import { IChannels } from '../../models/ITomatoApp';
+import { IChannel } from '../../models/IChannel';
 import {
     TOMATO_APP_LOADING_CHANNELS_STARTED, TOMATO_APP_LOADING_CHANNELS_SUCCESS
-} from '../constants/actionTypes';
+} from '../../constants/actionTypes';
 
 const channelsById = (prevState = Immutable.Map<Uuid, IChannel>(), action: Action): Immutable.Map<Uuid, IChannel> => {
     switch (action.type) {

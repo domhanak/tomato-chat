@@ -1,10 +1,10 @@
 import * as Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import {IMessageListProps, MessageList} from '../components/message/MessageList';
-import {IState} from '../common/IState';
-import {MessageFilter} from '../constants/MessageFilter';
-import {IMessage} from '../models/IMessage';
+import {IMessageListProps, MessageList} from '../../components/message/MessageList';
+import {IState} from '../../common/IState';
+import {MessageFilter} from '../../constants/MessageFilter';
+import {IMessage} from '../../models/IMessage';
 
 
 const getMessagesForActiveChannel = createSelector<IState, MessageFilter, Immutable.List<Uuid>, Immutable.Map<Uuid, IMessage>, Immutable.List<Uuid>>(

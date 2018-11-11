@@ -1,10 +1,10 @@
 import * as Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import {IState} from '../common/IState';
-import {ChannelFilter} from '../constants/ChannelFilter';
-import {IChannel} from '../models/IChannel';
-import {ChannelList, IChannelListProps} from '../components/channel/ChannelList';
+import {IState} from '../../common/IState';
+import {ChannelFilter} from '../../constants/ChannelFilter';
+import {IChannel} from '../../models/IChannel';
+import {ChannelList, IChannelListProps} from '../../components/channel/ChannelList';
 
 
 const getChannelsForUser = createSelector<IState, ChannelFilter, Immutable.List<IChannel>, Immutable.Map<Uuid, IChannel>, Immutable.List<IChannel>>(

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import {List} from 'immutable';
-import {IMessage} from '../models/IMessage';
-import {createChannel} from '../actions/createChannel';
-import {Channels, IChannelsDispatchProps} from '../components/channel/Channels';
+import {IMessage} from '../../models/IMessage';
+import {createChannel} from '../../actions/channel/createChannel';
+import {Channels, IChannelsDispatchProps} from '../../components/channel/Channels';
 
 
 const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {

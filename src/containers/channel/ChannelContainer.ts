@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import {IState} from '../common/IState';
-import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} from '../components/channel/Channel';
-import {cancelEditingChannel, startEditingChannel} from '../actions/actionCreators';
-import {updateChannel} from '../actions/updateChannel';
+import {IState} from '../../common/IState';
+import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} from '../../components/channel/Channel';
+import {cancelEditingChannel, startEditingChannel} from '../../actions/actionCreators';
+import {updateChannel} from '../../actions/channel/updateChannel';
 
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {

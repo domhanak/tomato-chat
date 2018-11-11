@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
-import { getMessages } from '../api/chatRepository';
+import { getMessages } from '../../api/chatRepository';
 import {
     TOMATO_APP_LOADING_MESSAGES_STARTED, TOMATO_APP_LOADING_MESSAGES_SUCCESS
-} from '../constants/actionTypes';
-import {IMessage} from '../models/IMessage';
+} from '../../constants/actionTypes';
+import {IMessage} from '../../models/IMessage';
 
 const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_MESSAGES_STARTED,
