@@ -16,13 +16,13 @@ export class MessageForm extends React.PureComponent<IMessageFormDispatchProps, 
 
         this.state = {
             value: '',
-        }
+        };
     }
 
     private onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        this.props.onMessageAdd(this.state.value, "Figure out how to access me");
+        this.props.onMessageAdd(this.state.value, 'Figure out how to access me');
 
         this.setState(_ => ({ value: '' }));
     };

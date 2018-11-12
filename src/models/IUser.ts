@@ -1,4 +1,4 @@
-import {IChannel} from "./IChannel";
+import {IChannel} from './IChannel';
 import * as Immutable from 'immutable';
 
 export interface IUser {

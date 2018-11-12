@@ -1,28 +1,37 @@
 import * as React from 'react';
-import {IChannel} from '../../models/IChannel';
-import {ChannelList} from './ChannelList';
-import {List} from "immutable";
+import {List} from 'immutable';
+import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
+import {IMessage} from '../../models/IMessage';
 
-interface IChannelListState {
-    readonly newChannelName: string;
-    readonly channelList: IChannel[];
+export interface IChannelsDispatchProps {
+    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>) => void;
 }
 
-interface IChannelCallbackProps {
-    readonly onChannelCreation: (channel: IChannel) => void;
-    readonly onNewChannelNameChange: (channelName: string) => void;
+interface IState {
+    readonly value: string;
 }
 
-export class Channels extends React.Component<IChannelListState & IChannelCallbackProps> {
+export class Channels extends React.Component<IChannelsDispatchProps, IState> {
+
+    constructor(props: IChannelsDispatchProps) {
+        super(props);
+
+        this.state = {
+            value: '',
+        };
+    }
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelCreation({name: this.props.newChannelName, id: 'xx', order: 4, messages: List()});
+        this.props.onChannelAdd(this.state.value, 0, List());
+
+        this.setState(_ => ({ value: '' }));
     };
 
     handleNewChannelNameChange = (event: any) => {
-        this.props.onNewChannelNameChange(event.target.value);
+        const { value } = event.currentTarget;
+        this.setState(_ => ({ value }));
     };
 
     render(): JSX.Element {
@@ -31,11 +40,11 @@ export class Channels extends React.Component<IChannelListState & IChannelCallba
                 <header>
                     <h4>Channels</h4>
                 </header>
-                <ChannelList channelList={this.props.channelList} />
+                <ChannelListContainer />
                 <div className="channel-creation">
                     <form onSubmit={this.handleChannelCreation}>
                         <input
-                            value={this.props.newChannelName}
+                            value={this.state.value}
                             onChange={this.handleNewChannelNameChange}
                             placeholder="New Channel" />
                     </form>

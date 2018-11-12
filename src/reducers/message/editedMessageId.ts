@@ -2,7 +2,7 @@ import {
     TOMATO_APP_MESSAGE_EDITING_STARTED,
     TOMATO_APP_MESSAGE_EDITING_CANCELLED,
     TOMATO_APP_MESSAGE_EDITING_SUCCESS
-} from '../constants/actionTypes';
+} from '../../constants/actionTypes';
 
 export const editedMessageId = (prevState: Uuid | null = null, action: Action): Uuid | null => {
     switch (action.type) {

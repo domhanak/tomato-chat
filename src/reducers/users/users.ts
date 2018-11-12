@@ -1,10 +1,10 @@
 import * as Immutable from 'immutable';
 import { combineReducers} from 'redux';
-import { IUsers } from '../models/ITomatoApp';
+import { IUsers } from '../../models/ITomatoApp';
 import {
     TOMATO_APP_LOADING_USERS_STARTED, TOMATO_APP_LOADING_USERS_SUCCESS
-} from "../constants/actionTypes";
-import {IUser} from "../models/IUser";
+} from '../../constants/actionTypes';
+import {IUser} from '../../models/IUser';
 
 const usersById = (prevState = Immutable.Map<Uuid, IUser>(), action: Action): Immutable.Map<Uuid, IUser> => {
     switch (action.type) {

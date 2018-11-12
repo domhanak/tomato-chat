@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IState } from '../common/IState';
-import { loadUsers } from '../actions/loadUsers';
+import { loadUsers } from '../actions/users/loadUsers';
 import { ITomatoAppDispatchProps, ITomatoAppStateProps, TomatoApp } from '../components/TomatoApp';
-import {loadMessages} from "../actions/loadMessages";
-import {loadChannels} from "../actions/loadChannels";
+import {loadMessages} from '../actions/message/loadMessages';
+import {loadChannels} from '../actions/channel/loadChannels';
 
 const mapStateToProps = (state: IState) => {
     return {

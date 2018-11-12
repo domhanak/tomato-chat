@@ -1,10 +1,10 @@
 import * as Immutable from 'immutable';
 import { combineReducers} from 'redux';
-import { IMessages } from '../models/ITomatoApp';
-import { IMessage } from "../models/IMessage";
+import { IMessages } from '../../models/ITomatoApp';
+import { IMessage } from '../../models/IMessage';
 import {
     TOMATO_APP_LOADING_MESSAGES_STARTED, TOMATO_APP_LOADING_MESSAGES_SUCCESS,
-} from "../constants/actionTypes";
+} from '../../constants/actionTypes';
 
 const messagesById = (prevState = Immutable.Map<Uuid, IMessage>(), action: Action): Immutable.Map<Uuid, IMessage> => {
     switch (action.type) {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { createMessage} from '../actions/createMessage';
-import {IMessageFormDispatchProps, MessageForm} from '../components/message/MessageForm';
+import { createMessage} from '../../actions/message/createMessage';
+import {IMessageFormDispatchProps, MessageForm} from '../../components/message/MessageForm';
 
 
 const mapDispatchToProps = (dispatch: Dispatch): IMessageFormDispatchProps => {

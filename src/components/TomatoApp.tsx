@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '../styles/App.scss';
-import {Navigation} from "./navigation/Navigation";
+import {Navigation} from './navigation/Navigation';
 
 export interface ITomatoAppStateProps {
     readonly loggedUser: Uuid | null;
@@ -13,7 +13,7 @@ export interface ITomatoAppDispatchProps {
 }
 
 export class TomatoApp extends React.PureComponent<ITomatoAppDispatchProps & ITomatoAppStateProps> {
-    componentDidMount() {
+    componentDidMount(): void {
         this.props.loadUsers();
         this.props.loadMessages();
         this.props.loadChannels();

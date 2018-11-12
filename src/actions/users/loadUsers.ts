@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
-import { getUsers } from '../api/chatRepository';
+import { getUsers } from '../../api/chatRepository';
 import {
     TOMATO_APP_LOADING_USERS_STARTED, TOMATO_APP_LOADING_USERS_SUCCESS
-} from '../constants/actionTypes';
-import {IUser} from "../models/IUser";
+} from '../../constants/actionTypes';
+import {IUser} from '../../models/IUser';
 
 const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_STARTED,
