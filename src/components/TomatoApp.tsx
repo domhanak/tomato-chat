@@ -1,9 +1,10 @@
 import * as React from 'react';
 import '../styles/App.scss';
-import {Navigation} from './navigation/Navigation';
+import { Navigation } from './navigation/Navigation';
+import { IUser } from '../models/IUser';
 
 export interface ITomatoAppStateProps {
-    readonly loggedUser: Uuid | null;
+    readonly loggedUser: IUser | null;
 }
 
 export interface ITomatoAppDispatchProps {

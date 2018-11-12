@@ -25,7 +25,7 @@ export interface ITomatoApp {
   users: IUsers;
   channels: IChannels;
   messages: IMessages;
-  loggedUser: Uuid | null;
+  loggedUser: IUser | null;
   editedMessageId: Uuid | null;
   editedChannelId: Uuid | null;
   messageFilter: MessageFilter;

@@ -1,6 +1,14 @@
 import * as React from 'react';
-import {ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
+import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { IUser } from '../../models/IUser';
 
+export interface IMessageFormStateProps {
+
+}
+
+export interface IMessageFormOwnProps {
+    readonly loggedUser: IUser;
+}
 
 export interface IMessageFormDispatchProps {
     readonly onMessageAdd: (text: string, username: string) => void;
@@ -10,8 +18,10 @@ interface IState {
     readonly value: string;
 }
 
-export class MessageForm extends React.PureComponent<IMessageFormDispatchProps, IState> {
-    constructor(props: IMessageFormDispatchProps) {
+type IProps = IMessageFormDispatchProps & IMessageFormOwnProps & IMessageFormStateProps;
+
+export class MessageForm extends React.PureComponent<IProps, IState> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -22,7 +32,7 @@ export class MessageForm extends React.PureComponent<IMessageFormDispatchProps, 
     private onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        this.props.onMessageAdd(this.state.value, 'Figure out how to access me');
+        this.props.onMessageAdd(this.state.value, this.props.loggedUser.nickname);
 
         this.setState(_ => ({ value: '' }));
     };

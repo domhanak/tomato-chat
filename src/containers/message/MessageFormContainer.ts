@@ -1,8 +1,15 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { createMessage} from '../../actions/message/createMessage';
-import {IMessageFormDispatchProps, MessageForm} from '../../components/message/MessageForm';
+import { IMessageFormDispatchProps, IMessageFormOwnProps, MessageForm} from '../../components/message/MessageForm';
+import { IState} from '../../common/IState';
+import { IUser} from '../../models/IUser';
 
+const mapStateToProps = (state: IState): IMessageFormOwnProps => {
+    return {
+        loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.isLoggedIn)),
+    };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch): IMessageFormDispatchProps => {
     return {
@@ -10,4 +17,4 @@ const mapDispatchToProps = (dispatch: Dispatch): IMessageFormDispatchProps => {
     };
 };
 
-export const MessageFormContainer = connect(undefined, mapDispatchToProps)(MessageForm);
+export const MessageFormContainer = connect(mapStateToProps, mapDispatchToProps)(MessageForm);
