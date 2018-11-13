@@ -1,13 +1,14 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {IChannel} from '../../models/IChannel';
-
+import * as Autocomplete from 'react-autocomplete';
+import * as Immutable from 'immutable';
+import {IUser} from '../../models/IUser';
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
     readonly isBeingEdited: boolean;
-    // readonly newParticipantName: string;
-    // readonly participants: List<Uuid>;
+    readonly allUsers: Immutable.List<IUser>;
 }
 
 export interface IChannelOwnProps {
@@ -22,9 +23,16 @@ export interface IChannelCallBackProps {
 
 export interface IState {
     readonly channelName: string;
+    readonly userNickname: string;
+    readonly notAssignedUsers: IUser[];
 }
 
 type IProps = IChannelOwnProps & IChannelStateProps & IChannelCallBackProps;
+
+// todo - editing name of channel
+// todo - adding/removing channel
+// todo - changing order of channel
+// todo - SASS my ass up
 
 export class Channel extends React.PureComponent<IProps, IState> {
 
@@ -32,7 +40,11 @@ export class Channel extends React.PureComponent<IProps, IState> {
         super(props);
         this.state = {
             channelName: this.props.channel.name,
+            userNickname: '',
+            notAssignedUsers: this.props.allUsers.toArray(),
         };
+
+        console.log(this.props.allUsers.toArray());
     }
 
     handleChannelNameChange = (event: any) => {
@@ -44,6 +56,37 @@ export class Channel extends React.PureComponent<IProps, IState> {
        event.preventDefault();
        this.props.onChannelNameChange(this.state.channelName);
     };
+
+
+    removeParticipant = () => {
+        return;
+    }
+
+    addParticipant = (event: any) => {
+        event.preventDefault();
+        return;
+    }
+
+    onNewParticipantNameChange = () => {
+        return;
+    }
+
+    getItemValue = (item: IUser) => {
+        this.setState((_) => ({userNickname: item.nickname}))
+        return `${item.id}`;
+    }
+
+    onSelect = (value: string) => {
+        return value;
+    }
+
+    renderItem = (item: IUser, isHighlighted: boolean) => {
+        return (
+            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }} key={item.id}>
+                {item.nickname}<br />
+            </div>
+        );
+    }
 
     render(): JSX.Element {
         return (
@@ -59,23 +102,30 @@ export class Channel extends React.PureComponent<IProps, IState> {
                         />
                     </FormGroup>
                 </form>
-                {/*<div className="participants">*/}
-                    {/*<h4>Participants</h4>*/}
-                    {/*<ul>*/}
-                       {/*<li><h6>Participant name </h6><a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/></li>*/}
-                    {/*</ul>*/}
-                    {/*<form onSubmit={this.addParticipant}>*/}
-                        {/*<FormGroup>*/}
-                            {/*<ControlLabel> New participant </ControlLabel>*/}
-                            {/*<FormControl*/}
-                                {/*type="text"*/}
-                                {/*value={this.props.newParticipantName}*/}
-                                {/*placeholder="Participant name"*/}
-                                {/*onChange={this.onNewParticipantNameChange}*/}
-                            {/*/>*/}
-                        {/*</FormGroup>*/}
-                    {/*</form>*/}
-                {/*</div>*/}
+                <div className="participants">
+                    <h4>Participants</h4>
+                    <ul>
+                        {this.props.channel.users && this.props.channel.users.map((user: IUser) => (
+                       <li>
+                           <h6>{user.nickname}</h6>
+                           <a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/>
+                       </li>
+                        ))}
+                    </ul>
+                    <form onSubmit={this.addParticipant}>
+                        <FormGroup>
+                            <ControlLabel> New participant </ControlLabel>
+                            <Autocomplete
+                                getItemValue={this.getItemValue}
+                                items={this.state.notAssignedUsers}
+                                renderItem={this.renderItem}
+                                value={this.state.userNickname}
+                                onSelect={this.onSelect}
+                            />
+                            <button type="submit" className="glyphicon glyphicon-plus" />
+                        </FormGroup>
+                    </form>
+                </div>
             </div>
         );
     }

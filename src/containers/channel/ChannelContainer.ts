@@ -9,6 +9,7 @@ const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
         channel: state.tomatoApp.channels.channelsById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedChannelId === ownProps.id,
+        allUsers: state.tomatoApp.users.allUsers,
     };
 };
 

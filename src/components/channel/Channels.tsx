@@ -2,9 +2,10 @@ import * as React from 'react';
 import {List} from 'immutable';
 import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
 import {IMessage} from '../../models/IMessage';
+import {IUser} from '../../models/IUser';
 
 export interface IChannelsDispatchProps {
-    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>) => void;
+    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<IUser>) => void;
 }
 
 interface IState {
@@ -24,7 +25,7 @@ export class Channels extends React.Component<IChannelsDispatchProps, IState> {
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, 0, List());
+        this.props.onChannelAdd(this.state.value, 0, List(), List());
 
         this.setState(_ => ({ value: '' }));
     };
