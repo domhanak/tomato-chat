@@ -8,6 +8,7 @@ import {IUser} from './IUser';
 export interface IUsers {
     allUserIds: Immutable.List<Uuid>;
     usersById: Immutable.Map<Uuid, IUser>;
+    allUsers: Immutable.List<IUser>;
 }
 
 export interface IMessages {
@@ -25,7 +26,7 @@ export interface ITomatoApp {
   users: IUsers;
   channels: IChannels;
   messages: IMessages;
-  loggedUser: IUser | null;
+  userId: Uuid | null;
   editedMessageId: Uuid | null;
   editedChannelId: Uuid | null;
   messageFilter: MessageFilter;

@@ -2,15 +2,28 @@ import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import '../../styles/base.scss';
 import '../../styles/login.scss';
-import {Route} from 'react-router';
+import {IUser} from '../../models/IUser';
+import * as Immutable from 'immutable';
+
+export interface ILoginFormOwnProps {
+    readonly users: Immutable.List<IUser>;
+    readonly user: IUser;
+}
+
+export interface ILoginFormDispatchProps {
+    readonly onUserAdd: (username: string) => void;
+    readonly onUserLogin: (id: Uuid, isLoggedIn: true) => void;
+}
+
+type IProps = ILoginFormOwnProps & ILoginFormDispatchProps;
 
 interface ILoginState {
     readonly username: string;
     readonly password: string;
 }
 
-export class LoginForm extends React.Component<{}, ILoginState> {
-    constructor(props: any) {
+export class LoginForm extends React.Component<IProps, ILoginState> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -18,16 +31,26 @@ export class LoginForm extends React.Component<{}, ILoginState> {
             password: '',
         };
     }
-
     handleLoginChange = (event: any) => {
+        event.persist();
         this.setState(() => ({ username: event.target.value }));
     };
 
     handlePasswordChange = (event: any) => {
+        event.persist();
         this.setState(() => ({ password: event.target.value }));
     };
     handleSubmit = (event: any) => {
         event.preventDefault();
+
+        // TODO: Move - this needs to be handled by thunk
+        const newUser = this.props.users.find((user: IUser) => (user.nickname === this.state.username));
+        if (newUser === null || newUser === undefined) {
+            return;
+        }
+
+        this.props.onUserLogin(newUser.id, true);
+        this.setState(_ => ({ username: '', password: '' }));
     };
     render(): JSX.Element {
         return (
@@ -52,15 +75,12 @@ export class LoginForm extends React.Component<{}, ILoginState> {
                           onChange={this.handlePasswordChange}
                       />
                   </FormGroup>
-                  <Route render={({ history }) => (
-                      <button
-                          className="btn btn-primary"
-                          type="button"
-                          onClick={() => { history.push('/messages'); }}
-                      >
-                          Login
-                      </button>
-                  )} />
+                  <button
+                      className="btn btn-primary"
+                      type="input"
+                  >
+                      Login
+                  </button>
               </form>
         </div>
         );

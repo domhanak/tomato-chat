@@ -47,6 +47,11 @@ const updateChannels = (channelsToBeSaved: Immutable.List<IChannel>) => {
     localStorage.setItem(channelLocalStorageKey, JSON.stringify(channels.toJS()));
 };
 
+const updateUsers = (usersToBeSaved: Immutable.List<IUser>) => {
+    users = usersToBeSaved;
+    localStorage.setItem(userLocalStorageKey, JSON.stringify(users.toJS()));
+};
+
 let users: Immutable.List<IUser> = getInitialUsers();
 let channels: Immutable.List<IChannel> = getInitialChannels();
 let messages: Immutable.List<IMessage> = getInitialMessages();
@@ -58,6 +63,23 @@ export const getUsers = async (): Promise<IUser[]> => {
     await delay(500);
 
     return users.toArray();
+};
+
+export const updateUser = async (user: IUser): Promise<IUser> => {
+    await delay(500);
+
+    const index = users.findIndex((t: IUser) => t.id === user.id);
+    updateUsers(users.set(index, user));
+
+    return user;
+};
+
+export const createUser = async (user: IUser): Promise<IUser> => {
+    await delay(500);
+
+    updateUsers(users.push(user));
+
+    return user;
 };
 
 // ********************* CHANNELS *********************
