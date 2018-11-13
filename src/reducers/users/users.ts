@@ -28,7 +28,19 @@ const allUserIds = (prevState: Immutable.List<Uuid> = Immutable.List(), action: 
     }
 };
 
+const allUsers = (prevState: Immutable.List<IUser> = Immutable.List(), action: Action): Immutable.List<IUser> => {
+    switch (action.type) {
+        case TOMATO_APP_LOADING_USERS_STARTED:
+            return prevState;
+        case TOMATO_APP_LOADING_USERS_SUCCESS:
+            return Immutable.List(action.payload.users.map((user: IUser) => (user)));
+        default:
+            return prevState;
+    }
+};
+
 export const users = combineReducers<IUsers>({
     allUserIds,
     usersById,
+    allUsers,
 });

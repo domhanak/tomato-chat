@@ -2,13 +2,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IState } from '../common/IState';
 import { loadUsers } from '../actions/users/loadUsers';
-import { ITomatoAppDispatchProps, ITomatoAppStateProps, TomatoApp } from '../components/TomatoApp';
+import {ITomatoAppDispatchProps, ITomatoAppStateProps, TomatoApp} from '../components/TomatoApp';
 import {loadMessages} from '../actions/message/loadMessages';
 import {loadChannels} from '../actions/channel/loadChannels';
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: IState): ITomatoAppStateProps => {
     return {
-        loggedUser: state.tomatoApp.loggedUser,
+        userId: state.tomatoApp.userId,
+        isLoggedIn: state.tomatoApp.userId !== null,
     };
 };
 
