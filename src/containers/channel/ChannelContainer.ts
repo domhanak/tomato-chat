@@ -3,7 +3,9 @@ import { Dispatch } from 'redux';
 import {IState} from '../../common/IState';
 import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} from '../../components/channel/Channel';
 import {cancelEditingChannel, startEditingChannel} from '../../actions/actionCreators';
-import {updateChannel} from '../../actions/channel/updateChannel';
+import {updateChannel, updateChannelUsers} from '../../actions/channel/updateChannel';
+import {IUser} from '../../models/IUser';
+import {List} from 'immutable';
 
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
@@ -18,6 +20,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelOwnProps) => {
         onStartEditing: () => dispatch(startEditingChannel(ownProps.id)),
         onCancelEditing: () => dispatch(cancelEditingChannel(ownProps.id)),
         onChannelNameChange: (channelName: string) => dispatch(updateChannel(ownProps.id, channelName)),
+        updateChannelUsers: (users: List<IUser>) => {
+            dispatch(updateChannelUsers(ownProps.id, users));
+            // dispatch(updateUserChannels());
+        },
     };
 };
 

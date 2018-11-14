@@ -19,11 +19,12 @@ export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
+    readonly updateChannelUsers: (users: Immutable.List<IUser>) => void;
 }
 
 export interface IState {
     readonly channelName: string;
-    readonly userNickname: string;
+    readonly user: IUser;
     readonly notAssignedUsers: IUser[];
 }
 
@@ -40,11 +41,11 @@ export class Channel extends React.PureComponent<IProps, IState> {
         super(props);
         this.state = {
             channelName: this.props.channel.name,
-            userNickname: '',
-            notAssignedUsers: this.props.allUsers.toArray(),
+            user: {} as IUser,
+            notAssignedUsers: this.props.allUsers.filter((user: IUser) => {
+                return !this.props.channel.users.includes(user);
+            }).toArray(),
         };
-
-        console.log(this.props.allUsers.toArray());
     }
 
     handleChannelNameChange = (event: any) => {
@@ -58,26 +59,30 @@ export class Channel extends React.PureComponent<IProps, IState> {
     };
 
 
-    removeParticipant = () => {
-        return;
+    removeParticipant = (event: any) => {
+        event.preventDefault();
+        console.log(event.target.parentElement);
     }
 
     addParticipant = (event: any) => {
         event.preventDefault();
-        return;
-    }
-
-    onNewParticipantNameChange = () => {
-        return;
+        if (this.state.user.id !== undefined) {
+            this.props.updateChannelUsers(this.props.channel.users.push(this.state.user));
+            this.setState((prevState) => ({
+                notAssignedUsers: prevState.notAssignedUsers.filter(
+                (item: IUser) => { return item.id !== prevState.user.id; }),
+                user: {} as IUser
+            }));
+        }
     }
 
     getItemValue = (item: IUser) => {
-        this.setState((_) => ({userNickname: item.nickname}))
-        return `${item.id}`;
+        return `${item}`;
     }
 
-    onSelect = (value: string) => {
-        return value;
+    onSelect = (_: string, item: IUser) => {
+        this.setState((__) => ({user: item}));
+        return item;
     }
 
     renderItem = (item: IUser, isHighlighted: boolean) => {
@@ -106,7 +111,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                     <h4>Participants</h4>
                     <ul>
                         {this.props.channel.users && this.props.channel.users.map((user: IUser) => (
-                       <li>
+                       <li key={user.id}>
                            <h6>{user.nickname}</h6>
                            <a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/>
                        </li>
@@ -119,7 +124,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                                 getItemValue={this.getItemValue}
                                 items={this.state.notAssignedUsers}
                                 renderItem={this.renderItem}
-                                value={this.state.userNickname}
+                                value={this.state.user.nickname}
                                 onSelect={this.onSelect}
                             />
                             <button type="submit" className="glyphicon glyphicon-plus" />
