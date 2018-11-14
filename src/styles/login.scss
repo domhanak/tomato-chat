@@ -1,13 +1,41 @@
 .login-form {
-  background: tomato;
-  border: solid 2px tomato;
+
+  .box {
+    width: 500px;
+    margin: 200px 0;
+  }
 
   & form {
-    margin-bottom: 10px;
+    margin-left: 100px;
   }
 
   & input {
-    border: solid 2px tomato;
+
+  }
+  .float {
+    position: absolute;
+    z-index: 2;
+  }
+
+  .shape1 {
+    position: relative;
+    height: 450px;
+    width: 450px;
+    background-color: tomato;
+    border-radius: 240px;
+    float: left;
+    margin-right: -100px;
+  }
+
+  .shape2 {
+    position: relative;
+    height: 80px;
+    width: 80px;
+    background-color: green;
+    border-radius: 80px;
+    margin-top: -345px;
+    float: right;
+    margin-left: -31px;
   }
 }
 
