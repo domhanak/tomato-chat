@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import '../../styles/base.scss';
 import '../../styles/login.scss';
 import {IUser} from '../../models/IUser';
@@ -23,19 +22,10 @@ interface ILoginState {
 }
 
 export class LoginForm extends React.Component<IProps, ILoginState> {
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            username: '',
-            password: '',
-        };
-    }
     handleLoginChange = (event: any) => {
         event.persist();
         this.setState(() => ({ username: event.target.value }));
     };
-
     handlePasswordChange = (event: any) => {
         event.persist();
         this.setState(() => ({ password: event.target.value }));
@@ -52,36 +42,56 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
         this.props.onUserLogin(newUser.id, true);
         this.setState(_ => ({ username: '', password: '' }));
     };
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+            username: '',
+            password: '',
+        };
+    }
+
     render(): JSX.Element {
         return (
-        <div className="login-form col-md-6 col-md-offset-3">
-            <h4> Login </h4>
-              <form name="login-form" onSubmit={this.handleSubmit}>
-                  <FormGroup controlId="formControlsEmail">
-                      <ControlLabel> Username </ControlLabel>
-                      <FormControl
-                        value={this.state.username}
-                        placeholder="Enter Username"
-                        onChange={this.handleLoginChange}
-                      />
-                  <FormControl.Feedback />
-                  </FormGroup>
-                  <FormGroup controlId="formControlsPassword">
-                      <ControlLabel> Password </ControlLabel>
-                      <FormControl
-                          type="password"
-                          value={this.state.password}
-                          placeholder="Enter Password"
-                          onChange={this.handlePasswordChange}
-                      />
-                  </FormGroup>
-                  <button
-                      className="btn btn-primary"
-                      type="input"
-                  >
-                      Login
-                  </button>
-              </form>
+        <div className="login-form col-md-6 col-md-offset-4">
+            <div className="box col-md-6 row justify-content-center align-items-center">
+            <div className="shape1"/>
+            <div className="shape2"/>
+            <div className="float">
+                <form className="form" onSubmit={this.handleSubmit}>
+                    <h4> Login </h4>
+                    <div className="form-group">
+                        <label placeholder="Username"
+                               className="text-white"> Username: </label>
+                        <br/>
+                        <input type="text"
+                               name="username"
+                               id="username"
+                               value={this.state.username}
+                               onChange={this.handleLoginChange}
+                               className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        <label placeholder="Password"
+                               className="text-white"> Password: </label>
+                        <br/>
+                        <input type="password"
+                               name="password"
+                               id="password"
+                               value={this.state.password}
+                               onChange={this.handlePasswordChange}
+                               className="form-control" />
+                    </div>
+                    <div className="form-group">
+                        <input type="submit"
+                               name="login"
+                               className="btn btn-primary"
+                               value="Login" />
+                    </div>
+                </form>
+            </div>
+            </div>
         </div>
         );
     }
