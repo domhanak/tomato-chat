@@ -7,7 +7,7 @@ import { IUser} from '../../models/IUser';
 
 const mapStateToProps = (state: IState): IMessageFormOwnProps => {
     return {
-        loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.isLoggedIn)),
+        loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.id === state.tomatoApp.userId)),
     };
 };
 
