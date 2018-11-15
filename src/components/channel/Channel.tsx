@@ -4,6 +4,7 @@ import {IChannel} from '../../models/IChannel';
 import * as Autocomplete from 'react-autocomplete';
 import * as Immutable from 'immutable';
 import {IUser} from '../../models/IUser';
+import {UserListItem} from './UserListItem';
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
@@ -30,11 +31,6 @@ export interface IState {
 
 type IProps = IChannelOwnProps & IChannelStateProps & IChannelCallBackProps;
 
-// todo - editing name of channel
-// todo - adding/removing channel
-// todo - changing order of channel
-// todo - SASS my ass up
-
 export class Channel extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
@@ -42,9 +38,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
         this.state = {
             channelName: this.props.channel.name,
             user: {} as IUser,
-            notAssignedUsers: this.props.allUsers.filter((user: IUser) => {
-                return !this.props.channel.users.includes(user);
-            }).toArray(),
+            notAssignedUsers: this.props.allUsers
+                .filter((user: IUser) => { return !this.props.channel.users.contains(user); }).toArray(),
         };
     }
 
@@ -58,10 +53,13 @@ export class Channel extends React.PureComponent<IProps, IState> {
        this.props.onChannelNameChange(this.state.channelName);
     };
 
+    onUserRemove = (user: IUser) => {
+        this.props.updateChannelUsers(this.props.channel.users
+            .filter((item: IUser) => { return item.id !== user.id; }).toList());
 
-    removeParticipant = (event: any) => {
-        event.preventDefault();
-        console.log(event.target.parentElement);
+        this.setState((prevState) => ({
+            notAssignedUsers: [...prevState.notAssignedUsers, user]
+        }));
     }
 
     addParticipant = (event: any) => {
@@ -111,11 +109,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                     <h4>Participants</h4>
                     <ul>
                         {this.props.channel.users && this.props.channel.users.map((user: IUser) => (
-                       <li key={user.id}>
-                           <h6>{user.nickname}</h6>
-                           <a onClick={this.removeParticipant} className="glyphicon glyphicon-minus"/>
-                       </li>
-                        ))}
+                            <UserListItem key={user.id} user={user} onUserRemove={this.onUserRemove} />))}
                     </ul>
                     <form onSubmit={this.addParticipant}>
                         <FormGroup>
