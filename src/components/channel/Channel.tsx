@@ -35,11 +35,16 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        const notAssigned = this.props.allUsers
+            .filter((user: IUser) => { return !Object.values(this.props.channel.users)
+                .find((item: IUser) => {
+                    return item.id === user.id;
+            }); }).toArray();
         this.state = {
             channelName: this.props.channel.name,
             user: {} as IUser,
-            notAssignedUsers: this.props.allUsers
-                .filter((user: IUser) => { return !this.props.channel.users.contains(user); }).toArray(),
+            notAssignedUsers: notAssigned,
         };
     }
 
@@ -54,8 +59,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
     };
 
     onUserRemove = (user: IUser) => {
-        this.props.updateChannelUsers(this.props.channel.users
-            .filter((item: IUser) => { return item.id !== user.id; }).toList());
+        this.props.updateChannelUsers(Immutable.List(Object.values(this.props.channel.users)
+            .filter((item: IUser) => { return item.id !== user.id; })));
 
         this.setState((prevState) => ({
             notAssignedUsers: [...prevState.notAssignedUsers, user]
