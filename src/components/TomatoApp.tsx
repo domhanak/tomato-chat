@@ -42,7 +42,7 @@ export class TomatoApp extends React.PureComponent<ITomatoAppDispatchProps & ITo
                             </div>
                             <div>
                                 <h4>
-                                    Chat application so you can chat like true tomato.
+                                    Chat application so you can chat like a true tomato.
                                 </h4>
                             </div>
                             <Navigation/>

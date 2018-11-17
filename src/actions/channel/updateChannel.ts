@@ -42,3 +42,12 @@ export const updateChannelUsers = (id: Uuid, users: List<IUser>): any =>
         dispatch(updateChannelSuccess(channel));
     };
 
+export const updateChannelOrder = (id: Uuid, order: number): any =>
+    async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
+        const oldChannel = getState().tomatoApp.channels.channelsById.get(id);
+
+        dispatch(updateChannelStarted(oldChannel));
+        const channel = await updateChannelApi({ ...oldChannel, order });
+
+        dispatch(updateChannelSuccess(channel));
+    };

@@ -1,10 +1,12 @@
-import * as Immutable from 'immutable';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import {IState} from '../../common/IState';
 import {ChannelFilter} from '../../constants/ChannelFilter';
 import {IChannel} from '../../models/IChannel';
-import {ChannelList, IChannelListProps} from '../../components/channel/ChannelList';
+import {ChannelList, IChannelListProps, IChannelListDispatchProps} from '../../components/channel/ChannelList';
+import {Dispatch} from 'redux';
+import * as Immutable from 'immutable';
+import {updateChannelOrder} from '../../actions/channel/updateChannel';
 
 
 const getChannelsForUser = createSelector<IState, ChannelFilter, Immutable.List<IChannel>, Immutable.Map<Uuid, IChannel>, Immutable.List<IChannel>>(
@@ -35,4 +37,10 @@ const mapStateToProps = (state: IState): IChannelListProps => {
     };
 };
 
-export const ChannelListContainer = connect(mapStateToProps)(ChannelList);
+const mapDispatchToProps = (dispatch: Dispatch): IChannelListDispatchProps => {
+    return {
+        updateChannelOrder: (channel: IChannel) => dispatch(updateChannelOrder(channel.id, channel.order)),
+    };
+};
+
+export const ChannelListContainer = connect(mapStateToProps, mapDispatchToProps)(ChannelList);
