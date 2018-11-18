@@ -27,6 +27,7 @@ export interface IState {
     readonly channelName: string;
     readonly user: IUser;
     readonly notAssignedUsers: IUser[];
+    readonly userName: string;
 }
 
 type IProps = IChannelOwnProps & IChannelStateProps & IChannelCallBackProps;
@@ -45,6 +46,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
             channelName: this.props.channel.name,
             user: {} as IUser,
             notAssignedUsers: notAssigned,
+            userName: ''
         };
     }
 
@@ -102,6 +104,16 @@ export class Channel extends React.PureComponent<IProps, IState> {
         );
     }
 
+    onChange = (event: any) => {
+        this.setState({
+            userName: event.target.value
+        });
+
+        // todo update not assigned user to autocomplete
+        // todo style autocomplete
+        // todo adding/removing channel/user update
+    }
+
     render(): JSX.Element {
         return (
             <div className="channel">
@@ -129,8 +141,9 @@ export class Channel extends React.PureComponent<IProps, IState> {
                                 getItemValue={this.getItemValue}
                                 items={this.state.notAssignedUsers}
                                 renderItem={this.renderItem}
-                                value={this.state.user.nickname}
+                                value={this.state.userName}
                                 onSelect={this.onSelect}
+                                onChange={this.onChange}
                             />
                             <button type="submit" className="glyphicon glyphicon-plus" />
                         </FormGroup>
