@@ -3,9 +3,15 @@ import { Dispatch } from 'redux';
 import {List} from 'immutable';
 import {IMessage} from '../../models/IMessage';
 import {createChannel} from '../../actions/channel/createChannel';
-import {Channels, IChannelsDispatchProps} from '../../components/channel/Channels';
+import {Channels, IChannelsDispatchProps, IChannelsStateProps} from '../../components/channel/Channels';
 import {IUser} from '../../models/IUser';
+import {IState} from '../../common/IState';
 
+const mapStateToProps = (state: IState): IChannelsStateProps => {
+    return {
+        loggedUser: state.tomatoApp.users.allUsers.find((user: IUser) => (user.id === state.tomatoApp.userId))
+    };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
     return {
@@ -13,4 +19,4 @@ const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
     };
 };
 
-export const ChannelsContainer = connect(undefined, mapDispatchToProps)(Channels);
+export const ChannelsContainer = connect(mapStateToProps, mapDispatchToProps)(Channels);

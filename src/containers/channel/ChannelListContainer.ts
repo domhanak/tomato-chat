@@ -39,7 +39,7 @@ const mapStateToProps = (state: IState): IChannelListProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IChannelListDispatchProps => {
     return {
-        updateChannelOrder: (channel: IChannel) => dispatch(updateChannelOrder(channel.id, channel.order)),
+        updateChannelOrder: (channel: IChannel, newOrder: number) => dispatch(updateChannelOrder(channel.id, newOrder)),
     };
 };
 

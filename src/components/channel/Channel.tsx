@@ -20,7 +20,7 @@ export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
-    readonly updateChannelUsers: (users: Immutable.List<IUser>) => void;
+    readonly updateChannelUsers: (users: Immutable.List<IUser>, userId: Uuid, channels: Immutable.List<IChannel>) => void;
 }
 
 export interface IState {
@@ -59,8 +59,12 @@ export class Channel extends React.PureComponent<IProps, IState> {
     };
 
     onUserRemove = (user: IUser) => {
-        this.props.updateChannelUsers(Immutable.List(Object.values(this.props.channel.users)
-            .filter((item: IUser) => { return item.id !== user.id; })));
+        this.props.updateChannelUsers(
+            Immutable.List(Object.values(this.props.channel.users)
+                .filter((item: IUser) => { return item.id !== user.id; })),
+            this.state.user.id,
+            Immutable.List(Object.values(this.state.user.channels)
+                .filter((channel: IChannel) => { return channel.id !== this.props.channel.id; })));
 
         this.setState((prevState) => ({
             notAssignedUsers: [...prevState.notAssignedUsers, user]
@@ -70,7 +74,9 @@ export class Channel extends React.PureComponent<IProps, IState> {
     addParticipant = (event: any) => {
         event.preventDefault();
         if (this.state.user.id !== undefined) {
-            this.props.updateChannelUsers(this.props.channel.users.push(this.state.user));
+            this.props.updateChannelUsers(this.props.channel.users.push(this.state.user),
+                this.state.user.id,
+                this.state.user.channels.push(this.props.channel));
             this.setState((prevState) => ({
                 notAssignedUsers: prevState.notAssignedUsers.filter(
                 (item: IUser) => { return item.id !== prevState.user.id; }),

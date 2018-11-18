@@ -8,10 +8,24 @@ export interface IChannelListProps {
 }
 
 export interface IChannelListDispatchProps {
-    readonly updateChannelOrder: (channel: IChannel) => void;
+    readonly updateChannelOrder: (channel: IChannel, newOrder: number) => void;
 }
 
-export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps> {
+interface IState {
+    readonly value: string;
+    readonly stateChannels: Immutable.List<IChannel>;
+}
+
+export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps, IState> {
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            value: '',
+            stateChannels: this.props.channels,
+        };
+    }
 
     handleOrderChange = (channel: IChannel, newOrder: number) => {
         if (newOrder < 0) {
@@ -26,8 +40,8 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
             return;
         }
 
-        this.props.updateChannelOrder(channel);
-        this.props.updateChannelOrder(neighbour);
+        this.props.updateChannelOrder(channel, neighbour.order);
+        this.props.updateChannelOrder(neighbour, channel.order);
     };
 
     onMoveUp = (channel: IChannel) => {
@@ -42,7 +56,7 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
         return (
             <div className="channel-list">
                 <ul>
-                    {this.props.channels && this.props.channels.sort((first: IChannel, second: IChannel) => {
+                    {this.state.stateChannels && this.state.stateChannels.sort((first: IChannel, second: IChannel) => {
                         return first.order - second.order;
                     }).map(channel => (
                         <ChannelListItem key={channel!.id} channel={channel!} onMoveDown={this.onMoveDown} onMoveUp={this.onMoveUp} />

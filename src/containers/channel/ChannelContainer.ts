@@ -6,6 +6,9 @@ import {cancelEditingChannel, startEditingChannel} from '../../actions/actionCre
 import {updateChannel, updateChannelUsers} from '../../actions/channel/updateChannel';
 import {IUser} from '../../models/IUser';
 import {List} from 'immutable';
+import {updateUserChannels} from '../../actions/users/updateUser';
+import * as Immutable from 'immutable';
+import {IChannel} from '../../models/IChannel';
 
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
@@ -20,9 +23,9 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelOwnProps) => {
         onStartEditing: () => dispatch(startEditingChannel(ownProps.id)),
         onCancelEditing: () => dispatch(cancelEditingChannel(ownProps.id)),
         onChannelNameChange: (channelName: string) => dispatch(updateChannel(ownProps.id, channelName)),
-        updateChannelUsers: (users: List<IUser>) => {
+        updateChannelUsers: (users: List<IUser>, userId: Uuid, channels: Immutable.List<IChannel>) => {
             dispatch(updateChannelUsers(ownProps.id, users));
-            // dispatch(updateUserChannels());
+            dispatch(updateUserChannels(userId, channels));
         },
     };
 };

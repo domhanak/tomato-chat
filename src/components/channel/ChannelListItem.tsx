@@ -27,7 +27,7 @@ export class ChannelListItem extends React.Component<IChannelListItemsProps> {
             <li>
                 <Router>
                     <div>
-                        <h6><Link className="channel-name" to="/todo" >{this.props.channel.name}</Link></h6>
+                        <h6>{this.props.channel.name}</h6>
                         <div className="channel-options visible">
                             <Link to="/channel" className="settings glyphicon glyphicon-cog" />
                             <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />

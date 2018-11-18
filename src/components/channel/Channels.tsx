@@ -3,6 +3,11 @@ import {List} from 'immutable';
 import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
 import {IMessage} from '../../models/IMessage';
 import {IUser} from '../../models/IUser';
+// import {IChannel} from '../../models/IChannel';
+
+export interface IChannelsStateProps {
+    readonly loggedUser: IUser;
+}
 
 export interface IChannelsDispatchProps {
     readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<IUser>) => void;
@@ -10,24 +15,26 @@ export interface IChannelsDispatchProps {
 
 interface IState {
     readonly value: string;
+    readonly nextOrder: number;
 }
 
-export class Channels extends React.Component<IChannelsDispatchProps, IState> {
+export class Channels extends React.Component<IChannelsStateProps & IChannelsDispatchProps, IState> {
 
-    constructor(props: IChannelsDispatchProps) {
+    constructor(props: any) {
         super(props);
 
         this.state = {
             value: '',
+            nextOrder: Object.values(this.props.loggedUser.channels).length + 1,
         };
     }
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, 0, List(), List());
+        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List<IUser>().push(this.props.loggedUser));
 
-        this.setState(_ => ({ value: '' }));
+        this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };
 
     handleNewChannelNameChange = (event: any) => {

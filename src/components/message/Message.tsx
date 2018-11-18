@@ -1,5 +1,4 @@
 import * as React from 'react';
-import '../../styles/App.scss';
 import {IMessage} from '../../models/IMessage';
 
 export interface IMessageOwnProps {
