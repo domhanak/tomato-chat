@@ -3,14 +3,13 @@ import {List} from 'immutable';
 import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
 import {IMessage} from '../../models/IMessage';
 import {IUser} from '../../models/IUser';
-// import {IChannel} from '../../models/IChannel';
 
 export interface IChannelsStateProps {
     readonly loggedUser: IUser;
 }
 
 export interface IChannelsDispatchProps {
-    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<IUser>) => void;
+    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>) => void;
 }
 
 interface IState {
@@ -25,14 +24,14 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
         this.state = {
             value: '',
-            nextOrder: Object.values(this.props.loggedUser.channels).length + 1,
+            nextOrder: Object.values(this.props.loggedUser.channels).length,
         };
     }
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List<IUser>().push(this.props.loggedUser));
+        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List<Uuid>().push(this.props.loggedUser.id));
 
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };

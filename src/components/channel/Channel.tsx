@@ -4,7 +4,7 @@ import {IChannel} from '../../models/IChannel';
 import * as Autocomplete from 'react-autocomplete';
 import * as Immutable from 'immutable';
 import {IUser} from '../../models/IUser';
-import {UserListItem} from './UserListItem';
+import {UserListItemContainer} from '../../containers/user/UserListItemContainer';
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
@@ -20,13 +20,12 @@ export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
-    readonly updateChannelUsers: (users: Immutable.List<IUser>, userId: Uuid, channels: Immutable.List<IChannel>) => void;
+    readonly updateChannelUsers: (users: Immutable.List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => void;
 }
 
 export interface IState {
     readonly channelName: string;
     readonly user: IUser;
-    readonly notAssignedUsers: IUser[];
     readonly userName: string;
 }
 
@@ -36,59 +35,56 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
-
-        const notAssigned = this.props.allUsers
-            .filter((user: IUser) => { return !Object.values(this.props.channel.users)
-                .find((item: IUser) => {
-                    return item.id === user.id;
-            }); }).toArray();
         this.state = {
             channelName: this.props.channel.name,
             user: {} as IUser,
-            notAssignedUsers: notAssigned,
             userName: ''
         };
+        console.log(this.props.channel);
     }
 
     handleChannelNameChange = (event: any) => {
         const { value } = event.currentTarget;
         this.setState(_ => ({ channelName: value }));
+        this.props.onStartEditing();
     };
 
-    onSubmit = (event: any) => {
+    onSubmitChannelNameChange = (event: any) => {
        event.preventDefault();
        this.props.onChannelNameChange(this.state.channelName);
     };
 
-    onUserRemove = (user: IUser) => {
-        this.props.updateChannelUsers(
-            Immutable.List(Object.values(this.props.channel.users)
-                .filter((item: IUser) => { return item.id !== user.id; })),
-            this.state.user.id,
-            Immutable.List(Object.values(this.state.user.channels)
-                .filter((channel: IChannel) => { return channel.id !== this.props.channel.id; })));
+    onUserRemove = (userId: Uuid) => {
+        const filteredUsers = this.props.channel.users.filter(id => { return id !== userId; } );
 
-        this.setState((prevState) => ({
-            notAssignedUsers: [...prevState.notAssignedUsers, user]
-        }));
+        const user = this.props.allUsers.find((item: IUser) => { return item.id !== userId; } );
+        const filteredChannels = user!.channels.filter(id => { return id !== this.props.channel.id; } );
+
+        this.props.updateChannelUsers(
+            Immutable.List(filteredUsers),
+            this.state.user.id,
+            Immutable.List(filteredChannels));
     }
 
     addParticipant = (event: any) => {
         event.preventDefault();
         if (this.state.user.id !== undefined) {
-            this.props.updateChannelUsers(this.props.channel.users.push(this.state.user),
+
+            const user = this.props.allUsers.find((item: IUser) => { return item.id !== this.state.user.id; } );
+            user.channels.push(this.props.channel.id);
+            this.props.updateChannelUsers(
+                this.props.channel.users.push(this.state.user.id),
                 this.state.user.id,
-                this.state.user.channels.push(this.props.channel));
-            this.setState((prevState) => ({
-                notAssignedUsers: prevState.notAssignedUsers.filter(
-                (item: IUser) => { return item.id !== prevState.user.id; }),
+                Immutable.List(user.channels));
+
+            this.setState(() => ({
                 user: {} as IUser
             }));
         }
     }
 
     getItemValue = (item: IUser) => {
-        return `${item}`;
+        return `${item.nickname}`;
     }
 
     onSelect = (_: string, item: IUser) => {
@@ -105,19 +101,18 @@ export class Channel extends React.PureComponent<IProps, IState> {
     }
 
     onChange = (event: any) => {
-        this.setState({
+        this.setState(_ => ({
             userName: event.target.value
-        });
-
-        // todo update not assigned user to autocomplete
-        // todo style autocomplete
-        // todo adding/removing channel/user update
+        }));
     }
 
+    // todo style autocomplete
+
     render(): JSX.Element {
+        const isList = true;
         return (
             <div className="channel">
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.onSubmitChannelNameChange}>
                     <FormGroup>
                         <ControlLabel>{this.props.channel.name}</ControlLabel>
                         <FormControl
@@ -131,17 +126,17 @@ export class Channel extends React.PureComponent<IProps, IState> {
                 <div className="participants">
                     <h4>Participants</h4>
                     <ul>
-                        {this.props.channel.users && this.props.channel.users.map((user: IUser) => (
-                            <UserListItem key={user.id} user={user} onUserRemove={this.onUserRemove} />))}
+                        {this.props.channel.users  && this.props.channel.users.map((id: Uuid) => (
+                            <UserListItemContainer key={id} isHighlighted={false} isList={isList} userId={id} onUserRemove={this.onUserRemove} />))}
                     </ul>
                     <form onSubmit={this.addParticipant}>
                         <FormGroup>
                             <ControlLabel> New participant </ControlLabel>
                             <Autocomplete
                                 getItemValue={this.getItemValue}
-                                items={this.state.notAssignedUsers}
+                                items={this.props.allUsers.toArray()}
                                 renderItem={this.renderItem}
-                                value={this.state.userName}
+                                value={this.state.user.nickname}
                                 onSelect={this.onSelect}
                                 onChange={this.onChange}
                             />

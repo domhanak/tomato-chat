@@ -9,22 +9,22 @@ import * as Immutable from 'immutable';
 import {updateChannelOrder} from '../../actions/channel/updateChannel';
 
 
-const getChannelsForUser = createSelector<IState, ChannelFilter, Immutable.List<IChannel>, Immutable.Map<Uuid, IChannel>, Immutable.List<IChannel>>(
+const getChannelsForUser = createSelector<IState, ChannelFilter, Immutable.List<Uuid>, Immutable.Map<Uuid, IChannel>, Immutable.List<Uuid>>(
     [
         state => state.tomatoApp.channelFilter,
-        state => state.tomatoApp.channels.allChannels,
+        state => state.tomatoApp.channels.allChannelIds,
         state => state.tomatoApp.channels.channelsById,
     ],
-    (channelFilter, allChannels, channelsById) => {
+    (channelFilter, allChannelsIds, channelsById) => {
         switch (channelFilter) {
             case ChannelFilter.All:
-                return allChannels;
+                return allChannelsIds;
 
             case ChannelFilter.Starred:
-                return allChannels.filter((channel: IChannel) => channelsById.get(channel.id) !== undefined ).toList();
+                return allChannelsIds.filter((id: Uuid) => channelsById.get(id) !== undefined ).toList();
 
             case ChannelFilter.Muted:
-                return allChannels.filter((channel: IChannel) => !channelsById.get(channel.id) !== undefined).toList();
+                return allChannelsIds.filter((id: Uuid) => !channelsById.get(id) !== undefined).toList();
 
             default:
                 throw new Error(`Unknown value of visibility filter '${channelFilter}'`);
@@ -33,7 +33,7 @@ const getChannelsForUser = createSelector<IState, ChannelFilter, Immutable.List<
 
 const mapStateToProps = (state: IState): IChannelListProps => {
     return {
-        channels: getChannelsForUser(state)
+        channelIds: getChannelsForUser(state)
     };
 };
 

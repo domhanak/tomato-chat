@@ -8,7 +8,7 @@ import {
 import {IChannel} from '../../models/IChannel';
 import {List} from 'immutable';
 import {IMessage} from '../../models/IMessage';
-import {IUser} from '../../models/IUser';
+// import {IUser} from '../../models/IUser';
 
 const createChannelStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,
@@ -21,7 +21,7 @@ const createChannelSuccess = (channel: IChannel): Action => ({
     }
 });
 
-export const createChannel = (name: string, order: number, messages: List<IMessage>, users: List<IUser>): any =>
+export const createChannel = (name: string, order: number, messages: List<IMessage>, users: List<Uuid>): any =>
     async (dispatch: Dispatch): Promise<void> => {
         dispatch(createChannelStarted());
 

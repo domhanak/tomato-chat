@@ -12,8 +12,8 @@ import {
 
 const mapStateToProps = (state: IState): ILoginFormOwnProps => {
     return {
-        users: state.tomatoApp.users.allUsers,
-        user: state.tomatoApp.users.allUsers.find((user: IUser) => (user.id === state.tomatoApp.userId)),
+        users: state.tomatoApp.users.usersById.toList(),
+        user: state.tomatoApp.users.usersById.find((user: IUser) => (user.id === state.tomatoApp.userId)),
     };
 };
 

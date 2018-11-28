@@ -9,13 +9,13 @@ import {IState} from '../../common/IState';
 
 const mapStateToProps = (state: IState): IChannelsStateProps => {
     return {
-        loggedUser: state.tomatoApp.users.allUsers.find((user: IUser) => (user.id === state.tomatoApp.userId))
+        loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.id === state.tomatoApp.userId))
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
     return {
-        onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<IUser>) => dispatch(createChannel(name, order, messages, users))
+        onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>) => dispatch(createChannel(name, order, messages, users))
     };
 };
 

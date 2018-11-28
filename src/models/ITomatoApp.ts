@@ -8,7 +8,6 @@ import {IUser} from './IUser';
 export interface IUsers {
     allUserIds: Immutable.List<Uuid>;
     usersById: Immutable.Map<Uuid, IUser>;
-    allUsers: Immutable.List<IUser>;
 }
 
 export interface IMessages {
@@ -17,7 +16,6 @@ export interface IMessages {
 }
 
 export interface IChannels {
-    allChannels: Immutable.List<IChannel>;
     allChannelIds: Immutable.List<Uuid>;
     channelsById: Immutable.Map<Uuid, IChannel>;
 }

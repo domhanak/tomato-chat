@@ -3,14 +3,25 @@ import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import {ChannelContainer} from '../../containers/channel/ChannelContainer';
 import {IChannel} from '../../models/IChannel';
 
-interface IChannelListItemsProps {
+export interface IChannelListItemsProps {
+    readonly id: Uuid;
+    // readonly index: number;
+}
+
+export interface IChannelListItemStateProps {
     readonly channel: IChannel;
-    readonly key: Uuid;
+}
+
+interface IChannelDispatchProps {
     readonly onMoveDown: (channel: IChannel) => void;
     readonly onMoveUp: (channel: IChannel) => void;
 }
 
-export class ChannelListItem extends React.Component<IChannelListItemsProps> {
+type IProps = IChannelListItemsProps & IChannelListItemStateProps & IChannelDispatchProps;
+
+export interface IState {}
+
+export class ChannelListItem extends React.Component<IProps, IState> {
 
     handleMoveDown = (event: any) => {
         event.preventDefault();
