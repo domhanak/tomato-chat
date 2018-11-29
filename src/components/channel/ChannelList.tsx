@@ -19,10 +19,8 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
 
     constructor(props: any) {
         super(props);
-
         this.state = {
             value: '',
-            // stateChannels: this.props.channels,
         };
     }
 
@@ -51,14 +49,13 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
     };
 
     render(): JSX.Element {
-        // console.log(this.props.allChannels);
         return (
             <div className="channel-list">
                 <ul>
                     {this.props.allChannels && this.props.allChannels
                         .sort((item1: IChannel, item2: IChannel) => { return item1.order - item2.order; })
                         .map((channel: IChannel, index: number) => (
-                        <ChannelListItemContainer key={channel.id} id={channel.id}  index={index} channel2={channel}
+                        <ChannelListItemContainer key={channel.id} id={channel.id} index={index} channel2={channel}
                                                   onMoveDown={this.onMoveDown}
                                                   onMoveUp={this.onMoveUp} />
                     ))}

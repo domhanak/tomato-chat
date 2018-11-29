@@ -111,7 +111,9 @@ export class Channel extends React.PureComponent<IProps, IState> {
         }));
     }
 
-    // todo style autocomplete
+    // todo styling
+    // todo default order after logging in
+    // todo better user logging according to MS2
 
     render(): JSX.Element {
         const isList = true;

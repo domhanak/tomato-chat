@@ -21,7 +21,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
     constructor(props: any) {
         super(props);
-
+        console.log(this.props.loggedUser.channels);
         this.state = {
             value: '',
             nextOrder: 0,
