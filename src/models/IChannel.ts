@@ -8,4 +8,5 @@ export interface IChannel {
     readonly order: number;
     readonly messages: Immutable.List<IMessage>;
     readonly users: Immutable.List<Uuid>;
+    readonly owner: Uuid;
 }

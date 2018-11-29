@@ -9,7 +9,7 @@ export interface IChannelsStateProps {
 }
 
 export interface IChannelsDispatchProps {
-    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>) => void;
+    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid) => void;
 }
 
 interface IState {
@@ -31,7 +31,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List<Uuid>().push(this.props.loggedUser.id));
+        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List(), this.props.loggedUser.id);
 
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };

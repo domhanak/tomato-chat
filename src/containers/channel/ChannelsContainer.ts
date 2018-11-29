@@ -15,7 +15,7 @@ const mapStateToProps = (state: IState): IChannelsStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
     return {
-        onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>) => dispatch(createChannel(name, order, messages, users))
+        onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid) => dispatch(createChannel(name, order, messages, users, owner))
     };
 };
 

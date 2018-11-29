@@ -21,11 +21,11 @@ const createChannelSuccess = (channel: IChannel): Action => ({
     }
 });
 
-export const createChannel = (name: string, order: number, messages: List<IMessage>, users: List<Uuid>): any =>
+export const createChannel = (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid): any =>
     async (dispatch: Dispatch): Promise<void> => {
         dispatch(createChannelStarted());
 
-        const channel = await createChannelApi({ id: uuid(), name, order, messages, users });
+        const channel = await createChannelApi({ id: uuid(), name, order, messages, users, owner });
 
         dispatch(createChannelSuccess(channel));
     };

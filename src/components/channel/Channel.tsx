@@ -38,9 +38,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
         this.state = {
             channelName: this.props.channel.name,
             user: {} as IUser,
-            userName: ''
+            userName: '',
         };
-        console.log(this.props.channel);
     }
 
     handleChannelNameChange = (event: any) => {
@@ -71,6 +70,11 @@ export class Channel extends React.PureComponent<IProps, IState> {
         if (this.state.user.id !== undefined) {
 
             const user = this.props.allUsers.find((item: IUser) => { return item.id !== this.state.user.id; } );
+
+            if (user.channels.contains(this.props.channel.id) || this.props.channel.users.contains(this.state.user.id)) {
+                return;
+            }
+
             user.channels.push(this.props.channel.id);
             this.props.updateChannelUsers(
                 this.props.channel.users.push(this.state.user.id),
@@ -101,6 +105,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
     }
 
     onChange = (event: any) => {
+        event.persist();
         this.setState(_ => ({
             userName: event.target.value
         }));
@@ -134,9 +139,9 @@ export class Channel extends React.PureComponent<IProps, IState> {
                             <ControlLabel> New participant </ControlLabel>
                             <Autocomplete
                                 getItemValue={this.getItemValue}
-                                items={this.props.allUsers.toArray()}
+                                items={this.props.allUsers.filter((user: IUser) => { return user.id !== this.props.channel.owner; }).toArray()}
                                 renderItem={this.renderItem}
-                                value={this.state.user.nickname}
+                                value={this.state.userName}
                                 onSelect={this.onSelect}
                                 onChange={this.onChange}
                             />
