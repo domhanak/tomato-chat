@@ -5,7 +5,8 @@ import {IChannel} from '../../models/IChannel';
 
 export interface IChannelListItemsProps {
     readonly id: Uuid;
-    // readonly index: number;
+    readonly index: number;
+    readonly channel2: IChannel;
 }
 
 export interface IChannelListItemStateProps {
@@ -25,12 +26,12 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
     handleMoveDown = (event: any) => {
         event.preventDefault();
-        this.props.onMoveDown(this.props.channel);
+        this.props.onMoveDown(this.props.channel2);
     }
 
     handleMoveUp = (event: any) => {
         event.preventDefault();
-        this.props.onMoveUp(this.props.channel);
+        this.props.onMoveUp(this.props.channel2);
     }
 
     render(): JSX.Element {
@@ -38,14 +39,14 @@ export class ChannelListItem extends React.Component<IProps, IState> {
             <li>
                 <Router>
                     <div>
-                        <h6>{this.props.channel.name}</h6>
+                        <h6>{this.props.channel2.name}</h6>
                         <div className="channel-options visible">
                             <Link to="/channel" className="settings glyphicon glyphicon-cog" />
                             <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                             <a onClick={this.handleMoveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
                         </div>
 
-                        <Route path="/channel" render={() => <ChannelContainer id={this.props.channel.id} />}/>
+                        <Route path="/channel" render={() => <ChannelContainer id={this.props.id} />}/>
                     </div>
                 </Router>
             </li>

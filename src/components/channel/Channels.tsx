@@ -24,7 +24,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
         this.state = {
             value: '',
-            nextOrder: Object.values(this.props.loggedUser.channels).length,
+            nextOrder: 0,
         };
     }
 

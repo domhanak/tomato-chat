@@ -4,16 +4,15 @@ import * as Immutable from 'immutable';
 import {ChannelListItemContainer} from '../../containers/channel/ChannelListItemContainer';
 
 export interface IChannelListProps {
-    readonly channelIds: Immutable.List<Uuid>;
+    readonly allChannels: Immutable.List<IChannel>;
 }
 
 export interface IChannelListDispatchProps {
-    readonly updateChannelOrder: (channel: IChannel, newOrder: number) => Promise<any>;
+    readonly updateChannelOrder: (channelId: Uuid, newOrder: number, channelId2: Uuid, newOrder2: number) => void;
 }
 
 interface IState {
     readonly value: string;
-    // readonly stateChannels: Immutable.List<IChannel>;
 }
 
 export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps, IState> {
@@ -31,17 +30,16 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
         if (newOrder < 0) {
             return;
         }
-        console.log(channel);
-        // const neighbour = this.props.channels.find((item: IChannel) => {
-        //     return item.order === newOrder && item.id !== channel.id;
-        // });
-        //
-        // if (neighbour === null || neighbour === undefined) {
-        //     return;
-        // }
-        //
-        // this.props.updateChannelOrder(channel, neighbour.order);
-        // this.props.updateChannelOrder(neighbour, channel.order).then(_ => console.log(this.props.channels));
+
+        const neighbour = this.props.allChannels.find((item: IChannel) => {
+            return item.order === newOrder && item.id !== channel.id;
+        });
+
+        if (neighbour === null || neighbour === undefined) {
+            return;
+        }
+
+        this.props.updateChannelOrder(channel.id, neighbour.order, neighbour.id, channel.order);
     };
 
     onMoveUp = (channel: IChannel) => {
@@ -53,11 +51,16 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
     };
 
     render(): JSX.Element {
+        // console.log(this.props.allChannels);
         return (
             <div className="channel-list">
                 <ul>
-                    {this.props.channelIds && this.props.channelIds.map((id: string) => (
-                        <ChannelListItemContainer key={id} id={id} onMoveDown={this.onMoveDown} onMoveUp={this.onMoveUp} />
+                    {this.props.allChannels && this.props.allChannels
+                        .sort((item1: IChannel, item2: IChannel) => { return item1.order - item2.order; })
+                        .map((channel: IChannel, index: number) => (
+                        <ChannelListItemContainer key={channel.id} id={channel.id}  index={index} channel2={channel}
+                                                  onMoveDown={this.onMoveDown}
+                                                  onMoveUp={this.onMoveUp} />
                     ))}
                 </ul>
             </div>

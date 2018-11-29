@@ -19,10 +19,11 @@ const updateChannelSuccess = (channel: IChannel): Action => ({
     }
 });
 
-const updateChannelOrderSuccess = (channels: List<Uuid>): Action => ({
+const updateChannelOrderSuccess = (channel: IChannel, channel2: IChannel): Action => ({
    type: TOMATO_APP_CHANNEL_ORDER_CHANGED,
    payload: {
-       channels,
+       channel,
+       channel2,
    }
 });
 
@@ -46,13 +47,16 @@ export const updateChannelUsers = (id: Uuid, users: List<Uuid>): any =>
         dispatch(updateChannelSuccess(channel));
     };
 
-export const updateChannelOrder = (id: Uuid, order: number): any =>
+export const updateChannelOrder = (id: Uuid, order: number, id2: Uuid, order2: number): any =>
     async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
         dispatch(updateChannelStarted());
 
         const oldChannel = getState().tomatoApp.channels.channelsById.get(id);
-        /*const channel = */
-        await updateChannelApi({ ...oldChannel, order });
+        const oldChannel2 = getState().tomatoApp.channels.channelsById.get(id2);
 
-        dispatch(updateChannelOrderSuccess(getState().tomatoApp.channels.allChannelIds));
+        const channel = await updateChannelApi({ ...oldChannel, order });
+        order = order2;
+        const channel2 = await updateChannelApi({ ...oldChannel2, order });
+
+        dispatch(updateChannelOrderSuccess(channel, channel2));
     };
