@@ -6,16 +6,22 @@ import {createChannel} from '../../actions/channel/createChannel';
 import {Channels, IChannelsDispatchProps, IChannelsStateProps} from '../../components/channel/Channels';
 import {IUser} from '../../models/IUser';
 import {IState} from '../../common/IState';
+import * as uuid from 'uuid';
+import {updateUserChannels} from '../../actions/users/updateUser';
 
 const mapStateToProps = (state: IState): IChannelsStateProps => {
     return {
-        loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.id === state.tomatoApp.userId))
+        loggedUser: state.tomatoApp.loggedUser,
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
     return {
-        onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid) => dispatch(createChannel(name, order, messages, users, owner))
+        onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, user: IUser | null) => {
+            const channelId = uuid();
+            dispatch(updateUserChannels(user!.id, List(user!.channels).push(channelId)));
+            dispatch(createChannel(channelId, name, order, messages, users, user!.id));
+        }
     };
 };
 

@@ -5,11 +5,11 @@ import {IMessage} from '../../models/IMessage';
 import {IUser} from '../../models/IUser';
 
 export interface IChannelsStateProps {
-    readonly loggedUser: IUser;
+    readonly loggedUser: IUser | null;
 }
 
 export interface IChannelsDispatchProps {
-    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid) => void;
+    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, user: IUser | null) => void;
 }
 
 interface IState {
@@ -21,18 +21,16 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
     constructor(props: any) {
         super(props);
-        console.log(this.props.loggedUser.channels);
         this.state = {
             value: '',
-            nextOrder: 0,
+            nextOrder: List(this.props.loggedUser!.channels).count(),
         };
     }
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List(), this.props.loggedUser.id);
-
+        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List(), this.props.loggedUser);
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };
 

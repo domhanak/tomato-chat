@@ -50,8 +50,6 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
             username: '',
             password: '',
         };
-
-        console.log(this.props.user);
     }
 
     render(): JSX.Element {

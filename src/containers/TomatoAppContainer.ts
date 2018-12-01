@@ -9,6 +9,7 @@ import {loadChannels} from '../actions/channel/loadChannels';
 const mapStateToProps = (state: IState): ITomatoAppStateProps => {
     return {
         userId: state.tomatoApp.userId,
+        loggedUser: state.tomatoApp.loggedUser,
         isLoggedIn: state.tomatoApp.userId !== null,
     };
 };

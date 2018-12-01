@@ -4,9 +4,11 @@ import { Navigation } from './navigation/Navigation';
 import { LoginFormContainer } from '../containers/login/LoginFormContainer';
 // @ts-ignore
 import * as url from '../tomato.jpg';
+import {IUser} from '../models/IUser';
 
 export interface ITomatoAppStateProps {
     readonly userId: Uuid | null;
+    readonly loggedUser: IUser | null;
     readonly isLoggedIn: boolean;
 }
 

@@ -4,11 +4,9 @@ import {IState} from '../../common/IState';
 import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} from '../../components/channel/Channel';
 import {cancelEditingChannel, startEditingChannel} from '../../actions/actionCreators';
 import {updateChannel, updateChannelUsers} from '../../actions/channel/updateChannel';
-// import {IUser} from '../../models/IUser';
 import {List} from 'immutable';
 import {updateUserChannels} from '../../actions/users/updateUser';
 import * as Immutable from 'immutable';
-// import {IChannel} from '../../models/IChannel';
 
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
