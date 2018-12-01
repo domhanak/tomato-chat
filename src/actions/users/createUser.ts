@@ -23,7 +23,7 @@ export const createUser = (nickname: string): any =>
     async (dispatch: Dispatch): Promise<void> => {
         dispatch(createUserStarted());
 
-        const user = await updateUserApi({id: uuid(), nickname, channels: Immutable.List<Uuid>(), isLoggedIn: false});
+        const user = await updateUserApi({id: uuid(), nickname, channels: Immutable.List<Uuid>()});
 
         dispatch(createUserSuccess(user));
     };

@@ -11,7 +11,7 @@ export interface ILoginFormOwnProps {
 
 export interface ILoginFormDispatchProps {
     readonly onUserAdd: (username: string) => void;
-    readonly onUserLogin: (id: Uuid, isLoggedIn: true) => void;
+    readonly onUserLogin: (id: Uuid) => void;
 }
 
 type IProps = ILoginFormOwnProps & ILoginFormDispatchProps;
@@ -39,7 +39,7 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
             return;
         }
 
-        this.props.onUserLogin(newUser.id, true);
+        this.props.onUserLogin(newUser.id);
         this.setState(_ => ({ username: '', password: '' }));
     };
 
@@ -50,6 +50,8 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
             username: '',
             password: '',
         };
+
+        console.log(this.props.user);
     }
 
     render(): JSX.Element {

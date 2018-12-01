@@ -20,14 +20,24 @@ const updateUserSuccess = (user: IUser): Action => ({
     }
 });
 
-export const updateUser = (id: Uuid, isLoggedIn: boolean): any =>
+// export const updateUser = (id: Uuid, isLoggedIn: boolean): any =>
+//     async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
+//         dispatch(updateUserStarted());
+//
+//         const oldUser = getState().tomatoApp.users.usersById.get(id);
+//         const user = await updateUserApi({ ...oldUser, isLoggedIn });
+//
+//         dispatch(updateUserSuccess(user));
+//     };
+
+export const logInUser = (id: Uuid): any =>
     async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
         dispatch(updateUserStarted());
 
-        const oldUser = getState().tomatoApp.users.usersById.get(id);
-        const user = await updateUserApi({ ...oldUser, isLoggedIn });
+        const loggedUser = getState().tomatoApp.users.usersById.get(id);
+        // const user = await updateUserApi({...oldUser});
 
-        dispatch(updateUserSuccess(user));
+        dispatch(updateUserSuccess(loggedUser));
     };
 
 
