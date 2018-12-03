@@ -1,6 +1,5 @@
-import * as uuid from 'uuid';
 import { Dispatch } from 'redux';
-import { createChannel as createChannelApi } from '../../api/chatRepository';
+import {createChannel as createChannelApi} from '../../api/chatRepository';
 import {
     TOMATO_APP_CHANNEL_CREATE_STARTED,
     TOMATO_APP_CHANNEL_CREATE_SUCCESS
@@ -20,11 +19,11 @@ const createChannelSuccess = (channel: IChannel): Action => ({
     }
 });
 
-export const createChannel = (name: string, order: number, messages: List<IMessage>): any =>
+export const createChannel = (id: Uuid, name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid): any =>
     async (dispatch: Dispatch): Promise<void> => {
         dispatch(createChannelStarted());
 
-        const channel = await createChannelApi({ id: uuid(), name, order, messages });
+        const channel = await createChannelApi({ id, name, order, messages, users, owner });
 
         dispatch(createChannelSuccess(channel));
     };

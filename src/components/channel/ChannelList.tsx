@@ -1,41 +1,63 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {IChannel} from '../../models/IChannel';
-import {ChannelContainer} from '../../containers/channel/ChannelContainer';
 import * as Immutable from 'immutable';
+import {ChannelListItemContainer} from '../../containers/channel/ChannelListItemContainer';
 
 export interface IChannelListProps {
-    readonly channels: Immutable.List<IChannel>;
+    readonly allChannels: Immutable.List<IChannel>;
 }
 
-export class ChannelList extends React.Component<IChannelListProps> {
-    moveUp = () => {
-        return;
+export interface IChannelListDispatchProps {
+    readonly updateChannelOrder: (channelId: Uuid, newOrder: number, channelId2: Uuid, newOrder2: number) => void;
+}
+
+interface IState {
+    readonly value: string;
+}
+
+export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps, IState> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            value: '',
+        };
+    }
+
+    handleOrderChange = (channel: IChannel, newOrder: number) => {
+        if (newOrder < 0) {
+            return;
+        }
+
+        const neighbour = this.props.allChannels.find((item: IChannel) => {
+            return item.order === newOrder && item.id !== channel.id;
+        });
+
+        if (neighbour === null || neighbour === undefined) {
+            return;
+        }
+
+        this.props.updateChannelOrder(channel.id, neighbour.order, neighbour.id, channel.order);
     };
 
-    moveDown = () => {
-        return;
+    onMoveUp = (channel: IChannel) => {
+        this.handleOrderChange(channel, channel.order - 1);
+    };
+
+    onMoveDown = (channel: IChannel) => {
+        this.handleOrderChange(channel, channel.order + 1);
     };
 
     render(): JSX.Element {
         return (
             <div className="channel-list">
                 <ul>
-                    {this.props.channels && this.props.channels.map(channel => (
-                        <li key={channel!.id}>
-                            <Router>
-                                <div>
-                                    <h6><Link className="channel-name" to="/todo" >{channel!.name}</Link></h6>
-                                    <div className="channel-options visible">
-                                        <Link to="/channel" className="settings glyphicon glyphicon-cog" />
-                                        <a onClick={this.moveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
-                                        <a onClick={this.moveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
-                                    </div>
-
-                                    <Route path="/channel" render={() => <ChannelContainer id={channel!.id} />}/>
-                                </div>
-                            </Router>
-                        </li>
+                    {this.props.allChannels && this.props.allChannels
+                        .sort((item1: IChannel, item2: IChannel) => { return item1.order - item2.order; })
+                        .map((channel: IChannel, index: number) => (
+                        <ChannelListItemContainer key={channel.id} id={channel.id} index={index} channel2={channel}
+                                                  onMoveDown={this.onMoveDown}
+                                                  onMoveUp={this.onMoveUp} />
                     ))}
                 </ul>
             </div>

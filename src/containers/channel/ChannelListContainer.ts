@@ -1,38 +1,19 @@
-import * as Immutable from 'immutable';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import {IState} from '../../common/IState';
-import {ChannelFilter} from '../../constants/ChannelFilter';
-import {IChannel} from '../../models/IChannel';
-import {ChannelList, IChannelListProps} from '../../components/channel/ChannelList';
-
-
-const getChannelsForUser = createSelector<IState, ChannelFilter, Immutable.List<IChannel>, Immutable.Map<Uuid, IChannel>, Immutable.List<IChannel>>(
-    [
-        state => state.tomatoApp.channelFilter,
-        state => state.tomatoApp.channels.allChannels,
-        state => state.tomatoApp.channels.channelsById,
-    ],
-    (channelFilter, allChannels, channelsById) => {
-        switch (channelFilter) {
-            case ChannelFilter.All:
-                return allChannels;
-
-            case ChannelFilter.Starred:
-                return allChannels.filter((channel: IChannel) => channelsById.get(channel.id) !== undefined ).toList();
-
-            case ChannelFilter.Muted:
-                return allChannels.filter((channel: IChannel) => !channelsById.get(channel.id) !== undefined).toList();
-
-            default:
-                throw new Error(`Unknown value of visibility filter '${channelFilter}'`);
-        }
-    });
+import {ChannelList, IChannelListProps, IChannelListDispatchProps} from '../../components/channel/ChannelList';
+import {Dispatch} from 'redux';
+import {updateChannelOrder} from '../../actions/channel/updateChannel';
 
 const mapStateToProps = (state: IState): IChannelListProps => {
     return {
-        channels: getChannelsForUser(state)
+        allChannels: state.tomatoApp.channels.channelsById.toList(),
+    };
+};
+const mapDispatchToProps = (dispatch: Dispatch): IChannelListDispatchProps => {
+    return {
+        updateChannelOrder: (channelId: Uuid, newOrder: number, channelId2: Uuid, newOrder2: number) => dispatch(
+            updateChannelOrder(channelId, newOrder, channelId2, newOrder2)),
     };
 };
 
-export const ChannelListContainer = connect(mapStateToProps)(ChannelList);
+export const ChannelListContainer = connect(mapStateToProps, mapDispatchToProps)(ChannelList);

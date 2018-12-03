@@ -4,9 +4,11 @@ import { Navigation } from './navigation/Navigation';
 import { LoginFormContainer } from '../containers/login/LoginFormContainer';
 // @ts-ignore
 import * as url from '../tomato.jpg';
+import {IUser} from '../models/IUser';
 
 export interface ITomatoAppStateProps {
     readonly userId: Uuid | null;
+    readonly loggedUser: IUser | null;
     readonly isLoggedIn: boolean;
 }
 
@@ -42,7 +44,7 @@ export class TomatoApp extends React.PureComponent<ITomatoAppDispatchProps & ITo
                             </div>
                             <div>
                                 <h4>
-                                    Chat application so you can chat like true tomato.
+                                    Chat application so you can chat like a true tomato.
                                 </h4>
                             </div>
                             <Navigation/>

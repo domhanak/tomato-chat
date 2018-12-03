@@ -1,7 +1,7 @@
 import { ITomatoApp } from '../models/ITomatoApp';
 import { editedMessageId } from './message/editedMessageId';
 import { editedChannelId } from './channel/editedChannelID';
-import { userId } from './users/userId';
+import {user, userId} from './users/userId';
 import { isEditing } from './isEditing';
 import { isTyping } from './isTyping';
 import { users } from './users/users';
@@ -21,4 +21,5 @@ export const tomatoApp = (prevState = {} as ITomatoApp, action: Action): ITomato
     isEditing: isEditing(prevState.isEditing, action),
     isTyping: isTyping(prevState.isTyping, action),
     userId: userId(prevState.userId, action),
+    loggedUser: user(prevState.loggedUser, action),
 });

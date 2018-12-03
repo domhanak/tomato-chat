@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as Immutable from 'immutable';
-import '../../styles/messages.scss';
 import {MessageContainer} from '../../containers/message/MessageContainer';
 
 export interface IMessageListProps {

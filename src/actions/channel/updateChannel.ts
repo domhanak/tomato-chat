@@ -2,9 +2,11 @@ import { Dispatch } from 'redux';
 import { updateChannel as updateChannelApi } from '../../api/chatRepository';
 import { IState } from '../../common/IState';
 import {
-    TOMATO_APP_CHANNEL_EDITING_STARTED, TOMATO_APP_CHANNEL_EDITING_SUCCESS
+    TOMATO_APP_CHANNEL_EDITING_STARTED, TOMATO_APP_CHANNEL_EDITING_SUCCESS, TOMATO_APP_CHANNEL_ORDER_CHANGED
 } from '../../constants/actionTypes';
 import {IChannel} from '../../models/IChannel';
+import {List} from 'immutable';
+// import {IUser} from '../../models/IUser';
 
 const updateChannelStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_STARTED,
@@ -17,6 +19,14 @@ const updateChannelSuccess = (channel: IChannel): Action => ({
     }
 });
 
+const updateChannelOrderSuccess = (channel: IChannel, channel2: IChannel): Action => ({
+   type: TOMATO_APP_CHANNEL_ORDER_CHANGED,
+   payload: {
+       channel,
+       channel2,
+   }
+});
+
 export const updateChannel = (id: Uuid, name: string): any =>
     async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
         dispatch(updateChannelStarted());
@@ -27,3 +37,26 @@ export const updateChannel = (id: Uuid, name: string): any =>
         dispatch(updateChannelSuccess(channel));
     };
 
+export const updateChannelUsers = (id: Uuid, users: List<Uuid>): any =>
+    async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
+        dispatch(updateChannelStarted());
+
+        const oldChannel = getState().tomatoApp.channels.channelsById.get(id);
+        const channel = await updateChannelApi({ ...oldChannel, users });
+
+        dispatch(updateChannelSuccess(channel));
+    };
+
+export const updateChannelOrder = (id: Uuid, order: number, id2: Uuid, order2: number): any =>
+    async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
+        dispatch(updateChannelStarted());
+
+        const oldChannel = getState().tomatoApp.channels.channelsById.get(id);
+        const oldChannel2 = getState().tomatoApp.channels.channelsById.get(id2);
+
+        const channel = await updateChannelApi({ ...oldChannel, order });
+        order = order2;
+        const channel2 = await updateChannelApi({ ...oldChannel2, order });
+
+        dispatch(updateChannelOrderSuccess(channel, channel2));
+    };
