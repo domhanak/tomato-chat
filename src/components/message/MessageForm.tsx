@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { IUser } from '../../models/IUser';
 
 export interface IMessageFormStateProps {
@@ -44,25 +43,22 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
 
     render(): JSX.Element {
         return (
-            <form className="message-form">
-                <FormGroup controlId="formBasicText">
-                    <ControlLabel> Message </ControlLabel>
-                    <FormControl
-                        componentClass="textarea"
-                        value={this.state.value}
-                        placeholder="Click here to start typing..."
-                        onChange={this.onValueChanged}
-                    />
-                </FormGroup>
-                <button
-                    type="submit"
-                    className="btn btn-primary"
-                    value={this.state.value}
-                    onClick={this.onSubmit}
-                >
-                    Send
-                </button>
-            </form>
+                <div className="message-input rounded">
+                        <input
+                            type="textarea"
+                            value={this.state.value}
+                            placeholder="Click here to start typing..."
+                            onChange={this.onValueChanged}
+                        />
+                        <button
+                            type="submit"
+                            className="message-input-button btn btn-success"
+                            value={this.state.value}
+                            onClick={this.onSubmit}
+                        >
+                            Send
+                        </button>
+                </div>
         );
     }
 }

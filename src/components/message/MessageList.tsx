@@ -13,13 +13,11 @@ export class MessageList extends React.PureComponent<IMessageListProps> {
                 {
                     this.props.messageIds.map((id: Uuid, index: number) => {
                             return (
-                                <div key={id} className="list-group-item">
-                                    <MessageContainer
-                                        key={id}
-                                        id={id}
-                                        index={index + 1}
-                                    />
-                                </div>
+                                <MessageContainer
+                                    key={id}
+                                    id={id}
+                                    index={index + 1}
+                                />
                             );
                         }
                     )
