@@ -71,7 +71,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
             const user = this.props.allUsers.find((item: IUser) => { return item.id !== this.state.user.id; } );
 
-            if (user.channels.contains(this.props.channel.id) || this.props.channel.users.contains(this.state.user.id)) {
+            if (Immutable.List(user.channels).contains(this.props.channel.id)
+                || Immutable.List(this.props.channel.users).contains(this.state.user.id)) {
                 return;
             }
 
@@ -79,7 +80,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
             this.props.updateChannelUsers(
                 this.props.channel.users.push(this.state.user.id),
                 this.state.user.id,
-                Immutable.List(user.channels));
+                Immutable.List(user.channels).push(this.props.channel.id));
 
             this.setState(() => ({
                 user: {} as IUser
@@ -92,7 +93,9 @@ export class Channel extends React.PureComponent<IProps, IState> {
     }
 
     onSelect = (_: string, item: IUser) => {
-        this.setState((__) => ({user: item}));
+        this.setState((__) => ({
+            userName: item.nickname,
+            user: item}));
         return item;
     }
 
@@ -115,6 +118,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
     render(): JSX.Element {
         const isList = true;
+        console.log(this.props.channel);
         return (
             <div className="channel">
                 <form onSubmit={this.onSubmitChannelNameChange}>
@@ -131,11 +135,11 @@ export class Channel extends React.PureComponent<IProps, IState> {
                 <div className="participants">
                     <h4>Participants</h4>
                     <ul>
-                        {this.props.channel.users  && this.props.channel.users.map((id: Uuid) => (
+                        {this.props.channel.users  && Immutable.List(this.props.channel.users).map((id: Uuid) => (
                             <UserListItemContainer key={id} isHighlighted={false} isList={isList} userId={id} onUserRemove={this.onUserRemove} />))}
                     </ul>
                     <form onSubmit={this.addParticipant}>
-                        <FormGroup>
+                        <FormGroup className="autocomplete">
                             <ControlLabel> New participant </ControlLabel>
                             <Autocomplete
                                 getItemValue={this.getItemValue}

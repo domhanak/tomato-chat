@@ -35,8 +35,12 @@
       }
     }
 
-    & .form-group {
+    & .autocomplete {
       margin-top: 20px;
+
+      & div {
+
+      }
     }
   }
 }
