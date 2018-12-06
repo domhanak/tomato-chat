@@ -9,7 +9,6 @@ export interface IUserListItemsProps {
     readonly userId: Uuid;
     readonly key: Uuid;
     readonly isHighlighted: boolean;
-    readonly isList: boolean;
 }
 
 interface IUserListItemsUserRemove {

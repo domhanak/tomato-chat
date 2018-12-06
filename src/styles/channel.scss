@@ -1,8 +1,8 @@
 .channel {
   width: 70%;
 
-  & input {
-    width: 50%;
+  & form input {
+    border-radius: 15px;
   }
 
   & .participants {
@@ -35,11 +35,26 @@
       }
     }
 
+    & form {
+      width: 100%;
+      margin-top: 50px;
+    }
+
     & .autocomplete {
+
       margin-top: 20px;
 
-      & div {
+      & input {
+        border-radius: 15px;
+      }
 
+      & .autocomplete-menu {
+
+        & .autocomplete-item {
+          display: block;
+          margin-left: 10px;
+          margin-right: 10px;
+        }
       }
     }
   }
