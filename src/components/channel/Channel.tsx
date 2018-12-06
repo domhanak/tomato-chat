@@ -83,7 +83,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
                 Immutable.List(user.channels).push(this.props.channel.id));
 
             this.setState(() => ({
-                user: {} as IUser
+                user: {} as IUser,
+                userName: ''
             }));
         }
     }
@@ -99,10 +100,18 @@ export class Channel extends React.PureComponent<IProps, IState> {
         return item;
     }
 
+    renderMenu = (children: any) => {
+        return (
+          <div className="autocomplete-menu">
+              {children}
+          </div>
+        );
+    }
+
     renderItem = (item: IUser, isHighlighted: boolean) => {
         return (
-            <div style={{ background: isHighlighted ? 'lightgray' : 'white' }} key={item.id}>
-                {item.nickname}<br />
+            <div className="autocomplete-item" style={{ background: isHighlighted ? 'lightgray' : 'white' }} key={item.id}>
+                {item.nickname}
             </div>
         );
     }
@@ -117,8 +126,6 @@ export class Channel extends React.PureComponent<IProps, IState> {
     // todo styling channels, autocomplete
 
     render(): JSX.Element {
-        const isList = true;
-        console.log(this.props.channel);
         return (
             <div className="channel">
                 <form onSubmit={this.onSubmitChannelNameChange}>
@@ -136,7 +143,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                     <h4>Participants</h4>
                     <ul>
                         {this.props.channel.users  && Immutable.List(this.props.channel.users).map((id: Uuid) => (
-                            <UserListItemContainer key={id} isHighlighted={false} isList={isList} userId={id} onUserRemove={this.onUserRemove} />))}
+                            <UserListItemContainer key={id} isHighlighted={false} userId={id} onUserRemove={this.onUserRemove} />))}
                     </ul>
                     <form onSubmit={this.addParticipant}>
                         <FormGroup className="autocomplete">
@@ -144,6 +151,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                             <Autocomplete
                                 getItemValue={this.getItemValue}
                                 items={this.props.allUsers.filter((user: IUser) => { return user.id !== this.props.channel.owner; }).toArray()}
+                                renderMenu={this.renderMenu}
                                 renderItem={this.renderItem}
                                 value={this.state.userName}
                                 onSelect={this.onSelect}
