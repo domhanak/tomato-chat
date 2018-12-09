@@ -69,16 +69,15 @@ export class Channel extends React.PureComponent<IProps, IState> {
         event.preventDefault();
         if (this.state.user.id !== undefined) {
 
-            const user = this.props.allUsers.find((item: IUser) => { return item.id !== this.state.user.id; } );
+            const user = this.props.allUsers.find((item: IUser) => { return item.id === this.state.user.id; } );
 
             if (Immutable.List(user.channels).contains(this.props.channel.id)
                 || Immutable.List(this.props.channel.users).contains(this.state.user.id)) {
                 return;
             }
 
-            user.channels.push(this.props.channel.id);
             this.props.updateChannelUsers(
-                this.props.channel.users.push(this.state.user.id),
+                Immutable.List(this.props.channel.users).push(this.state.user.id),
                 this.state.user.id,
                 Immutable.List(user.channels).push(this.props.channel.id));
 
@@ -97,6 +96,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
         this.setState((__) => ({
             userName: item.nickname,
             user: item}));
+
         return item;
     }
 

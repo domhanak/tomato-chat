@@ -54,8 +54,8 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
                 <ul>
                     {this.props.allChannels && this.props.allChannels
                         .sort((item1: IChannel, item2: IChannel) => { return item1.order - item2.order; })
-                        .map((channel: IChannel, index: number) => (
-                        <ChannelListItemContainer key={channel.id} id={channel.id} index={index} channel2={channel}
+                        .map((channel: IChannel) => (
+                        <ChannelListItemContainer key={channel.id} id={channel.id}
                                                   onMoveDown={this.onMoveDown}
                                                   onMoveUp={this.onMoveUp} />
                     ))}

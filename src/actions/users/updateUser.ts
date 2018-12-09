@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { updateUser as updateUserApi} from '../../api/chatRepository';
+import { updateUser as updateUserApi, getUsers as getUsersApi} from '../../api/chatRepository';
 import {
     TOMATO_APP_USER_LOGIN_STARTED,
     TOMATO_APP_USER_LOGIN_SUCCESS,
@@ -25,10 +25,10 @@ const updateUserChannelsStarted = (): Action => ({
     type: TOMATO_APP_USER_CHANNELS_STARTED,
 });
 
-const updateUserChannelsSuccess = (user: IUser): Action => ({
+const updateUserChannelsSuccess = (users: Immutable.List<IUser>): Action => ({
     type: TOMATO_APP_USER_CHANNELS_SUCCESS,
     payload: {
-        user,
+        users,
     }
 });
 
@@ -47,7 +47,7 @@ export const updateUserChannels = (id: Uuid, channels: Immutable.List<Uuid>): an
         dispatch(updateUserChannelsStarted());
 
         const oldUser = getState().tomatoApp.users.usersById.get(id);
-        const user = await updateUserApi({ ...oldUser, channels });
+        await updateUserApi({ ...oldUser, channels });
 
-        dispatch(updateUserChannelsSuccess(user));
+        dispatch(updateUserChannelsSuccess(Immutable.List(await getUsersApi())));
     };
