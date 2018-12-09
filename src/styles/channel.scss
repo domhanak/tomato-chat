@@ -45,7 +45,9 @@
       margin-top: 20px;
 
       & input {
+        width: 99%;
         border-radius: 15px;
+        padding-left: 10px;
       }
 
       & .autocomplete-menu {
