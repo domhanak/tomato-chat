@@ -47,7 +47,8 @@ export const updateUserChannels = (id: Uuid, channels: Immutable.List<Uuid>): an
         dispatch(updateUserChannelsStarted());
 
         const oldUser = getState().tomatoApp.users.usersById.get(id);
-        await updateUserApi({ ...oldUser, channels });
+        const user = await updateUserApi({ ...oldUser, channels });
 
         dispatch(updateUserChannelsSuccess(Immutable.List(await getUsersApi())));
+        dispatch(updateUserSuccess(user));
     };

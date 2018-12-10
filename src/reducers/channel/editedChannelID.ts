@@ -7,8 +7,9 @@ import {
 export const editedChannelId = (prevState: Uuid | null = null, action: Action): Uuid | null => {
     switch (action.type) {
         case TOMATO_APP_CHANNEL_EDITING_STARTED:
+            return action.payload.id;
         case TOMATO_APP_CHANNEL_EDITING_SUCCESS:
-            return action.payload;
+            return action.payload.channel.id;
         case TOMATO_APP_CHANNEL_EDITING_CANCELLED:
             return null;
         default:

@@ -51,7 +51,7 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
     render(): JSX.Element {
         return (
             <div className="channel-list">
-                <ul>
+                <ul className="list-group">
                     {this.props.allChannels && this.props.allChannels
                         .sort((item1: IChannel, item2: IChannel) => { return item1.order - item2.order; })
                         .map((channel: IChannel) => (

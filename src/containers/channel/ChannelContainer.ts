@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import {IState} from '../../common/IState';
 import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} from '../../components/channel/Channel';
-import {cancelEditingChannel, startEditingChannel} from '../../actions/actionCreators';
+import {/*cancelEditingChannel, */startEditingChannel} from '../../actions/actionCreators';
 import {updateChannel, updateChannelUsers} from '../../actions/channel/updateChannel';
 import {List} from 'immutable';
 import {updateUserChannels} from '../../actions/users/updateUser';
@@ -11,7 +11,7 @@ import * as Immutable from 'immutable';
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
         channel: state.tomatoApp.channels.channelsById.get(ownProps.id),
-        isBeingEdited: state.tomatoApp.editedChannelId === ownProps.id,
+        // isBeingEdited: state.tomatoApp.editedChannelId === ownProps.id,
         allUsers: state.tomatoApp.users.usersById.toList(),
     };
 };
@@ -19,7 +19,7 @@ const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelOwnProps) => {
     return {
         onStartEditing: () => dispatch(startEditingChannel(ownProps.id)),
-        onCancelEditing: () => dispatch(cancelEditingChannel(ownProps.id)),
+        // onCancelEditing: () => dispatch(cancelEditingChannel(ownProps.id)),
         onChannelNameChange: (channelName: string) => dispatch(updateChannel(ownProps.id, channelName)),
         updateChannelUsers: (users: List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => {
             dispatch(updateChannelUsers(ownProps.id, users));
