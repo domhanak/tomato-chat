@@ -8,7 +8,7 @@ import {UserListItemContainer} from '../../containers/user/UserListItemContainer
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
-    readonly isBeingEdited: boolean;
+    // readonly isBeingEdited: boolean;
     readonly allUsers: Immutable.List<IUser>;
 }
 
@@ -19,11 +19,11 @@ export interface IChannelOwnProps {
 export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
     readonly onStartEditing: () => void;
-    readonly onCancelEditing: () => void;
+    // readonly onCancelEditing: () => void;
     readonly updateChannelUsers: (users: Immutable.List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => void;
 }
 
-export interface IState {
+interface IState {
     readonly channelName: string;
     readonly user: IUser;
     readonly userName: string;
@@ -45,11 +45,11 @@ export class Channel extends React.PureComponent<IProps, IState> {
     handleChannelNameChange = (event: any) => {
         const { value } = event.currentTarget;
         this.setState(_ => ({ channelName: value }));
-        this.props.onStartEditing();
     };
 
     onSubmitChannelNameChange = (event: any) => {
        event.preventDefault();
+       this.props.onStartEditing();
        this.props.onChannelNameChange(this.state.channelName);
     };
 
@@ -68,7 +68,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
     addParticipant = (event: any) => {
         event.preventDefault();
         if (this.state.user.id !== undefined) {
-
+            this.props.onStartEditing();
             const user = this.props.allUsers.find((item: IUser) => { return item.id === this.state.user.id; } );
 
             if (Immutable.List(user.channels).contains(this.props.channel.id)
