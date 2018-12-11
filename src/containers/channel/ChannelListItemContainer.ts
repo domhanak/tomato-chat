@@ -13,6 +13,8 @@ const mapStateToProps = (state: IState, ownProps: IChannelListItemProps) => {
     return {
         channel: state.tomatoApp.channels.channelsById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedChannelId === ownProps.id,
+        ownerNickname: state.tomatoApp.users.usersById
+            .find((_, key: Uuid) => { return key === ownProps.ownerId; }).nickname,
     };
 };
 

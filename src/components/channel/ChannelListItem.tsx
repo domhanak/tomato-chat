@@ -4,11 +4,13 @@ import {IChannel} from '../../models/IChannel';
 
 export interface IChannelListItemProps {
     readonly id: Uuid;
+    readonly ownerId: Uuid;
 }
 
 export interface IChannelListItemStateProps {
     readonly channel: IChannel;
     readonly isBeingEdited: boolean;
+    readonly ownerNickname: string | null | undefined;
 }
 
 export interface IChannelListItemCallBackProps {
@@ -52,6 +54,9 @@ export class ChannelListItem extends React.Component<IProps, IState> {
                         <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog" />
                         <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                         <a onClick={this.handleMoveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
+                    </div>
+                    <div className="owner-nickname">
+                        {this.props.ownerNickname}
                     </div>
                     <div>
                         {this.props.isBeingEdited ? <ChannelContainer id={this.props.id}/> : <div />}
