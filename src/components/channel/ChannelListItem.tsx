@@ -47,16 +47,18 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
     render(): JSX.Element {
         return (
-            <li>
-                <div>
-                    <h6>{this.props.channel.name}</h6>
+            <li className="channel-list-item__container">
+                <div className="channel-list-item">
+                    <div className="channel-name">
+                        <h6>{this.props.channel.name}</h6>
+                    </div>
                     <div className="channel-options visible">
                         <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog" />
                         <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                         <a onClick={this.handleMoveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
                     </div>
                     <div className="owner-nickname">
-                        {this.props.ownerNickname}
+                        <p>{this.props.ownerNickname}</p>
                     </div>
                     <div>
                         {this.props.isBeingEdited ? <ChannelContainer id={this.props.id}/> : <div />}

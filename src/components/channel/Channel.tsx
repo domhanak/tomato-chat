@@ -8,7 +8,6 @@ import {UserListItemContainer} from '../../containers/user/UserListItemContainer
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
-    // readonly isBeingEdited: boolean;
     readonly allUsers: Immutable.List<IUser>;
 }
 
@@ -19,7 +18,6 @@ export interface IChannelOwnProps {
 export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
     readonly onStartEditing: () => void;
-    // readonly onCancelEditing: () => void;
     readonly updateChannelUsers: (users: Immutable.List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => void;
 }
 
@@ -123,14 +121,12 @@ export class Channel extends React.PureComponent<IProps, IState> {
         }));
     }
 
-    // todo styling channels, autocomplete
-
     render(): JSX.Element {
         return (
             <div className="channel">
                 <form onSubmit={this.onSubmitChannelNameChange}>
-                    <FormGroup>
-                        <ControlLabel>{this.props.channel.name}</ControlLabel>
+                    <FormGroup className="form-channel-name">
+                        <ControlLabel>Change channel name:</ControlLabel>
                         <FormControl
                             type="text"
                             value={this.state.channelName}
@@ -140,24 +136,28 @@ export class Channel extends React.PureComponent<IProps, IState> {
                     </FormGroup>
                 </form>
                 <div className="participants">
-                    <h4>Participants</h4>
+                    <h4>Participants:</h4>
                     <ul>
                         {this.props.channel.users  && Immutable.List(this.props.channel.users).map((id: Uuid) => (
                             <UserListItemContainer key={id} isHighlighted={false} userId={id} onUserRemove={this.onUserRemove} />))}
                     </ul>
                     <form onSubmit={this.addParticipant}>
-                        <FormGroup className="autocomplete">
+                        <FormGroup className="autocomplete-form">
                             <ControlLabel> New participant </ControlLabel>
-                            <Autocomplete
-                                getItemValue={this.getItemValue}
-                                items={this.props.allUsers.filter((user: IUser) => { return user.id !== this.props.channel.owner; }).toArray()}
-                                renderMenu={this.renderMenu}
-                                renderItem={this.renderItem}
-                                value={this.state.userName}
-                                onSelect={this.onSelect}
-                                onChange={this.onChange}
-                            />
-                            <button type="submit" className="glyphicon glyphicon-plus" />
+                            <div className="row">
+                                <div className="col-8 autocomplete">
+                                    <Autocomplete
+                                        getItemValue={this.getItemValue}
+                                        items={this.props.allUsers.filter((user: IUser) => { return user.id !== this.props.channel.owner; }).toArray()}
+                                        renderMenu={this.renderMenu}
+                                        renderItem={this.renderItem}
+                                        value={this.state.userName}
+                                        onSelect={this.onSelect}
+                                        onChange={this.onChange}
+                                    />
+                                </div>
+                                <button type="submit" className="col-1 glyphicon glyphicon-plus" />
+                            </div>
                         </FormGroup>
                     </form>
                 </div>
