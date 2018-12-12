@@ -4,6 +4,12 @@
   border: 4px solid $channel-li-hover-colour;
   border-radius: 8px;
 
+  & header h4 {
+    border-bottom: 4px solid $tomato-chat-items-hover-colour;
+    margin-top: 20px;
+    padding-bottom: 20px;
+  }
+
   & .channel-list {
 
     width: 100%;
@@ -14,51 +20,41 @@
       list-style: none;
     }
 
-    & ul li {
-      width: 80%;
-      margin: 0 auto;
-      margin-top: 15px;
-      text-align: center;
-      border-bottom: 1px solid $tomato-items-colour;
+    & ul .channel-list-item__container {
+      padding: 18px 16px 10px;
+      border-bottom: 2px solid $tomato-chat-items-hover-colour;
+      margin: 0;
+      box-sizing: border-box;
+      display: block;
 
-      & .visible {
-        visibility: visible;
+      & .channel-list-item {
+        overflow:hidden;
       }
 
-      & .not-visible {
-        visibility: hidden;
-      }
-
-      & div, h6 {
+      & .channel-name h6 {
+        text-align: left;
+        font-size: .85em;
         display: inline;
       }
 
-      & .settings {
-        margin-left: 10px;
+      & .channel-options {
+        margin-left: 20px;
+
+        & a {
+          color: $tomato-items-colour;
+        }
+
+        & a:hover {
+          text-decoration: none;
+          color: $channel-li-hover-colour;
+          cursor: pointer;
+        }
       }
 
-      & .arrowDown {
-        margin-left: 0px;
+      & .owner-nickname {
+        text-align: right;
+        font-size: .7em;
       }
-
-      & .arrowUp {
-        margin-left: 10px;
-      }
-
-      & a {
-        color: $tomato-items-colour;
-      }
-
-      & a:hover {
-        text-decoration: none;
-        color: $channel-li-hover-colour;
-        cursor: pointer;
-      }
-
-      & .channel-name {
-        color: $channel-name-colour;
-      }
-
     }
   }
 

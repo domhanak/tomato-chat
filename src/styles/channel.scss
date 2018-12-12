@@ -1,37 +1,53 @@
 .channel {
-  width: 70%;
+  width: 100%;
 
-  & form input {
-    border-radius: 15px;
+  & .form-channel-name {
+    text-align: left;
+    & label {
+
+      font-size: .8em;
+    }
+
+    & input {
+      border-radius: 15px;
+    }
   }
 
   & .participants {
-
+    text-align: left;
     & h4 {
       margin-top: 35px;
     }
 
     & ul {
+      text-align: left;
       list-style: none;
 
       & li {
 
-        width: 35%;
+        width: 100%;
 
         & h6, a {
+          margin-right: 3px;
           display: inline;
         }
 
         & a {
-          margin-left: 15px;
+          font-size: .6em;
           color: $tomato-items-colour;
         }
 
         & a:hover {
+          margin-left: 10px;
+          padding: 5px;
           text-decoration: none;
           color: $channel-li-hover-colour;
           cursor: pointer;
         }
+      }
+
+      & li + li {
+        margin-left: 0px;
       }
     }
 
@@ -40,9 +56,19 @@
       margin-top: 50px;
     }
 
-    & .autocomplete {
+    & .autocomplete-form {
 
       margin-top: 20px;
+
+      & label {
+        text-align: left;
+      }
+
+      & .autocomplete {
+        padding: 0;
+        margin: 0px 15px;
+        width: 80%;
+      }
 
       & input {
         width: 99%;
@@ -54,10 +80,24 @@
 
         & .autocomplete-item {
           display: block;
-          margin-left: 10px;
-          margin-right: 10px;
+          margin-left: 13px;
+          width: 85%;
         }
       }
+
+      & button {
+        text-align: center;
+        padding: 0px;
+        display: inline;
+        background: $tomato-colour;
+        border: none;
+        color: $tomato-items-colour;
+      }
+
+      & button:hover {
+        cursor: pointer;
+      }
+
     }
   }
 }
