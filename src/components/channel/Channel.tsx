@@ -53,13 +53,12 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
     onUserRemove = (userId: Uuid) => {
         const filteredUsers = this.props.channel.users.filter(id => { return id !== userId; } );
-
         const user = this.props.allUsers.find((item: IUser) => { return item.id !== userId; } );
         const filteredChannels = user!.channels.filter(id => { return id !== this.props.channel.id; } );
 
         this.props.updateChannelUsers(
             Immutable.List(filteredUsers),
-            this.state.user.id,
+            userId,
             Immutable.List(filteredChannels));
     }
 
