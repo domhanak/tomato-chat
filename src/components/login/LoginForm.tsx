@@ -33,15 +33,30 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
     };
     handleSubmit = (event: any) => {
         event.preventDefault();
+
         // TODO: Move - this needs to be handled by thunk
         const newUser = this.props.users.find((user: IUser) => (user.nickname === this.state.username));
         if (newUser === null || newUser === undefined) {
             return;
         }
 
+        if (!this.validateEmail(this.state.username)) {
+            return;
+        }
+
+        // this.props.onUserAuthentication(this.state.username);
+
         this.props.onUserLogin(newUser.id);
         this.setState(_ => ({ username: '', password: '' }));
     };
+    validateEmail = (email: string) => {
+        if (!email) {
+            return false;
+        }
+
+        return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email);
+    };
+
 
     constructor(props: IProps) {
         super(props);
