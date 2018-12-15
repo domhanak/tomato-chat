@@ -1,6 +1,5 @@
 import * as Immutable from 'immutable';
 import {IMessage} from './IMessage';
-// import {IUser} from './IUser';
 
 export interface IChannel {
     readonly name: string;

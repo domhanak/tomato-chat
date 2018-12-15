@@ -11,12 +11,14 @@ export interface IChatWindowStateProps {
 
 export interface IChatWindowDispatchProps {
     readonly loadUsers: (authToken: string | null) => void;
+    readonly loadChannels: (authToken: string | null) => void;
 }
 
 export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChatWindowStateProps> {
     componentDidMount(): void {
         if (this.props.authToken) {
             this.props.loadUsers(this.props.authToken);
+            this.props.loadChannels(this.props.authToken);
         }
     }
     render(): JSX.Element {
