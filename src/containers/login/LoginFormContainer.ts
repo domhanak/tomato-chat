@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { createUser } from '../../actions/users/createUser';
-import { logInUser, authenticateUser } from '../../actions/users/updateUser';
+import { logInUser } from '../../actions/users/updateUser';
 import { IState} from '../../common/IState';
 import { IUser} from '../../models/IUser';
 import {
@@ -9,6 +9,7 @@ import {
     ILoginFormOwnProps,
     LoginForm
 } from '../../components/login/LoginForm';
+import {authenticateUser} from '../../actions/users/authenticateUser';
 
 const mapStateToProps = (state: IState): ILoginFormOwnProps => {
     return {
