@@ -8,12 +8,13 @@ const mapStateToProps = (state: IState) => {
     return {
         isEditing: state.tomatoApp.isEditing,
         isTyping: state.tomatoApp.isTyping,
+        authToken: state.tomatoApp.authToken,
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        loadUsers: () => dispatch(loadUsers())
+        loadUsers: (authToken: string | null) => loadUsers(authToken)(dispatch),
     };
 };
 

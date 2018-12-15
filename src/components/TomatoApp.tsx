@@ -10,19 +10,22 @@ export interface ITomatoAppStateProps {
     readonly userId: Uuid | null;
     readonly loggedUser: IUser | null;
     readonly isLoggedIn: boolean;
+    readonly authToken: string | null;
 }
 
 export interface ITomatoAppDispatchProps {
-    readonly loadUsers: () => void;
+    readonly loadUsers: (authToken: string | null) => void;
     readonly loadMessages: () => void;
     readonly loadChannels: () => void;
 }
 
 export class TomatoApp extends React.PureComponent<ITomatoAppDispatchProps & ITomatoAppStateProps> {
     componentDidMount(): void {
-        this.props.loadUsers();
-        this.props.loadMessages();
-        this.props.loadChannels();
+        if (this.props.isLoggedIn && this.props.authToken) {
+            this.props.loadUsers(this.props.authToken);
+            this.props.loadMessages();
+            this.props.loadChannels();
+        }
     }
     constructor(props: any) {
         super(props);
