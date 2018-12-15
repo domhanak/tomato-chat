@@ -21,6 +21,7 @@ export const user = (prevState: IUser | null = null, action: Action): IUser | nu
     switch (action.type) {
         case TOMATO_APP_USER_CHANNELS_SUCCESS:
         case TOMATO_APP_USER_LOGIN_SUCCESS:
+            console.log(action.payload.user);
             return action.payload.user;
         case TOMATO_APP_USER_CHANNELS_FAILED:
         case TOMATO_APP_USER_LOGIN_FAILED:
