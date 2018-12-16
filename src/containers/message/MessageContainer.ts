@@ -9,6 +9,7 @@ const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
     return {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedMessageId === ownProps.id,
+        userId: state.tomatoApp.userId,
     };
 };
 

@@ -13,7 +13,7 @@ const mapStateToProps = (state: IState): IMessageFormOwnProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IMessageFormDispatchProps => {
     return {
-        onMessageAdd: (text: string, username: string) => dispatch(createMessage(text, username))
+        onMessageAdd: (text: string, from: Uuid) => dispatch(createMessage(text, from))
     };
 };
 

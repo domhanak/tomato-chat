@@ -10,7 +10,7 @@ export interface IMessageFormOwnProps {
 }
 
 export interface IMessageFormDispatchProps {
-    readonly onMessageAdd: (text: string, username: string) => void;
+    readonly onMessageAdd: (text: string, from: Uuid) => void;
 }
 
 interface IState {
@@ -31,7 +31,7 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
     private onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        this.props.onMessageAdd(this.state.value, this.props.loggedUser.nickname);
+        this.props.onMessageAdd(this.state.value, this.props.loggedUser.id);
 
         this.setState(_ => ({ value: '' }));
     };

@@ -20,7 +20,7 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps> {
 
     render(): JSX.Element {
         return (
-            !this.props.isLoggedIn ?
+            this.props.isLoggedIn ?
                 (
                     <div className="App">
                         <header className="page-nav">
