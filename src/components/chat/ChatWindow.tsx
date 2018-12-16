@@ -6,15 +6,20 @@ import {ChannelsContainer} from '../../containers/channel/ChannelsContainer';
 export interface IChatWindowStateProps {
     readonly isTyping: boolean;
     readonly isEditing: boolean;
+    readonly authToken: string | null;
 }
 
 export interface IChatWindowDispatchProps {
-    readonly loadUsers: () => void;
+    readonly loadUsers: (authToken: string | null) => void;
+    readonly loadChannels: (authToken: string | null) => void;
 }
 
 export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChatWindowStateProps> {
     componentDidMount(): void {
-        this.props.loadUsers();
+        if (this.props.authToken) {
+            this.props.loadUsers(this.props.authToken);
+            this.props.loadChannels(this.props.authToken);
+        }
     }
     render(): JSX.Element {
         return (

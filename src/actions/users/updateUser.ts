@@ -1,18 +1,13 @@
 import { Dispatch } from 'redux';
 import { updateUser as updateUserApi, getUsers as getUsersApi} from '../../api/chatRepository';
 import {
-    TOMATO_APP_USER_LOGIN_STARTED,
     TOMATO_APP_USER_LOGIN_SUCCESS,
     TOMATO_APP_USER_CHANNELS_STARTED,
-    TOMATO_APP_USER_CHANNELS_SUCCESS
+    TOMATO_APP_USER_CHANNELS_SUCCESS,
 } from '../../constants/actionTypes';
 import {IUser} from '../../models/IUser';
 import {IState} from '../../common/IState';
 import * as Immutable from 'immutable';
-
-const updateUserStarted = (): Action => ({
-    type: TOMATO_APP_USER_LOGIN_STARTED,
-});
 
 const updateUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
@@ -31,16 +26,6 @@ const updateUserChannelsSuccess = (users: Immutable.List<IUser>): Action => ({
         users,
     }
 });
-
-export const logInUser = (id: Uuid): any =>
-    async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
-        dispatch(updateUserStarted());
-
-        const loggedUser = getState().tomatoApp.users.usersById.get(id);
-
-        dispatch(updateUserSuccess(loggedUser));
-    };
-
 
 export const updateUserChannels = (id: Uuid, channels: Immutable.List<Uuid>): any =>
     async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
