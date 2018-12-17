@@ -31,7 +31,7 @@ const getMessagesForActiveChannel = createSelector<IState, MessageFilter, Immuta
 
 const mapStateToProps = (state: IState): IMessageListProps => {
     return {
-        messageIds: getMessagesForActiveChannel(state)
+        messageIds: getMessagesForActiveChannel(state),
     };
 };
 

@@ -29,12 +29,12 @@ export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChat
                         <ChannelsContainer />
                     </div>
                 </div>
-                <div className="col-lg-8 col-md-8 col-sm-8 new-message-container">
+                <div className="col-lg-8 col-md-8 col-sm-8 chat">
                     <div className="message-container">
                         <h4> Channel Name </h4>
                         <MessageListContainer />
                     </div>
-                    <div>
+                    <div className="new-message-container">
                         <MessageFormContainer />
                     </div>
                 </div>

@@ -54,7 +54,7 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
         super(props);
 
         this.state = {
-            username: '',
+            username: 'tomato@mailinator.com',
             password: '',
         };
     }
@@ -67,14 +67,13 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
             <div className="shape2"/>
             <div className="float">
                 <form className="form" onSubmit={this.handleSubmit}>
-                    <h4> Login </h4>
+                    <h4 id="login"> Login </h4>
                     <div className="form-group">
                         <label placeholder="Username"
                                className="text-white"> Username: </label>
                         <br/>
                         <input type="text"
                                name="username"
-                               id="username"
                                value={this.state.username}
                                onChange={this.handleLoginChange}
                                className="form-control" />

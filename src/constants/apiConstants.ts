@@ -5,3 +5,12 @@ export const USER_AUTH_URI = `${API_URI}/auth`;
 export const GET_USER_URI = (email: string) => `${API_URI}/${APP_ID}/user/${email}`;
 export const GET_ALL_USERS_URI = `${API_URI}/${APP_ID}/user`;
 export const GET_ALL_CHANNELS_URI = `${API_URI_WITH_APP}/${APP_ID}/channel`;
+
+
+/**
+ * Message API constants
+ * @param channelId ID of the channel that we want messages from
+ * @constructor
+ */
+export const GET_ALL_MESSAGES_FROM_CHANNEL = (channelId: Uuid) => `${API_URI_WITH_APP}/${APP_ID}/channel/${channelId}/message`;
+export const GET_MESSAGE_FROM_CHANNEL = (channelId: Uuid, messageId: Uuid) => `${API_URI_WITH_APP}/${APP_ID}/channel/${channelId}/message/${messageId}`;
