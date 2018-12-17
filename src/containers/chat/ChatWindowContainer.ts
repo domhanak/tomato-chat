@@ -4,6 +4,7 @@ import { IState } from '../../common/IState';
 import {ChatWindow, IChatWindowDispatchProps, IChatWindowStateProps} from '../../components/chat/ChatWindow';
 import {loadUsers} from '../../actions/users/loadUsers';
 import {loadChannels} from '../../actions/channel/loadChannels';
+import {loadMessages} from "../../actions/message/loadMessages";
 
 const mapStateToProps = (state: IState) => {
     return {
@@ -17,6 +18,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
         loadUsers: (authToken: string | null) => loadUsers(authToken)(dispatch),
         loadChannels: (authToken: string | null) => loadChannels(authToken)(dispatch),
+        loadMessages: (authToken: string | null, channelId: Uuid) => loadMessages(authToken, channelId)(dispatch),
     };
 };
 

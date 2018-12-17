@@ -22,7 +22,16 @@ export const createMessage = (text: string, from: Uuid): any =>
     async (dispatch: Dispatch): Promise<void> => {
         dispatch(createMessageStarted());
 
-        const message = await createMessageApi({ id: uuid(), from: from, text });
+        const message = await createMessageApi(
+            {
+                id: uuid(),
+                value: text,
+                createdAt: new Date(),
+                createdBy: from,
+                updatedAt: new Date(),
+                updatedBy: from
+            }
+        );
 
         dispatch(createMessageSuccess(message));
     };

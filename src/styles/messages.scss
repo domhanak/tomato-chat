@@ -21,28 +21,43 @@
   margin-left: 20px;
 }
 
-.message-author {
+.message-header {
   alignment: left;
   font-weight: bold;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
 .message-author-img {
-  display: inline-flex;
+  display: inline-block;
   width: 10%;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.fill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden
+}
+.fill img {
+  flex-shrink: 0;
+  min-width: 100%;
+  min-height: 100%
 }
 
 .received-message {
   display: inline-block;
   padding: 0 0 0 10px;
   vertical-align: top;
-  max-width: 92%;
 }
 
 .received-message-container {
   display: inline-block;
   padding: 0 0 0 10px;
   vertical-align: top;
-  width: auto;
+  width: 88%;
 }
 
 .received-message-container p {
@@ -60,33 +75,6 @@
   display: block;
   font-size: 12px;
   margin: 8px 0 0;
-}
-.received-message-container {
-  width: 65%;
-}
-
-.sent-msg-container p {
-  background: #05728f none repeat scroll 0 0;
-  border-radius: 3px;
-  font-size: 14px;
-  margin: 0;
-  color:#fff;
-  padding: 5px 10px 5px 12px;
-  width:100%;
-  word-wrap: break-word;
-}
-
-.outgoing-msg {
-  overflow:hidden;
-  margin:26px 0 26px;
-}
-
-.sent-msg-container {
-  float: right;
-  width: auto;
-  max-width: 46%;
-  word-break: break-word;
-  margin-right: 30px;
 }
 
 .message-input {

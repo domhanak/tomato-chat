@@ -25,21 +25,29 @@ export interface IState {}
 
 export class Message extends React.PureComponent<IProps, IState> {
     render(): JSX.Element {
-        const { index, message, userId } = this.props;
+        const { index, username, message } = this.props;
         return (
             <div key={index} id="message-container" >
-                <div className={message.from !== userId
-                                    ? "received-message" : "outgoing-msg"}>
-                    {message.from !== userId
-                        ? <div className="message-author-img">
-                            <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"/>
-                          </div> : null
-                    }
-                    <div className={message.from !== userId
-                                        ? "received-message-container" : "sent-msg-container"}>
-                        <div className="message-author">{message.from}</div>
-                        <p>{message.text}</p>
-                        <span className="time-date"> {new Date().toLocaleString()} </span></div>
+                <div className="message">
+                    <div className="message-author-img">
+                        <a className="username-head thumbnail fill">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/827672/Screen%20Shot%202016-11-21%20at%209.58.01%20AM.png" alt="sunil"/>
+                        </a>
+                    </div>
+
+                    <div className="received-message-container">
+                        <div className="message-header">
+                            <span>
+                                <a id="username">{username}</a>
+                            </span>
+                        </div>
+                        <div className="received-message" >
+                            <p>{message.value}</p>
+                            <a>
+                                <span className="time-date"> {message.createdAt.toLocaleString()} </span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 

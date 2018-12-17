@@ -1,13 +1,24 @@
 import { Dispatch } from 'redux';
-import { updateMessage as updateMessageApi } from '../../api/chatRepository';
-import { IState } from '../../common/IState';
 import {
+    TOMATO_APP_MESSAGE_EDITING_CANCELLED,
+    TOMATO_APP_MESSAGE_EDITING_FAILED,
     TOMATO_APP_MESSAGE_EDITING_STARTED, TOMATO_APP_MESSAGE_EDITING_SUCCESS
 } from '../../constants/actionTypes';
 import {IMessage} from '../../models/IMessage';
+import axios from "axios";
+import {GET_MESSAGE_FROM_CHANNEL} from "../../constants/apiConstants";
+import {requestBody} from "../../common/utils/utilFunctions";
 
 const updateMessageStarted = (): Action => ({
   type: TOMATO_APP_MESSAGE_EDITING_STARTED,
+});
+
+const updateMessageFailed = (): Action => ({
+    type: TOMATO_APP_MESSAGE_EDITING_FAILED,
+});
+
+const updateMessageCancelled = (): Action => ({
+    type: TOMATO_APP_MESSAGE_EDITING_CANCELLED,
 });
 
 const updateMessageSuccess = (message: IMessage): Action => ({
@@ -17,13 +28,42 @@ const updateMessageSuccess = (message: IMessage): Action => ({
   }
 });
 
-export const updateMessage = (id: Uuid, text: string): any =>
-  async (dispatch: Dispatch, getState: () => IState): Promise<void> => {
-    dispatch(updateMessageStarted());
+const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, text: string):any => {
+    return axios.put(GET_MESSAGE_FROM_CHANNEL(channelId, messageId), requestBody(authToken, text));
+};
 
-    const oldMessage = getState().tomatoApp.messages.messagesById.get(id);
-    const message = await updateMessageApi({ ...oldMessage, text });
+const createUpdateMessageFactoryDependencies = {
+    updateMessageStarted,
+    updateMessageSuccess,
+    updateMessageFailed,
+    updateMessageCancelled,
+    updateMessageFromChannel
+};
 
-    dispatch(updateMessageSuccess(message));
-  };
+interface IUpdateMessageFactoryDependencies {
+    readonly updateMessageStarted: () => Action;
+    readonly updateMessageSuccess: (message: IMessage) => Action;
+    readonly updateMessageFailed: () => Action;
+    readonly updateMessageCancelled: () => Action;
+    readonly updateMessageFromChannel: (authToken: string | null, messageId: Uuid, channelId: Uuid, text: string) => any;
+}
+
+const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies) => (authToken: string | null, messageId: Uuid, channelId: Uuid, text: string) =>
+    (dispatch: Dispatch): any => {
+        dispatch(dependencies.updateMessageStarted());
+
+        return dependencies.updateMessageFromChannel(authToken, channelId, messageId, text)
+            .then((response: any) => {
+                const message: IMessage = response.data.message;
+
+                dispatch(dependencies.updateMessageSuccess(message));
+            })
+            .catch((error: any) => {
+                console.log(error);
+                dispatch(dependencies.updateMessageFailed());
+            })
+    };
+
+
+export const updateMessage = createUpdateMessageFactory(createUpdateMessageFactoryDependencies);
 
