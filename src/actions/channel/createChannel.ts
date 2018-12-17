@@ -1,29 +1,62 @@
 import { Dispatch } from 'redux';
-import {createChannel as createChannelApi} from '../../api/chatRepository';
 import {
     TOMATO_APP_CHANNEL_CREATE_STARTED,
-    TOMATO_APP_CHANNEL_CREATE_SUCCESS
+    TOMATO_APP_CHANNEL_CREATE_SUCCESS,
+    TOMATO_APP_CHANNEL_CREATE_FAILED
 } from '../../constants/actionTypes';
 import {IChannel} from '../../models/IChannel';
-import {List} from 'immutable';
-import {IMessage} from '../../models/IMessage';
+import axios from 'axios';
+import {BASE_CHANNEL_URI} from '../../constants/apiConstants';
+import {endpointConfigHeader, responseChannelMapper, storeChannelId} from '../../common/utils/utilFunctions';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
 
-const createChannelStarted = (): Action => ({
+const channelCreateStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,
 });
 
-const createChannelSuccess = (channel: IChannel): Action => ({
+const channelCreateFailed = (): Action => ({
+    type: TOMATO_APP_CHANNEL_CREATE_FAILED,
+});
+
+const channelCreateSuccess = (channel: IChannel): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_SUCCESS,
     payload: {
         channel,
     }
 });
 
-export const createChannel = (id: Uuid, name: string, order: number, messages: List<IMessage>, users: List<Uuid>, owner: Uuid): any =>
-    async (dispatch: Dispatch): Promise<void> => {
-        dispatch(createChannelStarted());
+const channelCreate = (authToken: AuthToken, channel: IChannelServerModel) => {
+    return axios.post(BASE_CHANNEL_URI, JSON.stringify(channel), endpointConfigHeader(authToken));
+};
 
-        const channel = await createChannelApi({ id, name, order, messages, users, owner });
+const createChannelCreateFactoryDependencies = {
+    channelCreateStarted,
+    channelCreateFailed,
+    channelCreateSuccess,
+    channelCreate
+};
 
-        dispatch(createChannelSuccess(channel));
+interface ICreateChannelFactoryDependencies {
+    readonly channelCreateStarted: () => Action;
+    readonly channelCreateFailed: () => Action;
+    readonly channelCreateSuccess: (channel: IChannel) => Action;
+    readonly channelCreate: (authToken: AuthToken, channel: IChannelServerModel) => any;
+}
+
+const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependencies) => (authToken: AuthToken, channel: IChannelServerModel) =>
+    (dispatch: Dispatch): any => {
+        dispatch(dependencies.channelCreateStarted());
+
+        return channelCreate(authToken, channel)
+            .then((response: any) => {
+                const createdChannel: IChannel = responseChannelMapper(response.data);
+                storeChannelId(createdChannel.id);
+                dispatch(dependencies.channelCreateSuccess(createdChannel   ));
+            })
+            .catch((error: any) => {
+                console.log(error);
+                dispatch(dependencies.channelCreateFailed());
+            });
     };
+
+export const createChannel = createChannelCreateFactory(createChannelCreateFactoryDependencies);

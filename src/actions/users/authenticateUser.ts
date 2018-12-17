@@ -11,6 +11,7 @@ import axios from 'axios';
 import {GET_USER_URI, USER_AUTH_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUser} from '../../models/IUser';
+import {IUserServerModel} from '../../models/IUserServerModel';
 
 const userAuthenticateSuccess = (authenticationToken: String): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED,
@@ -86,7 +87,12 @@ const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryD
             dispatch(dependencies.logUserStarted());
             return dependencies.logUser(email, authToken)
                 .then((responselogUser: any) => {
-                    dispatch(dependencies.logUserSuccess(responselogUser.data.customData as IUser));
+                    const logUserResponse: IUserServerModel = responselogUser.data as IUserServerModel;
+                    dispatch(dependencies.logUserSuccess({
+                        id: logUserResponse.customData.id,
+                        email: logUserResponse.email,
+                        nickname: logUserResponse.customData.nickname,
+                        channels: logUserResponse.customData.channels} as IUser));
                 })
                 .catch((error: any) => {
                     console.log(error);

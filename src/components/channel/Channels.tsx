@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {List} from 'immutable';
 import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
-import {IMessage} from '../../models/IMessage';
 import {IUser} from '../../models/IUser';
 
 export interface IChannelsStateProps {
     readonly loggedUser: IUser | null;
+    readonly authToken: AuthToken;
 }
 
 export interface IChannelsDispatchProps {
-    readonly onChannelAdd: (name: string, order: number, messages: List<IMessage>, users: List<Uuid>, user: IUser | null) => void;
+    readonly onChannelAdd: (name: string, order: number, user: IUser | null, authToken: AuthToken) => void;
 }
 
 interface IState {
@@ -30,7 +30,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, this.state.nextOrder, List(), List(), this.props.loggedUser);
+        this.props.onChannelAdd(this.state.value, this.state.nextOrder, this.props.loggedUser, this.props.authToken);
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };
 

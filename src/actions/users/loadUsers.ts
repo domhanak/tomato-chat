@@ -5,9 +5,10 @@ import {
     TOMATO_APP_LOADING_USERS_SUCCESS
 } from '../../constants/actionTypes';
 import {IUser} from '../../models/IUser';
-import {GET_ALL_USERS_URI} from '../../constants/apiConstants';
+import {BASE_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {Dispatch} from 'redux';
+import {IUserServerModel} from '../../models/IUserServerModel';
 
 const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_FAILED,
@@ -24,8 +25,8 @@ const loadingSuccess = (users: ReadonlyArray<IUser>): Action => ({
     }
 });
 
-const loadAllUsers = (authToken: string | null) => {
-    return axios.get(GET_ALL_USERS_URI, endpointConfigHeader(authToken));
+export const loadAllUsers = (authToken: string | null) => {
+    return axios.get(BASE_USER_URI, endpointConfigHeader(authToken));
 };
 
 const createLoadAllUsersFactoryDependencies = {
@@ -49,8 +50,8 @@ const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencie
         return dependencies.loadAllUsers(authToken)
             .then((response: any) => {
                 const users: IUser[] = [];
-                response.data.forEach((serverData: any) => {
-                    users.push(serverData.customData as IUser);
+                response.data.forEach((serverData: IUserServerModel) => {
+                    users.push({email: serverData.email, ...serverData.customData} as IUser);
                 });
 
                 dispatch(dependencies.loadingSuccess(users));

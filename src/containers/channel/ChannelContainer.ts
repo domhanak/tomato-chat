@@ -5,13 +5,16 @@ import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} fr
 import {startEditingChannel} from '../../actions/actionCreators';
 import {updateChannel, updateChannelUsers} from '../../actions/channel/updateChannel';
 import {List} from 'immutable';
-import {updateUserChannels} from '../../actions/users/updateUser';
+import {updateUser} from '../../actions/users/updateUser';
 import * as Immutable from 'immutable';
+import {IUser} from '../../models/IUser';
+import {IUserServerModel} from '../../models/IUserServerModel';
 
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
         channel: state.tomatoApp.channels.channelsById.get(ownProps.id),
         allUsers: state.tomatoApp.users.usersById.toList(),
+        authToken: state.tomatoApp.authToken,
     };
 };
 
@@ -19,9 +22,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelOwnProps) => {
     return {
         onStartEditing: () => dispatch(startEditingChannel(ownProps.id)),
         onChannelNameChange: (channelName: string) => dispatch(updateChannel(ownProps.id, channelName)),
-        updateChannelUsers: (users: List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => {
+        updateChannelUsers: (users: List<Uuid>, user: IUser, channels: Immutable.List<Uuid>, authToken: AuthToken) => {
             dispatch(updateChannelUsers(ownProps.id, users));
-            dispatch(updateUserChannels(userId, channels));
+            updateUser(authToken, {email: user.email, customData:
+                    {nickname: user.nickname, id: user.id, channels}} as IUserServerModel)(dispatch);
         },
     };
 };

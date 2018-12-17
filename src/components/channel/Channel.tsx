@@ -9,6 +9,7 @@ import {UserListItemContainer} from '../../containers/user/UserListItemContainer
 export interface IChannelStateProps {
     readonly channel: IChannel;
     readonly allUsers: Immutable.List<IUser>;
+    readonly authToken: AuthToken;
 }
 
 export interface IChannelOwnProps {
@@ -18,7 +19,8 @@ export interface IChannelOwnProps {
 export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelName: string) => void;
     readonly onStartEditing: () => void;
-    readonly updateChannelUsers: (users: Immutable.List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => void;
+    readonly updateChannelUsers:
+        (users: Immutable.List<Uuid>, user: IUser, channels: Immutable.List<Uuid>, authToken: AuthToken) => void;
 }
 
 interface IState {
@@ -58,8 +60,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
         this.props.updateChannelUsers(
             Immutable.List(filteredUsers),
-            userId,
-            Immutable.List(filteredChannels));
+            user,
+            Immutable.List(filteredChannels), this.props.authToken);
     }
 
     addParticipant = (event: any) => {
@@ -75,8 +77,8 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
             this.props.updateChannelUsers(
                 Immutable.List(this.props.channel.users).push(this.state.user.id),
-                this.state.user.id,
-                Immutable.List(user.channels).push(this.props.channel.id));
+                this.state.user,
+                Immutable.List(user.channels).push(this.props.channel.id), this.props.authToken);
 
             this.setState(() => ({
                 user: {} as IUser,

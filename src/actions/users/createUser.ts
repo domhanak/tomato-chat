@@ -5,7 +5,6 @@ import {
     TOMATO_APP_USER_REGISTER_STARTED, TOMATO_APP_USER_REGISTER_SUCCESS
 } from '../../constants/actionTypes';
 import { IUser } from '../../models/IUser';
-// import { IChannel } from '../../models/IChannel';
 import * as uuid from 'uuid';
 
 const createUserStarted = (): Action => ({
@@ -23,7 +22,7 @@ export const createUser = (nickname: string): any =>
     async (dispatch: Dispatch): Promise<void> => {
         dispatch(createUserStarted());
 
-        const user = await updateUserApi({id: uuid(), nickname, channels: Immutable.List<Uuid>()});
+        const user = await updateUserApi({id: uuid(), nickname, channels: Immutable.List<Uuid>(), email: ''});
 
         dispatch(createUserSuccess(user));
     };
