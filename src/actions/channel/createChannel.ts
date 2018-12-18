@@ -51,7 +51,7 @@ const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependenc
             .then((response: any) => {
                 const createdChannel: IChannel = responseChannelMapper(response.data);
                 storeChannelId(createdChannel.id);
-                dispatch(dependencies.channelCreateSuccess(createdChannel   ));
+                dispatch(dependencies.channelCreateSuccess(createdChannel));
             })
             .catch((error: any) => {
                 console.log(error);

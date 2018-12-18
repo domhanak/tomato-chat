@@ -2,13 +2,17 @@ import * as React from 'react';
 import {IChannel} from '../../models/IChannel';
 import * as Immutable from 'immutable';
 import {ChannelListItemContainer} from '../../containers/channel/ChannelListItemContainer';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
 
 export interface IChannelListProps {
     readonly allChannels: Immutable.List<IChannel>;
+    readonly authToken: AuthToken;
 }
 
 export interface IChannelListDispatchProps {
-    readonly updateChannelOrder: (channelId: Uuid, newOrder: number, channelId2: Uuid, newOrder2: number) => void;
+    readonly updateChannelOrder: (authToken: AuthToken,
+                                  channelId: Uuid, channel: IChannelServerModel,
+                                  neighbourId: Uuid, neighbour: IChannelServerModel) => void;
 }
 
 interface IState {
@@ -37,7 +41,15 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
             return;
         }
 
-        this.props.updateChannelOrder(channel.id, neighbour.order, neighbour.id, channel.order);
+        const channelServerModel: IChannelServerModel = {name: channel.name, customData: {
+                ...channel, order: neighbour.order
+            }} as IChannelServerModel;
+
+        const channelServerModelNeighbour: IChannelServerModel = {name: neighbour.name, customData: {
+                ...neighbour, order: channel.order
+            }} as IChannelServerModel;
+        this.props.updateChannelOrder(this.props.authToken,
+            channel.id, channelServerModel, neighbour.id, channelServerModelNeighbour);
     };
 
     onMoveUp = (channel: IChannel) => {

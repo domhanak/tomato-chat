@@ -1,5 +1,6 @@
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
 import {IChannel} from '../../models/IChannel';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
 
 export const endpointConfigHeader = (authToken?: string | null) => {
     return authToken ?
@@ -23,6 +24,10 @@ export const endpointConfigHeader = (authToken?: string | null) => {
 
 export const responseChannelMapper = (channelResponse: IChannelServerModelResponse) => {
     return {id: channelResponse.id, ...channelResponse.customData} as IChannel;
+};
+
+export const serverModelChannelMapper = (channel: IChannel) => {
+    return {name: channel.name, customData: {...channel}} as IChannelServerModel;
 };
 
 export const storeChannelId = (channelId: Uuid) => {

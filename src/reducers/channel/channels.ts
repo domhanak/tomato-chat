@@ -18,7 +18,7 @@ const channelsById = (prevState = Immutable.Map<Uuid, IChannel>(), action: Actio
             return prevState;
         case TOMATO_APP_CHANNEL_ORDER_CHANGED:
             const actualState = prevState.set(action.payload.channel.id, action.payload.channel);
-            return actualState.set(action.payload.channel2.id, action.payload.channel2);
+            return actualState.set(action.payload.neighbour.id, action.payload.neighbour);
         case TOMATO_APP_CHANNEL_CREATE_SUCCESS:
         case TOMATO_APP_CHANNEL_EDITING_SUCCESS:
             return prevState.set(action.payload.channel.id, action.payload.channel);

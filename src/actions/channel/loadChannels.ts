@@ -39,10 +39,10 @@ interface ILoadAllChannelFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (channels: ReadonlyArray<IChannel>) => Action;
     readonly loadingFailed: () => Action;
-    readonly loadAllChannels: (authToken: string | null) => any;
+    readonly loadAllChannels: (authToken: AuthToken) => any;
 }
 
-const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDependencies) => (authToken: string | null) =>
+const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
 
@@ -53,7 +53,7 @@ const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDepende
                     const channel: IChannel = responseChannelMapper(serverData);
                     channels.push(channel);
                 });
-                console.log(channels);
+
                 dispatch(dependencies.loadingSuccess(channels));
             })
             .catch((error: any) => {
