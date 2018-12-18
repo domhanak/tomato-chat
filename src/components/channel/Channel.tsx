@@ -5,10 +5,12 @@ import * as Autocomplete from 'react-autocomplete';
 import * as Immutable from 'immutable';
 import {IUser} from '../../models/IUser';
 import {UserListItemContainer} from '../../containers/user/UserListItemContainer';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
     readonly allUsers: Immutable.List<IUser>;
+    readonly authToken: AuthToken;
 }
 
 export interface IChannelOwnProps {
@@ -16,9 +18,10 @@ export interface IChannelOwnProps {
 }
 
 export interface IChannelCallBackProps {
-    readonly onChannelNameChange: (channelName: string) => void;
+    readonly onChannelNameChange: (channelId: Uuid, channel: IChannelServerModel, authToken: AuthToken) => void;
     readonly onStartEditing: () => void;
-    readonly updateChannelUsers: (users: Immutable.List<Uuid>, userId: Uuid, channels: Immutable.List<Uuid>) => void;
+    readonly updateChannelUsers:
+        (channelId: Uuid, channel: IChannelServerModel, user: IUser, channels: Immutable.List<Uuid>, authToken: AuthToken) => void;
 }
 
 interface IState {
@@ -48,18 +51,23 @@ export class Channel extends React.PureComponent<IProps, IState> {
     onSubmitChannelNameChange = (event: any) => {
        event.preventDefault();
        this.props.onStartEditing();
-       this.props.onChannelNameChange(this.state.channelName);
+       this.props.onChannelNameChange(this.props.channel.id, {name: this.state.channelName, customData: {
+               ...this.props.channel, name: this.state.channelName
+           }} as IChannelServerModel, this.props.authToken);
     };
 
     onUserRemove = (userId: Uuid) => {
         const filteredUsers = this.props.channel.users.filter(id => { return id !== userId; } );
         const user = this.props.allUsers.find((item: IUser) => { return item.id !== userId; } );
         const filteredChannels = user!.channels.filter(id => { return id !== this.props.channel.id; } );
-
+        const channel: IChannelServerModel = {name: this.props.channel.name, customData: {
+                ...this.props.channel, users: Immutable.List(filteredUsers)
+            }} as IChannelServerModel;
         this.props.updateChannelUsers(
-            Immutable.List(filteredUsers),
-            userId,
-            Immutable.List(filteredChannels));
+            this.props.channel.id,
+            channel,
+            user,
+            Immutable.List(filteredChannels), this.props.authToken);
     }
 
     addParticipant = (event: any) => {
@@ -73,10 +81,15 @@ export class Channel extends React.PureComponent<IProps, IState> {
                 return;
             }
 
+            const channel: IChannelServerModel = {name: this.props.channel.name, customData: {
+                    ...this.props.channel, users: Immutable.List(this.props.channel.users).push(this.state.user.id)
+                }} as IChannelServerModel;
             this.props.updateChannelUsers(
-                Immutable.List(this.props.channel.users).push(this.state.user.id),
-                this.state.user.id,
-                Immutable.List(user.channels).push(this.props.channel.id));
+                this.props.channel.id,
+                channel,
+                this.state.user,
+                Immutable.List(user.channels).push(this.props.channel.id),
+                this.props.authToken);
 
             this.setState(() => ({
                 user: {} as IUser,

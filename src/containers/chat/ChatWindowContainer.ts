@@ -4,7 +4,7 @@ import { IState } from '../../common/IState';
 import {ChatWindow, IChatWindowDispatchProps, IChatWindowStateProps} from '../../components/chat/ChatWindow';
 import {loadUsers} from '../../actions/users/loadUsers';
 import {loadChannels} from '../../actions/channel/loadChannels';
-import {loadMessages} from "../../actions/message/loadMessages";
+import {loadMessages} from '../../actions/message/loadMessages';
 
 const mapStateToProps = (state: IState) => {
     return {

@@ -1,3 +1,7 @@
+import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
+import {IChannel} from '../../models/IChannel';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
+
 export const endpointConfigHeader = (authToken?: string | null) => {
     return authToken ?
     {
@@ -18,6 +22,26 @@ export const endpointConfigHeader = (authToken?: string | null) => {
     };
 };
 
+export const responseChannelMapper = (channelResponse: IChannelServerModelResponse) => {
+    return {id: channelResponse.id, ...channelResponse.customData} as IChannel;
+};
+
+export const serverModelChannelMapper = (channel: IChannel) => {
+    return {name: channel.name, customData: {...channel}} as IChannelServerModel;
+};
+
+export const storeChannelId = (channelId: Uuid) => {
+    localStorage.setItem('channelId', channelId);
+};
+
+export const getStoredChannelId = () => {
+    return localStorage.getItem('channelId');
+};
+
+export const clearStoredChannelId = () => {
+    localStorage.removeItem('channelId');
+};
+
 
 export const requestBody = (authToken?: string | null, text?: string) => {
     return {
@@ -31,5 +55,5 @@ export const requestBody = (authToken?: string | null, text?: string) => {
             value: text,
             customDate: {}
         }
-    }
-}
+    };
+};

@@ -5,8 +5,9 @@ import {
 } from '../../constants/actionTypes';
 import {IChannel} from '../../models/IChannel';
 import axios from 'axios';
-import {GET_ALL_CHANNELS_URI} from '../../constants/apiConstants';
-import {endpointConfigHeader} from '../../common/utils/utilFunctions';
+import {BASE_CHANNEL_URI} from '../../constants/apiConstants';
+import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/utilFunctions';
+import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
 
 const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_CHANNELS_STARTED,
@@ -24,7 +25,7 @@ const loadingSuccess = (channels: ReadonlyArray<IChannel>): Action => ({
 });
 
 const loadAllChannels = (authToken: string | null) => {
-    return axios.get(GET_ALL_CHANNELS_URI, endpointConfigHeader(authToken));
+    return axios.get(BASE_CHANNEL_URI, endpointConfigHeader(authToken));
 };
 
 const createLoadAllChannelsFactoryDependencies = {
@@ -38,18 +39,19 @@ interface ILoadAllChannelFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (channels: ReadonlyArray<IChannel>) => Action;
     readonly loadingFailed: () => Action;
-    readonly loadAllChannels: (authToken: string | null) => any;
+    readonly loadAllChannels: (authToken: AuthToken) => any;
 }
 
-const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDependencies) => (authToken: string | null) =>
+const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
 
         return dependencies.loadAllChannels(authToken)
             .then((response: any) => {
                 const channels: IChannel[] = [];
-                response.data.forEach((serverData: any) => {
-                   channels.push(serverData.customData as IChannel);
+                response.data.forEach((serverData: IChannelServerModelResponse) => {
+                    const channel: IChannel = responseChannelMapper(serverData);
+                    channels.push(channel);
                 });
 
                 dispatch(dependencies.loadingSuccess(channels));

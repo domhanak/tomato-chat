@@ -5,9 +5,9 @@ import {
     TOMATO_APP_LOADING_MESSAGES_SUCCESS,
 } from '../../constants/actionTypes';
 import {IMessage} from '../../models/IMessage';
-import axios from "axios";
-import {GET_ALL_MESSAGES_FROM_CHANNEL} from "../../constants/apiConstants";
-import {endpointConfigHeader} from "../../common/utils/utilFunctions";
+import axios from 'axios';
+import {GET_ALL_MESSAGES_FROM_CHANNEL} from '../../constants/apiConstants';
+import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 
 const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_MESSAGES_FAILED,
@@ -50,7 +50,7 @@ const createLoadAllMessagesFactory = (dependencies: ILoadAllMesagesFactoryDepend
             .then((response: any) => {
                 const messages: IMessage[] = [];
                 response.data.forEach((serverData: any) => {
-                    messages.push(serverData.customData as IMessage)
+                    messages.push(serverData.customData as IMessage);
                 });
 
                 dispatch(dependencies.loadingSuccess(messages));
@@ -58,7 +58,7 @@ const createLoadAllMessagesFactory = (dependencies: ILoadAllMesagesFactoryDepend
             .catch((error: any) => {
                 console.log(error);
                 dispatch(dependencies.loadingFailed());
-            })
+            });
     };
 
 export const loadMessages = createLoadAllMessagesFactory(createLoadAllMessagesFactoryDependencies);
