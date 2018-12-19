@@ -1,6 +1,8 @@
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
 import {IChannel} from '../../models/IChannel';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {IMessage} from '../../models/IMessage';
+import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
 
 export const endpointConfigHeader = (authToken?: string | null) => {
     return authToken ?
@@ -24,6 +26,17 @@ export const endpointConfigHeader = (authToken?: string | null) => {
 
 export const responseChannelMapper = (channelResponse: IChannelServerModelResponse) => {
     return {id: channelResponse.id, ...channelResponse.customData} as IChannel;
+};
+
+export const responseMessageMapper = (messageResponse: IMessageServerModelResponse): IMessage => {
+    return {
+        id: messageResponse.id,
+        value: messageResponse.value,
+        createdAt: messageResponse.createdAt,
+        createdBy: messageResponse.createdBy,
+        updatedAt: messageResponse.updatedAt,
+        updatedBy: messageResponse.updatedBy,
+    } as IMessage;
 };
 
 export const serverModelChannelMapper = (channel: IChannel) => {
@@ -52,8 +65,7 @@ export const requestBody = (authToken?: string | null, text?: string) => {
                 authorization: authToken,
         },
         body: {
-            value: text,
-            customDate: {}
+            messageUpdate: text
         }
     };
 };

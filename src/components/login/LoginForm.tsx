@@ -26,10 +26,12 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
         event.persist();
         this.setState(() => ({ username: event.target.value }));
     };
+
     handlePasswordChange = (event: any) => {
         event.persist();
         this.setState(() => ({ password: event.target.value }));
     };
+
     handleSubmit = (event: any) => {
         event.preventDefault();
 
@@ -41,6 +43,7 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
 
         this.setState(_ => ({ username: '', password: '' }));
     };
+
     validateEmail = (email: string) => {
         if (!email) {
             return false;

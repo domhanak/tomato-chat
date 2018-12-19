@@ -13,5 +13,5 @@ export const GET_CHANNEL_URI = (id: Uuid) => `${BASE_CHANNEL_URI}/${id}`;
  * @param channelId ID of the channel that we want messages from
  * @constructor
  */
-export const GET_ALL_MESSAGES_FROM_CHANNEL = (channelId: Uuid) => `${API_URI_WITH_APP}/${APP_ID}/channel/${channelId}/message`;
-export const GET_MESSAGE_FROM_CHANNEL = (channelId: Uuid, messageId: Uuid) => `${API_URI_WITH_APP}/${APP_ID}/channel/${channelId}/message/${messageId}`;
+export const BASE_MESSAGE_URI = (channelId: Uuid) => `${API_URI_WITH_APP}/${APP_ID}/channel/${channelId}/message`;
+export const BASE_MESSAGE_FROM_CHANNEL_URI = (channelId: Uuid, messageId: Uuid) => `${API_URI_WITH_APP}/${APP_ID}/channel/${channelId}/message/${messageId}`;

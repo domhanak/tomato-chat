@@ -3,17 +3,22 @@ import { Dispatch } from 'redux';
 import { createMessage} from '../../actions/message/createMessage';
 import { IMessageFormDispatchProps, IMessageFormOwnProps, MessageForm} from '../../components/message/MessageForm';
 import { IState} from '../../common/IState';
-import { IUser} from '../../models/IUser';
+import {IUser} from '../../models/IUser';
+import {IMessageServerModel} from '../../models/IMessageServerModel';
 
 const mapStateToProps = (state: IState): IMessageFormOwnProps => {
     return {
         loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.id === state.tomatoApp.userId)),
+        authToken: state.tomatoApp.authToken,
+        selectedChannel: state.tomatoApp.channels.allChannelIds.first(),
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IMessageFormDispatchProps => {
     return {
-        onMessageAdd: (text: string, from: Uuid) => dispatch(createMessage(text, from))
+        onMessageAdd: (message: IMessageServerModel, channelId: Uuid, authToken: AuthToken) => {
+            createMessage(authToken, channelId, message)(dispatch);
+        }
     };
 };
 

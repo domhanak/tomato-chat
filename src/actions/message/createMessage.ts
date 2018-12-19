@@ -1,14 +1,21 @@
-import * as uuid from 'uuid';
 import { Dispatch } from 'redux';
-import { createMessage as createMessageApi } from '../../api/chatRepository';
 import {
+    TOMATO_APP_MESSAGE_CREATE_FAILED,
     TOMATO_APP_MESSAGE_CREATE_STARTED,
     TOMATO_APP_MESSAGE_CREATE_SUCCESS
 } from '../../constants/actionTypes';
 import {IMessage} from '../../models/IMessage';
+import {BASE_MESSAGE_URI} from '../../constants/apiConstants';
+import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/utilFunctions';
+import axios from 'axios';
+import {IMessageServerModel} from '../../models/IMessageServerModel';
 
 const createMessageStarted = (): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_STARTED,
+});
+
+const createMessageFailed = (): Action => ({
+    type: TOMATO_APP_MESSAGE_CREATE_FAILED,
 });
 
 const createMessageSuccess = (message: IMessage): Action => ({
@@ -18,20 +25,38 @@ const createMessageSuccess = (message: IMessage): Action => ({
     }
 });
 
-export const createMessage = (text: string, from: Uuid): any =>
-    async (dispatch: Dispatch): Promise<void> => {
-        dispatch(createMessageStarted());
+const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
+    return axios.post(BASE_MESSAGE_URI(channelId), JSON.stringify(message), endpointConfigHeader(authToken));
+};
 
-        const message = await createMessageApi(
-            {
-                id: uuid(),
-                value: text,
-                createdAt: new Date(),
-                createdBy: from,
-                updatedAt: new Date(),
-                updatedBy: from
-            }
-        );
+const createMessageCreateFactoryDependencies = {
+    createMessageStarted,
+    createMessageFailed,
+    createMessageSuccess,
+    messageCreate
+};
 
-        dispatch(createMessageSuccess(message));
+interface ICreateMessageFactoryDependencies {
+    readonly createMessageStarted: () => Action;
+    readonly createMessageFailed: () => Action;
+    readonly createMessageSuccess: (channel: IMessage) => Action;
+    readonly messageCreate: (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => any;
+}
+
+
+const createMessageCreateFactory = (dependencies: ICreateMessageFactoryDependencies) => (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) =>
+    (dispatch: Dispatch): any => {
+        dispatch(dependencies.createMessageStarted());
+
+        return messageCreate(authToken, channelId, message)
+            .then((response: any) => {
+                const createdMessage: IMessage = responseMessageMapper(response.data);
+                dispatch(dependencies.createMessageSuccess(createdMessage));
+            })
+            .catch((error: any) => {
+                console.log(error);
+                dispatch(dependencies.createMessageFailed());
+            });
     };
+
+export const createMessage = createMessageCreateFactory(createMessageCreateFactoryDependencies);
