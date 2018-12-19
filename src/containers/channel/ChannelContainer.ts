@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelOwnProps) => {
         updateChannelUsers: (channelId: Uuid, channel: IChannelServerModel, user: IUser, channels: Immutable.List<Uuid>, authToken: AuthToken) => {
             updateChannel(authToken, channel, channelId)(dispatch);
             updateUser(authToken, {email: user.email, customData:
-                    {nickname: user.nickname, id: user.id, channels}} as IUserServerModel)(dispatch);
+                    {nickname: user.nickname, id: user.id, channels, selectedChannel: user.selectedChannel}} as IUserServerModel)(dispatch);
         },
     };
 };

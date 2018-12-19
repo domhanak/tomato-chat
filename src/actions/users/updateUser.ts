@@ -2,8 +2,8 @@ import { Dispatch } from 'redux';
 import {
     TOMATO_APP_USER_LOGIN_SUCCESS,
     TOMATO_APP_USER_CHANNELS_STARTED,
-    TOMATO_APP_USER_CHANNELS_SUCCESS,
-    TOMATO_APP_USER_CHANNELS_FAILED
+    TOMATO_APP_USER_CHANNELS_FAILED,
+    TOMATO_APP_LOADING_USERS_SUCCESS
 } from '../../constants/actionTypes';
 import {IUser} from '../../models/IUser';
 import * as Immutable from 'immutable';
@@ -30,7 +30,7 @@ const updateUserFailed = (): Action => ({
 });
 
 const updateUsersSuccess = (users: Immutable.List<IUser>): Action => ({
-    type: TOMATO_APP_USER_CHANNELS_SUCCESS,
+    type: TOMATO_APP_LOADING_USERS_SUCCESS,
     payload: {
         users,
     }
@@ -62,7 +62,7 @@ const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =
     dispatch(dependencies.updateUserStarted());
     return userUpdate(authToken, user)
         .then((response: any) => {
-            loadAllUsers(authToken)
+            return loadAllUsers(authToken)
                 .then((responseAllUsers: any) => {
                     let users: List<IUser> = List<IUser>();
                     responseAllUsers.data.forEach((serverData: IUserServerModel) => {
@@ -73,10 +73,8 @@ const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =
 
                     dispatch(dependencies.updateUsersSuccess(users));
                     dispatch(dependencies.updateUserSuccess({
-                        nickname: responseUser.customData.nickname,
-                        id: responseUser.customData.id,
                         email: responseUser.email,
-                        channels: responseUser.customData.channels} as IUser));
+                        ...responseUser.customData} as IUser));
                 })
                 .catch((error: any) => {
                     console.log(error);

@@ -8,6 +8,7 @@
     border-bottom: 4px solid $tomato-chat-items-hover-colour;
     margin-top: 20px;
     padding-bottom: 20px;
+    margin-bottom: 0px;
   }
 
   & .channel-list {
@@ -37,6 +38,15 @@
         display: inline;
       }
 
+      & .channel-name h6:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      & .channel-name-selected h6 {
+        font-style: italic;
+      }
+
       & .channel-options {
         margin-left: 20px;
 
@@ -55,6 +65,10 @@
         text-align: right;
         font-size: .7em;
       }
+    }
+
+    & ul .channel-list-item__container-selected {
+      background: $tomato-chat-items-hover-colour;
     }
   }
 

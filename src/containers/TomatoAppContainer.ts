@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 import { IState } from '../common/IState';
-import {ITomatoAppStateProps, TomatoApp} from '../components/TomatoApp';
+import {ITomatoAppDispatchProps, ITomatoAppStateProps, TomatoApp} from '../components/TomatoApp';
+import {Dispatch} from 'redux';
+import {loadUsers} from '../actions/users/loadUsers';
+import {loadChannels} from '../actions/channel/loadChannels';
+import {loadMessages} from '../actions/message/loadMessages';
 
 const mapStateToProps = (state: IState): ITomatoAppStateProps => {
     return {
@@ -12,4 +16,12 @@ const mapStateToProps = (state: IState): ITomatoAppStateProps => {
     };
 };
 
-export const TomatoAppContainer = connect<ITomatoAppStateProps>(mapStateToProps)(TomatoApp);
+const mapDispatchToProps = (dispatch: Dispatch): ITomatoAppDispatchProps => {
+    return {
+        loadUsers: (authToken: string | null) => loadUsers(authToken)(dispatch),
+        loadChannels: (authToken: string | null) => loadChannels(authToken)(dispatch),
+        loadMessages: (authToken: string | null, channelId: Uuid) => loadMessages(authToken, channelId)(dispatch),
+    };
+};
+
+export const TomatoAppContainer = connect<ITomatoAppStateProps>(mapStateToProps, mapDispatchToProps)(TomatoApp);

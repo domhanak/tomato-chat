@@ -89,10 +89,8 @@ const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryD
                 .then((responselogUser: any) => {
                     const logUserResponse: IUserServerModel = responselogUser.data as IUserServerModel;
                     dispatch(dependencies.logUserSuccess({
-                        id: logUserResponse.customData.id,
                         email: logUserResponse.email,
-                        nickname: logUserResponse.customData.nickname,
-                        channels: logUserResponse.customData.channels} as IUser));
+                        ...logUserResponse.customData} as IUser));
                 })
                 .catch((error: any) => {
                     console.log(error);
