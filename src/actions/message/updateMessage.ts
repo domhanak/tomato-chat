@@ -6,7 +6,7 @@ import {
 } from '../../constants/actionTypes';
 import {IMessage} from '../../models/IMessage';
 import axios from "axios";
-import {GET_MESSAGE_FROM_CHANNEL} from "../../constants/apiConstants";
+import {BASE_MESSAGE_FROM_CHANNEL_URI} from "../../constants/apiConstants";
 import {requestBody} from "../../common/utils/utilFunctions";
 
 const updateMessageStarted = (): Action => ({
@@ -29,7 +29,7 @@ const updateMessageSuccess = (message: IMessage): Action => ({
 });
 
 const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, text: string):any => {
-    return axios.put(GET_MESSAGE_FROM_CHANNEL(channelId, messageId), requestBody(authToken, text));
+    return axios.put(BASE_MESSAGE_FROM_CHANNEL_URI(channelId, messageId), requestBody(authToken, text));
 };
 
 const createUpdateMessageFactoryDependencies = {

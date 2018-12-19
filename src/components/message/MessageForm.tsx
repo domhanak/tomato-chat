@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { IUser } from '../../models/IUser';
+import {IMessageServerModel} from '../../models/IMessageServerModel';
 
 export interface IMessageFormStateProps {
 
@@ -7,10 +8,12 @@ export interface IMessageFormStateProps {
 
 export interface IMessageFormOwnProps {
     readonly loggedUser: IUser;
+    readonly authToken: AuthToken;
+    readonly selectedChannel: Uuid;
 }
 
 export interface IMessageFormDispatchProps {
-    readonly onMessageAdd: (text: string, from: Uuid) => void;
+    readonly onMessageAdd: (message: IMessageServerModel, channelId: Uuid, authToken: AuthToken) => void;
 }
 
 interface IState {
@@ -30,8 +33,12 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
 
     private onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
+        const newMessage = {
+            value: this.state.value,
+            customData: {}
+        };
 
-        this.props.onMessageAdd(this.state.value, this.props.loggedUser.id);
+        this.props.onMessageAdd(newMessage, this.props. selectedChannel, this.props.authToken);
 
         this.setState(_ => ({ value: '' }));
     };

@@ -3,12 +3,12 @@ import { Dispatch } from 'redux';
 import { createUser } from '../../actions/users/createUser';
 import { IState} from '../../common/IState';
 import { IUser} from '../../models/IUser';
+import {authenticate} from '../../actions/users/authenticateUser';
 import {
     ILoginFormDispatchProps,
     ILoginFormOwnProps,
     LoginForm
 } from '../../components/login/LoginForm';
-import {authenticate} from '../../actions/users/authenticateUser';
 
 const mapStateToProps = (state: IState): ILoginFormOwnProps => {
     return {

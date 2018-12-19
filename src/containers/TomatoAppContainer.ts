@@ -8,6 +8,7 @@ const mapStateToProps = (state: IState): ITomatoAppStateProps => {
         loggedUser: state.tomatoApp.loggedUser,
         isLoggedIn: state.tomatoApp.userId !== null,
         authToken: state.tomatoApp.authToken,
+        isLoading: state.tomatoApp.isLoading,
     };
 };
 

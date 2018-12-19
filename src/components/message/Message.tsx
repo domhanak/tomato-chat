@@ -9,7 +9,6 @@ export interface IMessageOwnProps {
 export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
-    readonly userId: Uuid | null;
     readonly username: string;
 }
 

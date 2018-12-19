@@ -5,11 +5,13 @@ import { LoginFormContainer } from '../containers/login/LoginFormContainer';
 // @ts-ignore
 import * as url from '../tomato.jpg';
 import {IUser} from '../models/IUser';
+import {ScaleLoader} from 'react-spinners';
 
 export interface ITomatoAppStateProps {
     readonly userId: Uuid | null;
     readonly loggedUser: IUser | null;
     readonly isLoggedIn: boolean;
+    readonly isLoading: boolean;
     readonly authToken: string | null;
 }
 
@@ -19,6 +21,18 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps> {
     }
 
     render(): JSX.Element {
+        if (this.props.isLoading) {
+            return (
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-12 text-center">
+                            <ScaleLoader/>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             this.props.isLoggedIn ?
                 (

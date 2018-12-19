@@ -6,10 +6,12 @@ import {loadUsers} from '../../actions/users/loadUsers';
 import {loadChannels} from '../../actions/channel/loadChannels';
 import {loadMessages} from '../../actions/message/loadMessages';
 
+
 const mapStateToProps = (state: IState) => {
     return {
         isEditing: state.tomatoApp.isEditing,
         isTyping: state.tomatoApp.isTyping,
+        selectedChannel: state.tomatoApp.channels.allChannelIds.first(),
         authToken: state.tomatoApp.authToken,
     };
 };

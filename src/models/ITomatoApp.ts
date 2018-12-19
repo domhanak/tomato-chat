@@ -32,5 +32,6 @@ export interface ITomatoApp {
   channelFilter: ChannelFilter;
   isEditing: boolean;
   isTyping: boolean;
+  isLoading: boolean;
   authToken: string | null;
 }
