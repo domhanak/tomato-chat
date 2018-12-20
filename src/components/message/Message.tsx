@@ -2,7 +2,6 @@ import * as React from 'react';
 import {IMessage} from '../../models/IMessage';
 import {MessageEdit} from "./MessageEdit";
 import {MessageDisplay} from "./MessageDisplay";
-import {IMessageServerModel} from "../../models/IMessageServerModel";
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
