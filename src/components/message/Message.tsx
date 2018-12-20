@@ -1,5 +1,8 @@
 import * as React from 'react';
 import {IMessage} from '../../models/IMessage';
+import {MessageEdit} from "./MessageEdit";
+import {MessageDisplay} from "./MessageDisplay";
+import {IMessageServerModel} from "../../models/IMessageServerModel";
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
@@ -10,10 +13,11 @@ export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
     readonly username: string;
+    readonly authToken: AuthToken;
 }
 
 export interface IMessageDispatchProps {
-    readonly onEdit: (text: string) => void;
+    readonly onEdit: (authToken: string | null, message: IMessage, channelId: Uuid) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
 }
@@ -24,7 +28,7 @@ export interface IState {}
 
 export class Message extends React.PureComponent<IProps, IState> {
     render(): JSX.Element {
-        const { index, username, message } = this.props;
+        const { index, username, message, isBeingEdited, onEdit, onCancelEditing, onStartEditing } = this.props;
         return (
             <div key={index} id="message-container" >
                 <div className="message">
@@ -40,12 +44,11 @@ export class Message extends React.PureComponent<IProps, IState> {
                                 <a id="username">{username}</a>
                             </span>
                         </div>
-                        <div className="received-message" >
-                            <p>{message.value}</p>
-                            <a>
-                                <span className="time-date"> {message.createdAt.toLocaleString()} </span>
-                            </a>
-                        </div>
+                        {
+                            isBeingEdited
+                            ? <MessageEdit message={message} onSave={onEdit} onCancel={onCancelEditing}/>
+                            : <MessageDisplay message={message} onClick={onStartEditing} />
+                        }
                     </div>
                 </div>
             </div>

@@ -7,10 +7,15 @@ import {
 import {IMessage} from '../../models/IMessage';
 import axios from "axios";
 import {BASE_MESSAGE_FROM_CHANNEL_URI} from "../../constants/apiConstants";
-import {requestBody} from "../../common/utils/utilFunctions";
+import {endpointConfigHeader, responseMessageMapper} from "../../common/utils/utilFunctions";
+import {IMessageServerModelResponse} from "../../models/IMessageServerModelResponse";
+import {IMessageServerModel} from "../../models/IMessageServerModel";
 
-const updateMessageStarted = (): Action => ({
+const updateMessageStarted = (id: Uuid): Action => ({
   type: TOMATO_APP_MESSAGE_EDITING_STARTED,
+    payload: {
+        id,
+    }
 });
 
 const updateMessageFailed = (): Action => ({
@@ -28,8 +33,8 @@ const updateMessageSuccess = (message: IMessage): Action => ({
   }
 });
 
-const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, text: string):any => {
-    return axios.put(BASE_MESSAGE_FROM_CHANNEL_URI(channelId, messageId), requestBody(authToken, text));
+const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, message: IMessageServerModel): any => {
+    return axios.put(BASE_MESSAGE_FROM_CHANNEL_URI(channelId, messageId), message, endpointConfigHeader(authToken));
 };
 
 const createUpdateMessageFactoryDependencies = {
@@ -41,22 +46,28 @@ const createUpdateMessageFactoryDependencies = {
 };
 
 interface IUpdateMessageFactoryDependencies {
-    readonly updateMessageStarted: () => Action;
+    readonly updateMessageStarted: (id: Uuid) => Action;
     readonly updateMessageSuccess: (message: IMessage) => Action;
     readonly updateMessageFailed: () => Action;
     readonly updateMessageCancelled: () => Action;
-    readonly updateMessageFromChannel: (authToken: string | null, messageId: Uuid, channelId: Uuid, text: string) => any;
+    readonly updateMessageFromChannel: (authToken: string | null, channelId: Uuid, messageId:Uuid, message: IMessageServerModel) => any;
 }
 
-const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies) => (authToken: string | null, messageId: Uuid, channelId: Uuid, text: string) =>
+const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies) =>
+    (authToken: string | null, message: IMessage, channelId: Uuid) =>
     (dispatch: Dispatch): any => {
-        dispatch(dependencies.updateMessageStarted());
+        dispatch(dependencies.updateMessageStarted(message.id));
 
-        return dependencies.updateMessageFromChannel(authToken, channelId, messageId, text)
+        const serverMessage: IMessageServerModel = {
+            value: message.value,
+            customData: {},
+        };
+
+        return dependencies.updateMessageFromChannel(authToken, channelId, message.id, serverMessage)
             .then((response: any) => {
-                const message: IMessage = response.data.message;
+                const message: IMessageServerModelResponse = response.data.message;
 
-                dispatch(dependencies.updateMessageSuccess(message));
+                dispatch(dependencies.updateMessageSuccess(responseMessageMapper(message)));
             })
             .catch((error: any) => {
                 console.log(error);
