@@ -31,11 +31,7 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
         if (this.props.authToken && this.props.loggedUser) {
             this.props.loadUsers(this.props.authToken);
             this.props.loadChannels(this.props.authToken);
-            if (this.props.loggedUser !== undefined) {
-                this.props.loadMessages(this.props.authToken, this.props.loggedUser.selectedChannel);
-            } else {
-                this.props.loadMessages(this.props.authToken, 'b384ca47-52dd-46ad-ab31-db52ed4ef776');
-            }
+            this.props.loadMessages(this.props.authToken, this.props.loggedUser.selectedChannel);
         }
     }
 

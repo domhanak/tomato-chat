@@ -10,6 +10,7 @@ const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedMessageId === ownProps.id,
         username: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.nickname : '',
+        selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : '',
         authToken: state.tomatoApp.authToken,
     };
 };
@@ -18,8 +19,8 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IMessageOwnProps) => {
     return {
         onStartEditing: () => dispatch(startEditingMessage(ownProps.id)),
         onCancelEditing: () => dispatch(cancelEditingMessage(ownProps.id)),
-        onEdit:  (authToken: string | null, message: IMessage, channelId: Uuid) => {
-            updateMessage(authToken,message,channelId);
+        onEdit:  (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: string) => {
+            updateMessage(authToken, message, channelId, newMessage)(dispatch);
         }
     };
 };

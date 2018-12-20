@@ -54,12 +54,12 @@ interface IUpdateMessageFactoryDependencies {
 }
 
 const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies) =>
-    (authToken: string | null, message: IMessage, channelId: Uuid) =>
+    (authToken: string | null, message: IMessage, channelId: Uuid, newValue: string) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.updateMessageStarted(message.id));
 
         const serverMessage: IMessageServerModel = {
-            value: message.value,
+            value: newValue,
             customData: {},
         };
 

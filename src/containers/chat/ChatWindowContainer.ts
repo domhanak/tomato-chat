@@ -11,7 +11,7 @@ const mapStateToProps = (state: IState) => {
     return {
         isEditing: state.tomatoApp.isEditing,
         isTyping: state.tomatoApp.isTyping,
-        selectedChannel: state.tomatoApp.channels.allChannelIds.first(),
+        selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : state.tomatoApp.channels.allChannelIds.first(),
         authToken: state.tomatoApp.authToken,
     };
 };

@@ -12,11 +12,12 @@ export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
     readonly username: string;
+    readonly selectedChannel: Uuid
     readonly authToken: AuthToken;
 }
 
 export interface IMessageDispatchProps {
-    readonly onEdit: (authToken: string | null, message: IMessage, channelId: Uuid) => void;
+    readonly onEdit: (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: string) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
 }
@@ -26,8 +27,12 @@ type IProps = IMessageOwnProps & IMessageStateProps & IMessageDispatchProps;
 export interface IState {}
 
 export class Message extends React.PureComponent<IProps, IState> {
+    onSubmitMessageTextChange = (newValue: string) => {
+        this.props.onStartEditing();
+        this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, newValue);
+    };
     render(): JSX.Element {
-        const { index, username, message, isBeingEdited, onEdit, onCancelEditing, onStartEditing } = this.props;
+        const { index, username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
         return (
             <div key={index} id="message-container" >
                 <div className="message">
@@ -45,7 +50,7 @@ export class Message extends React.PureComponent<IProps, IState> {
                         </div>
                         {
                             isBeingEdited
-                            ? <MessageEdit message={message} onSave={onEdit} onCancel={onCancelEditing}/>
+                            ? <MessageEdit message={message} onSave={this.onSubmitMessageTextChange} onCancel={onCancelEditing}/>
                             : <MessageDisplay message={message} onClick={onStartEditing} />
                         }
                     </div>
