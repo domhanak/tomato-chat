@@ -6,5 +6,6 @@ export interface IUserServerModel {
         readonly id: string;
         readonly nickname: string;
         readonly channels: Immutable.List<Uuid>;
+        readonly selectedChannel: Uuid;
     };
 }

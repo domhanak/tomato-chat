@@ -6,6 +6,7 @@ import { LoginFormContainer } from '../containers/login/LoginFormContainer';
 import * as url from '../tomato.jpg';
 import {IUser} from '../models/IUser';
 import {ScaleLoader} from 'react-spinners';
+import * as Immutable from 'immutable';
 
 export interface ITomatoAppStateProps {
     readonly userId: Uuid | null;
@@ -15,9 +16,27 @@ export interface ITomatoAppStateProps {
     readonly authToken: string | null;
 }
 
-export class TomatoApp extends React.PureComponent<ITomatoAppStateProps> {
+export interface ITomatoAppDispatchProps {
+    readonly loadUsers: (authToken: string | null) => void;
+    readonly loadChannels: (authToken: string | null) => void;
+    readonly loadMessages: (authToken: string | null, channelId: Uuid) => Immutable.List<Uuid>;
+}
+
+export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomatoAppDispatchProps> {
     constructor(props: any) {
         super(props);
+    }
+
+    componentDidMount(): void {
+        if (this.props.authToken && this.props.loggedUser) {
+            this.props.loadUsers(this.props.authToken);
+            this.props.loadChannels(this.props.authToken);
+            if (this.props.loggedUser !== undefined) {
+                this.props.loadMessages(this.props.authToken, this.props.loggedUser.selectedChannel);
+            } else {
+                this.props.loadMessages(this.props.authToken, 'b384ca47-52dd-46ad-ab31-db52ed4ef776');
+            }
+        }
     }
 
     render(): JSX.Element {
