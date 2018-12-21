@@ -38,7 +38,7 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
             customData: {}
         };
 
-        this.props.onMessageAdd(newMessage, this.props. selectedChannel, this.props.authToken);
+        this.props.onMessageAdd(newMessage, this.props.selectedChannel, this.props.authToken);
 
         this.setState(_ => ({ value: '' }));
     };
