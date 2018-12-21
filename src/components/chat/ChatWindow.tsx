@@ -25,6 +25,12 @@ export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChat
             this.props.loadMessages(this.props.authToken, this.props.selectedChannel);
         }
     }
+
+    componentDidUpdate(): void {
+        if (this.props.authToken) {
+            this.props.loadMessages(this.props.authToken, this.props.selectedChannel);
+        }
+    }
     render(): JSX.Element {
 
         return (
