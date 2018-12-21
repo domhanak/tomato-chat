@@ -1,68 +1,72 @@
 import { Dispatch } from 'redux';
 import {
-    TOMATO_APP_MESSAGE_EDITING_CANCELLED,
-    TOMATO_APP_MESSAGE_EDITING_FAILED,
-    TOMATO_APP_MESSAGE_EDITING_STARTED, TOMATO_APP_MESSAGE_EDITING_SUCCESS
+    TOMATO_APP_MESSAGE_UPDATE_FAILED,
+    TOMATO_APP_MESSAGE_UPDATE_STARTED,
+    TOMATO_APP_MESSAGE_UPDATE_SUCCESS
 } from '../../constants/actionTypes';
 import {IMessage} from '../../models/IMessage';
 import axios from "axios";
 import {BASE_MESSAGE_FROM_CHANNEL_URI} from "../../constants/apiConstants";
-import {requestBody} from "../../common/utils/utilFunctions";
+import {endpointConfigHeader, responseMessageMapper} from "../../common/utils/utilFunctions";
+import {IMessageServerModelResponse} from "../../models/IMessageServerModelResponse";
+import {IMessageServerModel} from "../../models/IMessageServerModel";
 
-const updateMessageStarted = (): Action => ({
-  type: TOMATO_APP_MESSAGE_EDITING_STARTED,
+const updateMessageStarted = (id: Uuid): Action => ({
+    type: TOMATO_APP_MESSAGE_UPDATE_STARTED,
+    payload: {
+        id
+    }
 });
 
 const updateMessageFailed = (): Action => ({
-    type: TOMATO_APP_MESSAGE_EDITING_FAILED,
-});
-
-const updateMessageCancelled = (): Action => ({
-    type: TOMATO_APP_MESSAGE_EDITING_CANCELLED,
+    type: TOMATO_APP_MESSAGE_UPDATE_FAILED,
 });
 
 const updateMessageSuccess = (message: IMessage): Action => ({
-  type: TOMATO_APP_MESSAGE_EDITING_SUCCESS,
+  type: TOMATO_APP_MESSAGE_UPDATE_SUCCESS,
   payload: {
       message,
   }
 });
 
-const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, text: string):any => {
-    return axios.put(BASE_MESSAGE_FROM_CHANNEL_URI(channelId, messageId), requestBody(authToken, text));
+const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, message: IMessageServerModel): any => {
+    return axios.put(BASE_MESSAGE_FROM_CHANNEL_URI(channelId, messageId), message, endpointConfigHeader(authToken));
 };
 
 const createUpdateMessageFactoryDependencies = {
     updateMessageStarted,
     updateMessageSuccess,
     updateMessageFailed,
-    updateMessageCancelled,
     updateMessageFromChannel
 };
 
 interface IUpdateMessageFactoryDependencies {
-    readonly updateMessageStarted: () => Action;
+    readonly updateMessageStarted: (id: Uuid) => Action;
     readonly updateMessageSuccess: (message: IMessage) => Action;
     readonly updateMessageFailed: () => Action;
-    readonly updateMessageCancelled: () => Action;
-    readonly updateMessageFromChannel: (authToken: string | null, messageId: Uuid, channelId: Uuid, text: string) => any;
+    readonly updateMessageFromChannel: (authToken: string | null, channelId: Uuid, messageId:Uuid, message: IMessageServerModel) => any;
 }
 
-const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies) => (authToken: string | null, messageId: Uuid, channelId: Uuid, text: string) =>
-    (dispatch: Dispatch): any => {
-        dispatch(dependencies.updateMessageStarted());
+const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies): any =>
+    (authToken: string | null, message: IMessage, channelId: Uuid, newValue: string): any =>
+        async (dispatch: Dispatch): Promise<IMessage> => {
+            dispatch(dependencies.updateMessageStarted(message.id));
 
-        return dependencies.updateMessageFromChannel(authToken, channelId, messageId, text)
-            .then((response: any) => {
-                const message: IMessage = response.data.message;
+            const serverMessage: IMessageServerModel = {
+                value: newValue,
+                customData: {},
+            };
 
-                dispatch(dependencies.updateMessageSuccess(message));
-            })
-            .catch((error: any) => {
-                console.log(error);
-                dispatch(dependencies.updateMessageFailed());
-            })
-    };
+            return dependencies.updateMessageFromChannel(authToken, channelId, message.id, serverMessage)
+                .then((response: any) => {
+                    const message: IMessageServerModelResponse = response.data as IMessageServerModelResponse;
+                    dispatch(dependencies.updateMessageSuccess(responseMessageMapper(message)));
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                    dispatch(dependencies.updateMessageFailed());
+                })
+        };
 
 
 export const updateMessage = createUpdateMessageFactory(createUpdateMessageFactoryDependencies);

@@ -39,16 +39,16 @@ const createMessageCreateFactoryDependencies = {
 interface ICreateMessageFactoryDependencies {
     readonly createMessageStarted: () => Action;
     readonly createMessageFailed: () => Action;
-    readonly createMessageSuccess: (channel: IMessage) => Action;
+    readonly createMessageSuccess: (message: IMessage) => Action;
     readonly messageCreate: (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => any;
 }
 
 
 const createMessageCreateFactory = (dependencies: ICreateMessageFactoryDependencies) => (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) =>
-    (dispatch: Dispatch): any => {
+    async (dispatch: Dispatch): Promise<IMessage> => {
         dispatch(dependencies.createMessageStarted());
 
-        return messageCreate(authToken, channelId, message)
+        return dependencies.messageCreate(authToken, channelId, message)
             .then((response: any) => {
                 const createdMessage: IMessage = responseMessageMapper(response.data);
                 dispatch(dependencies.createMessageSuccess(createdMessage));
