@@ -3,8 +3,8 @@ import { Dispatch } from 'redux';
 import {IState} from '../../common/IState';
 import {IMessageDispatchProps, IMessageOwnProps, IMessageStateProps, Message} from '../../components/message/Message';
 import {cancelEditingMessage, startEditingMessage} from '../../actions/actionCreators';
-import {updateMessage} from "../../actions/message/updateMessage";
-import {IMessage} from "../../models/IMessage";
+import {updateMessage} from '../../actions/message/updateMessage';
+import {IMessage} from '../../models/IMessage';
 const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
     return {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),

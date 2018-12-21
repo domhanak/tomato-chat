@@ -10,7 +10,7 @@ const mapStateToProps = (state: IState): IMessageFormOwnProps => {
     return {
         loggedUser: state.tomatoApp.users.usersById.find((user: IUser) => (user.id === state.tomatoApp.userId)),
         authToken: state.tomatoApp.authToken,
-        selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel: '',
+        selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : '',
     };
 };
 

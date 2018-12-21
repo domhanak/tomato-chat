@@ -5,11 +5,11 @@ import {
     TOMATO_APP_MESSAGE_UPDATE_SUCCESS
 } from '../../constants/actionTypes';
 import {IMessage} from '../../models/IMessage';
-import axios from "axios";
-import {BASE_MESSAGE_FROM_CHANNEL_URI} from "../../constants/apiConstants";
-import {endpointConfigHeader, responseMessageMapper} from "../../common/utils/utilFunctions";
-import {IMessageServerModelResponse} from "../../models/IMessageServerModelResponse";
-import {IMessageServerModel} from "../../models/IMessageServerModel";
+import axios from 'axios';
+import {BASE_MESSAGE_FROM_CHANNEL_URI} from '../../constants/apiConstants';
+import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/utilFunctions';
+import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
+import {IMessageServerModel} from '../../models/IMessageServerModel';
 
 const updateMessageStarted = (id: Uuid): Action => ({
     type: TOMATO_APP_MESSAGE_UPDATE_STARTED,
@@ -44,7 +44,7 @@ interface IUpdateMessageFactoryDependencies {
     readonly updateMessageStarted: (id: Uuid) => Action;
     readonly updateMessageSuccess: (message: IMessage) => Action;
     readonly updateMessageFailed: () => Action;
-    readonly updateMessageFromChannel: (authToken: string | null, channelId: Uuid, messageId:Uuid, message: IMessageServerModel) => any;
+    readonly updateMessageFromChannel: (authToken: string | null, channelId: Uuid, messageId: Uuid, message: IMessageServerModel) => any;
 }
 
 const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies): any =>
@@ -59,13 +59,13 @@ const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependenc
 
             return dependencies.updateMessageFromChannel(authToken, channelId, message.id, serverMessage)
                 .then((response: any) => {
-                    const message: IMessageServerModelResponse = response.data as IMessageServerModelResponse;
-                    dispatch(dependencies.updateMessageSuccess(responseMessageMapper(message)));
+                    const messageResponse: IMessageServerModelResponse = response.data as IMessageServerModelResponse;
+                    dispatch(dependencies.updateMessageSuccess(responseMessageMapper(messageResponse)));
                 })
                 .catch((error: any) => {
                     console.log(error);
                     dispatch(dependencies.updateMessageFailed());
-                })
+                });
         };
 
 
