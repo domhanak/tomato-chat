@@ -24,6 +24,16 @@ export const endpointConfigHeader = (authToken?: string | null) => {
     };
 };
 
+export const endpointFileConfigHeader = (authToken: AuthToken) => {
+    return {
+        headers: {
+            accept: 'text/plain',
+            'Content-Type': 'multipart/form-data',
+            authorization: authToken,
+        }
+    };
+};
+
 export const responseChannelMapper = (channelResponse: IChannelServerModelResponse) => {
     return {id: channelResponse.id, ...channelResponse.customData} as IChannel;
 };
@@ -43,16 +53,16 @@ export const serverModelChannelMapper = (channel: IChannel) => {
     return {name: channel.name, customData: {...channel}} as IChannelServerModel;
 };
 
-export const storeChannelId = (channelId: Uuid) => {
-    localStorage.setItem('channelId', channelId);
+export const storeData = (key: string, value: string) => {
+    localStorage.setItem(key, value);
 };
 
-export const getStoredChannelId = () => {
-    return localStorage.getItem('channelId');
+export const getStoredData = (key: string) => {
+    return localStorage.getItem(key);
 };
 
-export const clearStoredChannelId = () => {
-    localStorage.removeItem('channelId');
+export const clearStorage = (key: string) => {
+    localStorage.removeItem(key);
 };
 
 

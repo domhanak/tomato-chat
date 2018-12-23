@@ -10,37 +10,43 @@ export interface IProfileStateProps {
 }
 
 export interface IProfileDispatchProps {
-    readonly updateUserProfile: (authToken: AuthToken, user: IUserServerModel) => void;
+    readonly updateUserProfile: (authToken: AuthToken, user: IUserServerModel, avatar: FileType) => void;
 }
 
 interface IState {
     readonly nickname: string;
+    readonly avatar: FileType;
 }
 
 export class Profile extends React.Component<IProfileStateProps & IProfileDispatchProps, IState> {
     constructor(props: any) {
         super(props);
-        console.log(this.props.user!.nickname);
         this.state = {
             nickname: this.props.user!.nickname,
+            avatar: null,
         };
     }
 
     onSubmit = (event: any) => {
         event.preventDefault();
-        if (!this.state.nickname || !this.state.nickname.trim()) {
+        if (!this.state.nickname || !this.state.nickname.trim() || !this.state.avatar) {
             return;
         }
 
         const updatedUser: IUserServerModel = {email: this.props.user!.email,
             customData: {selectedChannel: this.props.user!.selectedChannel, nickname: this.state.nickname,
-                channels: this.props.user!.channels, id: this.props.user!.id}};
+                channels: this.props.user!.channels, id: this.props.user!.id, avatarId: ''}};
 
-        this.props.updateUserProfile(this.props.authToken, updatedUser);
+        console.log(this.state.avatar);
+        this.props.updateUserProfile(this.props.authToken, updatedUser, this.state.avatar);
     }
 
-    avatarUpdate = () => {
-        return;
+    avatarUpdate = (event: any) => {
+        event.persist();
+        console.log(event.target.files[0]);
+        this.setState((_) => ({
+            avatar: event.target.files[0]
+        }));
     }
 
     nameChanged = (event: any) => {
@@ -55,9 +61,10 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
                 <div className="avatar col-lg-4 col-md-6 col-sm-6">
                     <div className="row">
                         <img src="http://placehold.it/200x200" alt="avatar" className="img-circle special-img"/>
+                        {/*<img alt="avatar" className="img-circle special-img" src="https://pv247messaging.blob.core.windows.net/files/9ce79615-fe56-43f4-832d-5be6b11dd93b/snails-logo-notext.png?sv=2018-03-28&sr=b&sig=uv2VU7ly7%2FYfG0Plx4e5wuKn5CmcPFS88QsGXG2A9dc%3D&se=2019-12-22T14%3A14%3A50Z&sp=r" />*/}
                     </div>
                     <div className="profile-avatar-btn row">
-                        <a className="btn btn btn-primary" onClick={this.avatarUpdate} >Upload</a>
+                        <input type="file" className="btn btn btn-primary" placeholder="Upload" onChange={this.avatarUpdate}/>
                     </div>
                 </div>
                 <div className="profile-info col-lg-5 col-md-10 col-sm-10">

@@ -4,3 +4,4 @@ type Action = {
     type: string;
     payload?: any;
 };
+type FileType = File | null;

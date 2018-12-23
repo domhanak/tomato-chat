@@ -7,7 +7,7 @@ import {
 import {IChannel} from '../../models/IChannel';
 import axios from 'axios';
 import {BASE_CHANNEL_URI} from '../../constants/apiConstants';
-import {endpointConfigHeader, responseChannelMapper, storeChannelId} from '../../common/utils/utilFunctions';
+import {endpointConfigHeader, responseChannelMapper, storeData} from '../../common/utils/utilFunctions';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 
 const channelCreateStarted = (): Action => ({
@@ -50,7 +50,7 @@ const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependenc
         return channelCreate(authToken, channel)
             .then((response: any) => {
                 const createdChannel: IChannel = responseChannelMapper(response.data);
-                storeChannelId(createdChannel.id);
+                storeData('channelId', createdChannel.id);
                 dispatch(dependencies.channelCreateSuccess(createdChannel));
             })
             .catch((error: any) => {
