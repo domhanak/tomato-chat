@@ -7,6 +7,7 @@ import {IProfileStateProps, Profile, IProfileDispatchProps} from '../../componen
 import {createFile} from '../../actions/files/createFile';
 import {clearStorage, getStoredData} from '../../common/utils/utilFunctions';
 import {getDownloadLink} from '../../actions/files/getDownloadLink';
+import {getFile} from '../../actions/files/getFile';
 
 const mapStateToProps = (state: IState): IProfileStateProps => {
     return {
@@ -29,6 +30,8 @@ const mapDispatchToProps = (dispatch: Dispatch): IProfileDispatchProps => {
                 clearStorage(avatarId);
             }
 
+            console.log(updatedUser);
+            getFile(authToken, updatedUser.customData.avatarId)(dispatch);
             updateUser(authToken, updatedUser)(dispatch);
         },
     };
