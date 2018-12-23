@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
             const channelId: string = getStoredData('channelId') as string;
             const selectedChannel: Uuid = List(user!.channels).count() === 0 ? channelId : user!.selectedChannel;
             updateUser(authToken,
-                {email: user!.email, customData: {id: user!.id, nickname: user!.nickname, channels: List(user!.channels)
+                {email: user!.email, customData: {...user!, channels: List(user!.channels)
                             .push(channelId), selectedChannel}} as IUserServerModel)(dispatch);
             clearStorage('channelId');
         }

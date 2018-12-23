@@ -4,26 +4,32 @@ import {IState} from '../../common/IState';
 import {updateUser} from '../../actions/users/updateUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {IProfileStateProps, Profile, IProfileDispatchProps} from '../../components/profile/Profile';
-import {createAvatar} from '../../actions/files/createFile';
-import {clearStorage, getStoredData} from "../../common/utils/utilFunctions";
+import {createFile} from '../../actions/files/createFile';
+import {clearStorage, getStoredData} from '../../common/utils/utilFunctions';
+import {getDownloadLink} from '../../actions/files/getDownloadLink';
 
 const mapStateToProps = (state: IState): IProfileStateProps => {
     return {
         user: state.tomatoApp.loggedUser,
         authToken: state.tomatoApp.authToken,
+        avatarUri: state.tomatoApp.avatarUri
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IProfileDispatchProps => {
     return {
         updateUserProfile: (authToken: AuthToken, user: IUserServerModel, avatar: FileType) => {
+            let updatedUser: IUserServerModel = user;
+            console.log(user);
             if (avatar !== null) {
                 const avatarId = 'avatarId';
-                createAvatar(authToken, avatar!)(dispatch);
-                user = {email: user.email, customData: {...user.customData, avatarId: getStoredData(avatarId) as string}};
+                createFile(authToken, avatar!, avatarId)(dispatch);
+                updatedUser = {email: user.email, customData: {...user.customData, avatarId: getStoredData(avatarId) as string}};
+                getDownloadLink(authToken, getStoredData(avatarId) as string)(dispatch);
                 clearStorage(avatarId);
             }
-            updateUser(authToken, user)(dispatch);
+
+            updateUser(authToken, updatedUser)(dispatch);
         },
     };
 };

@@ -23,7 +23,9 @@ export const GET_CHANNEL_URI = (id: Uuid) => `${BASE_CHANNEL_URI}/${id}`;
 /**
  * File API constants
  */
-export const CREATE_FILE_URI = `${API_URI}/file`;
+export const BASE_FILE_URI = `${API_URI}/file`;
+export const GET_FILE_URI = (fileId: Uuid) => `${BASE_FILE_URI}/${fileId}`;
+export const GET_FILE_DOWNLOADLINK_URI = (fileId: Uuid) => `${GET_FILE_URI(fileId)}/download-link`;
 
 /**
  * Message API constants

@@ -5,7 +5,7 @@ import {
     TOMATO_APP_FILE_CREATE_SUCCESS
 } from '../../constants/actionTypes';
 import axios from 'axios';
-import {CREATE_FILE_URI} from '../../constants/apiConstants';
+import {BASE_FILE_URI} from '../../constants/apiConstants';
 import {endpointFileConfigHeader, storeData} from '../../common/utils/utilFunctions';
 
 const fileCreateStarted = (): Action => ({
@@ -27,7 +27,7 @@ const fileCreate = (file: File, authToken: AuthToken) => {
     const formData = new FormData();
     formData.append('Files', file);
     formData.append('type', file.type);
-    return axios.post(CREATE_FILE_URI, formData, endpointFileConfigHeader(authToken));
+    return axios.post(BASE_FILE_URI, formData, endpointFileConfigHeader(authToken));
 };
 
 const createChannelCreateFactoryDependencies = {
@@ -44,14 +44,13 @@ interface ICreateFileFactoryDependencies {
     readonly fileCreate: (file: File, authToken: AuthToken) => any;
 }
 
-const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies) => (authToken: AuthToken, file: File) =>
+const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies) => (authToken: AuthToken, file: File, appFileType: string) =>
     (dispatch: Dispatch): any => {
         dependencies.fileCreateStarted();
 
         return dependencies.fileCreate(file, authToken)
             .then((response: any) => {
-                console.log(response.data[0].id);
-                storeData('avatarId', response.data[0].id);
+                storeData(appFileType, response.data[0].id);
                 dispatch(dependencies.fileCreateSuccess(response.data[0].id as Uuid));
             })
             .catch((error: any) => {
@@ -60,4 +59,4 @@ const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies)
             });
     };
 
-export const createAvatar = createAvatarCreateFactory(createChannelCreateFactoryDependencies);
+export const createFile = createAvatarCreateFactory(createChannelCreateFactoryDependencies);

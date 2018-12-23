@@ -7,6 +7,7 @@ import {IUserServerModel} from '../../models/IUserServerModel';
 export interface IProfileStateProps {
     readonly user: IUser | null;
     readonly authToken: AuthToken;
+    readonly avatarUri: string | null;
 }
 
 export interface IProfileDispatchProps {
@@ -29,21 +30,19 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
 
     onSubmit = (event: any) => {
         event.preventDefault();
-        if (!this.state.nickname || !this.state.nickname.trim() || !this.state.avatar) {
+        if (!this.state.nickname || !this.state.nickname.trim()) {
             return;
         }
 
         const updatedUser: IUserServerModel = {email: this.props.user!.email,
             customData: {selectedChannel: this.props.user!.selectedChannel, nickname: this.state.nickname,
-                channels: this.props.user!.channels, id: this.props.user!.id, avatarId: ''}};
+                channels: this.props.user!.channels, id: this.props.user!.id, avatarId: this.props.avatarUri!}};
 
-        console.log(this.state.avatar);
         this.props.updateUserProfile(this.props.authToken, updatedUser, this.state.avatar);
     }
 
     avatarUpdate = (event: any) => {
         event.persist();
-        console.log(event.target.files[0]);
         this.setState((_) => ({
             avatar: event.target.files[0]
         }));
@@ -55,13 +54,17 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
         this.setState((_) => ({nickname: event.target.value}));
     }
 
+    getAvatarLink = () => {
+        return this.props.avatarUri ? this.props.avatarUri : 'http://placehold.it/200x200';
+    }
+
+
     render(): JSX.Element {
         return (
             <form className="profile-view container" onSubmit={this.onSubmit}>
                 <div className="avatar col-lg-4 col-md-6 col-sm-6">
                     <div className="row">
-                        <img src="http://placehold.it/200x200" alt="avatar" className="img-circle special-img"/>
-                        {/*<img alt="avatar" className="img-circle special-img" src="https://pv247messaging.blob.core.windows.net/files/9ce79615-fe56-43f4-832d-5be6b11dd93b/snails-logo-notext.png?sv=2018-03-28&sr=b&sig=uv2VU7ly7%2FYfG0Plx4e5wuKn5CmcPFS88QsGXG2A9dc%3D&se=2019-12-22T14%3A14%3A50Z&sp=r" />*/}
+                        <img src={this.getAvatarLink()} alt="avatar" className="img-circle special-img"/>
                     </div>
                     <div className="profile-avatar-btn row">
                         <input type="file" className="btn btn btn-primary" placeholder="Upload" onChange={this.avatarUpdate}/>
