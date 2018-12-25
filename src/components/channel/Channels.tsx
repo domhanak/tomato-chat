@@ -21,6 +21,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
     constructor(props: any) {
         super(props);
+        console.log(List(this.props.loggedUser!.channels).count());
         this.state = {
             value: '',
             nextOrder: List(this.props.loggedUser!.channels).count(),
@@ -30,7 +31,8 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
     handleChannelCreation = (event: any) => {
         event.preventDefault();
 
-        this.props.onChannelAdd(this.state.value, this.state.nextOrder, this.props.loggedUser, this.props.authToken);
+        console.log(this.state.nextOrder + 1);
+        // this.props.onChannelAdd(this.state.value, this.state.nextOrder, this.props.loggedUser, this.props.authToken);
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };
 
