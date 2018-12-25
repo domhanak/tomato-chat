@@ -3,16 +3,23 @@ import {IChannel} from '../../models/IChannel';
 import * as Immutable from 'immutable';
 import {ChannelListItemContainer} from '../../containers/channel/ChannelListItemContainer';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {IUser} from '../../models/IUser';
+import {List} from 'immutable';
+import {IUserServerModel} from '../../models/IUserServerModel';
 
 export interface IChannelListProps {
     readonly allChannels: Immutable.List<IChannel>;
     readonly authToken: AuthToken;
+    readonly loggedUser: IUser | null;
+    readonly allUsers: Immutable.List<IUser>;
 }
 
 export interface IChannelListDispatchProps {
     readonly updateChannelOrder: (authToken: AuthToken,
                                   channelId: Uuid, channel: IChannelServerModel,
                                   neighbourId: Uuid, neighbour: IChannelServerModel) => void;
+    readonly onChannelDelete: (deletedChannelId: Uuid, users: List<IUserServerModel>, channels: List<IChannel>,
+                               authToken: AuthToken) => void;
 }
 
 interface IState {
@@ -60,6 +67,42 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
         this.handleOrderChange(channel, channel.order + 1);
     };
 
+    onChannelDelete = (channelToDelete: IChannel) => {
+        let channelsToUpdate = List<IChannel>();
+        this.props.allChannels.forEach((channel: IChannel) => {
+           if (channel.id === channelToDelete.id) {
+               return;
+           }
+
+           if (channel.order > channelToDelete.order) {
+               const channelToUpdate: IChannel = {...channel, order: channel.order - 1} as IChannel;
+               channelsToUpdate = channelsToUpdate.push(channelToUpdate);
+           }
+        });
+
+        let usersToUpdate = List<IUserServerModel>();
+        this.props.allUsers.forEach((user: IUser) => {
+            if (Immutable.List(user.channels).contains(channelToDelete.id)) {
+                let userToUpdate: IUserServerModel = {email: user.email, customData: {
+                        nickname: user.nickname, selectedChannel: user.selectedChannel, id: user.id,
+                        avatarId: user.avatarId, channels: Immutable.List(user.channels).filter((channelId: Uuid) => {
+                            return channelId !== channelToDelete.id;
+                        })
+                    }} as IUserServerModel;
+
+                if (user.selectedChannel === channelToDelete.id && Immutable.List(userToUpdate.customData.channels).count() > 0) {
+                    userToUpdate = { email: userToUpdate.email,
+                                     customData: {...userToUpdate.customData,
+                                         selectedChannel: Immutable.List(userToUpdate.customData.channels).first()}};
+                }
+
+                usersToUpdate = usersToUpdate.push(userToUpdate);
+            }
+        });
+
+        this.props.onChannelDelete(channelToDelete.id, usersToUpdate, channelsToUpdate, this.props.authToken);
+    }
+
     render(): JSX.Element {
         return (
             <div className="channel-list">
@@ -69,7 +112,8 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
                         .map((channel: IChannel) => (
                         <ChannelListItemContainer key={channel.id} id={channel.id} ownerId={channel.owner}
                                                   onMoveDown={this.onMoveDown}
-                                                  onMoveUp={this.onMoveUp} />
+                                                  onMoveUp={this.onMoveUp}
+                                                  onChannelDelete={this.onChannelDelete}/>
                     ))}
                 </ul>
             </div>

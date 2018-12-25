@@ -26,6 +26,7 @@ export interface IChannelListItemCallBackProps {
 interface IChannelListItemDispatchProps {
     readonly onMoveDown: (channel: IChannel) => void;
     readonly onMoveUp: (channel: IChannel) => void;
+    readonly onChannelDelete: (channelToDelete: IChannel) => void;
 }
 
 interface IState {
@@ -44,6 +45,11 @@ export class ChannelListItem extends React.Component<IProps, IState> {
     handleMoveUp = (event: any) => {
         event.preventDefault();
         this.props.onMoveUp(this.props.channel);
+    }
+
+    handleDelete = (event: any) => {
+        event.preventDefault();
+        this.props.onChannelDelete(this.props.channel);
     }
 
     handleClick = () => {
@@ -71,6 +77,7 @@ export class ChannelListItem extends React.Component<IProps, IState> {
                         <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog" />
                         <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                         <a onClick={this.handleMoveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
+                        <a onClick={this.handleDelete} className="delete glyphicon glyphicon-minus"/>
                     </div>
                     <div className="owner-nickname">
                         <p>{this.props.ownerNickname}</p>

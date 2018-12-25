@@ -50,7 +50,8 @@ export const responseMessageMapper = (messageResponse: IMessageServerModelRespon
 };
 
 export const serverModelChannelMapper = (channel: IChannel) => {
-    return {name: channel.name, customData: {...channel}} as IChannelServerModel;
+    return {name: channel.name, customData: {order: channel.order, name: channel.name, users: channel.users,
+            messages: channel.messages, owner: channel.owner}} as IChannelServerModel;
 };
 
 export const storeData = (key: string, value: string) => {
