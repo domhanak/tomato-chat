@@ -21,7 +21,6 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
     constructor(props: any) {
         super(props);
-        console.log(List(this.props.loggedUser!.channels).count());
         this.state = {
             value: '',
             nextOrder: List(this.props.loggedUser!.channels).count(),
@@ -30,9 +29,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
-
-        console.log(this.state.nextOrder + 1);
-        // this.props.onChannelAdd(this.state.value, this.state.nextOrder, this.props.loggedUser, this.props.authToken);
+        this.props.onChannelAdd(this.state.value, this.state.nextOrder, this.props.loggedUser, this.props.authToken);
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };
 
@@ -41,13 +38,18 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
         this.setState(_ => ({ value }));
     };
 
+    onChannelDeleteOrderUpdate = () => {
+        this.setState(prevState => ({ nextOrder: prevState.nextOrder - 2 }));
+        console.log(this.state.nextOrder);
+    }
+
     render(): JSX.Element {
         return (
             <div className="channels">
                 <header>
                     <h4>Channels</h4>
                 </header>
-                <ChannelListContainer />
+                <ChannelListContainer onChannelDeleteOrderUpdate={this.onChannelDeleteOrderUpdate} />
                 <div className="channel-creation">
                     <form onSubmit={this.handleChannelCreation}>
                         <input

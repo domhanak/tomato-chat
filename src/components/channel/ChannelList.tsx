@@ -14,6 +14,10 @@ export interface IChannelListProps {
     readonly allUsers: Immutable.List<IUser>;
 }
 
+export interface IChannelListCallBackProps {
+    readonly onChannelDeleteOrderUpdate: () => void;
+}
+
 export interface IChannelListDispatchProps {
     readonly updateChannelOrder: (authToken: AuthToken,
                                   channelId: Uuid, channel: IChannelServerModel,
@@ -26,7 +30,7 @@ interface IState {
     readonly value: string;
 }
 
-export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps, IState> {
+export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps & IChannelListCallBackProps, IState> {
 
     constructor(props: any) {
         super(props);
@@ -101,6 +105,7 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
         });
 
         this.props.onChannelDelete(channelToDelete.id, usersToUpdate, channelsToUpdate, this.props.authToken);
+        this.props.onChannelDeleteOrderUpdate();
     }
 
     render(): JSX.Element {

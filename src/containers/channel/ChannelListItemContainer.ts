@@ -15,7 +15,7 @@ import {IUser} from '../../models/IUser';
 
 const mapStateToProps = (state: IState, ownProps: IChannelListItemProps) => {
     const user: IUser | null = state.tomatoApp.users.usersById.find((_, key: Uuid) => { return key === ownProps.ownerId; });
-    const ownerNickname = user.nickname || '';
+    const ownerNickname = user != null ? user.nickname : '' ;
     return {
         channel: state.tomatoApp.channels.channelsById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedChannelId === ownProps.id,

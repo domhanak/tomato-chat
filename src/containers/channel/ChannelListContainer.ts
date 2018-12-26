@@ -14,16 +14,18 @@ import {serverModelChannelMapper} from '../../common/utils/utilFunctions';
 
 const mapStateToProps = (state: IState): IChannelListProps => {
     let channels = List<IChannel>();
-    state.tomatoApp.loggedUser!.channels.forEach((id: Uuid) => {
-        const channel = state.tomatoApp.channels!.channelsById.get(id);
-        if (channel) {
-            channels = channels.push(channel);
-        }
+    const loggedUser = state.tomatoApp.loggedUser;
+
+    state.tomatoApp.channels.channelsById.forEach((value: IChannel, _) => {
+        if (List(loggedUser!.channels).contains(value.id)) {
+           channels = channels.push(value);
+       }
     });
+
     return {
         allChannels: channels,
         authToken: state.tomatoApp.authToken,
-        loggedUser: state.tomatoApp.loggedUser,
+        loggedUser,
         allUsers: state.tomatoApp.users.usersById.toList(),
     };
 };

@@ -54,19 +54,6 @@ export const serverModelChannelMapper = (channel: IChannel) => {
             messages: channel.messages, owner: channel.owner}} as IChannelServerModel;
 };
 
-export const storeData = (key: string, value: string) => {
-    localStorage.setItem(key, value);
-};
-
-export const getStoredData = (key: string) => {
-    return localStorage.getItem(key);
-};
-
-export const clearStorage = (key: string) => {
-    localStorage.removeItem(key);
-};
-
-
 export const requestBody = (authToken?: string | null, text?: string) => {
     return {
         headers: {

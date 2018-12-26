@@ -6,7 +6,11 @@ import {
 } from '../../constants/actionTypes';
 import axios from 'axios';
 import {BASE_FILE_URI} from '../../constants/apiConstants';
-import {endpointFileConfigHeader, storeData} from '../../common/utils/utilFunctions';
+import {endpointFileConfigHeader} from '../../common/utils/utilFunctions';
+import {IUserServerModel} from '../../models/IUserServerModel';
+import {getDownloadLink} from './getDownloadLink';
+import {getFile} from './getFile';
+import {updateUser} from '../users/updateUser';
 
 const fileCreateStarted = (): Action => ({
     type: TOMATO_APP_FILE_CREATE_STARTED,
@@ -44,13 +48,22 @@ interface ICreateFileFactoryDependencies {
     readonly fileCreate: (file: File, authToken: AuthToken) => any;
 }
 
-const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies) => (authToken: AuthToken, file: File, appFileType: string) =>
+const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies) => (authToken: AuthToken, file: File, user: IUserServerModel) =>
     (dispatch: Dispatch): any => {
         dependencies.fileCreateStarted();
 
         return dependencies.fileCreate(file, authToken)
             .then((response: any) => {
-                storeData(appFileType, response.data[0].id);
+                // storeData(appFileType, response.data[0].id);
+                const avatarId = response.data[0].id;
+
+                getDownloadLink(authToken, avatarId as string)(dispatch);
+
+                const updatedUser = {email: user.email, customData: {...user.customData, avatarId}};
+
+                updateUser(authToken, updatedUser)(dispatch);
+                getFile(authToken, updatedUser.customData.avatarId)(dispatch);
+
                 dispatch(dependencies.fileCreateSuccess(response.data[0].id as Uuid));
             })
             .catch((error: any) => {
@@ -59,4 +72,4 @@ const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies)
             });
     };
 
-export const createFile = createAvatarCreateFactory(createChannelCreateFactoryDependencies);
+export const createAvatar = createAvatarCreateFactory(createChannelCreateFactoryDependencies);
