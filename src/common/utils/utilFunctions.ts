@@ -67,3 +67,11 @@ export const requestBody = (authToken?: string | null, text?: string) => {
         }
     };
 };
+
+export const validateEmail = (email: string) => {
+    if (!email) {
+        return false;
+    }
+
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email);
+};

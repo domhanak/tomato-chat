@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { createUser } from '../../actions/users/createUser';
+// import { registerUser } from '../../actions/users/registerUser';
 import { IState} from '../../common/IState';
 import { IUser} from '../../models/IUser';
 import {authenticate} from '../../actions/users/authenticateUser';
@@ -19,7 +19,7 @@ const mapStateToProps = (state: IState): ILoginFormOwnProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ILoginFormDispatchProps => {
     return {
-        onUserAdd: (username: string) => dispatch(createUser(username)),
+        // onUserAdd: (username: string) => registerUser()(dispatch),
         onUserAuthentication: (email: string) => authenticate(email)(dispatch),
     };
 };

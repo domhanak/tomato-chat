@@ -5,8 +5,6 @@ import {Dispatch} from 'redux';
 import {updateChannelOrder} from '../../actions/channel/updateChannelOrder';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {deleteChannel} from '../../actions/channel/deleteChannel';
-import {updateUser} from '../../actions/users/updateUser';
-import {IUserServerModel} from '../../models/IUserServerModel';
 import {List} from 'immutable';
 import {IChannel} from '../../models/IChannel';
 import {updateChannel} from '../../actions/channel/updateChannel';
@@ -17,7 +15,9 @@ const mapStateToProps = (state: IState): IChannelListProps => {
     const loggedUser = state.tomatoApp.loggedUser;
 
     state.tomatoApp.channels.channelsById.forEach((value: IChannel, _) => {
-        if (List(loggedUser!.channels).contains(value.id)) {
+
+
+        if (List(value.users).contains(loggedUser!.id) || value.owner === loggedUser!.id) {
            channels = channels.push(value);
        }
     });
@@ -36,13 +36,9 @@ const mapDispatchToProps = (dispatch: Dispatch): IChannelListDispatchProps => {
                              neighbourId: Uuid, neighbour: IChannelServerModel) => {
             updateChannelOrder(authToken, channelId, channel, neighbourId, neighbour)(dispatch);
         },
-        onChannelDelete: (deletedChannelId: Uuid, users: List<IUserServerModel>,
+        onChannelDelete: (deletedChannelId: Uuid,
                           channels: List<IChannel>, authToken: AuthToken) => {
             deleteChannel(authToken, deletedChannelId)(dispatch);
-
-            users.forEach((user: IUserServerModel) => {
-                updateUser(authToken, user)(dispatch);
-            });
 
             channels.forEach((channel: IChannel) => {
                updateChannel(authToken, serverModelChannelMapper(channel), channel.id)(dispatch);

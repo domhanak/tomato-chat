@@ -4,11 +4,9 @@ import {IState} from '../../common/IState';
 import {IChannelCallBackProps, IChannelOwnProps, IChannelStateProps, Channel} from '../../components/channel/Channel';
 import {startEditingChannel} from '../../actions/actionCreators';
 import {updateChannel} from '../../actions/channel/updateChannel';
-import {updateUser} from '../../actions/users/updateUser';
-import * as Immutable from 'immutable';
-import {IUser} from '../../models/IUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {registerUser} from '../../actions/users/registerUser';
 
 const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
     return {
@@ -23,11 +21,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelOwnProps) => {
         onStartEditing: () => dispatch(startEditingChannel(ownProps.id)),
         onChannelNameChange: (channelId: Uuid, channel: IChannelServerModel, authToken: AuthToken) =>
             updateChannel(authToken, channel, channelId)(dispatch),
-        updateChannelUsers: (channelId: Uuid, channel: IChannelServerModel, user: IUser, channels: Immutable.List<Uuid>, authToken: AuthToken) => {
+        onChannelChange: (channelId: Uuid, channel: IChannelServerModel, authToken: AuthToken) => {
             updateChannel(authToken, channel, channelId)(dispatch);
-            updateUser(authToken, {email: user.email, customData:
-                    {...user, channels}} as IUserServerModel)(dispatch);
         },
+        onUserRegistration: (authToken: AuthToken, user: IUserServerModel) => registerUser(authToken, user)(dispatch),
     };
 };
 

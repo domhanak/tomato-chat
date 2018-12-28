@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {List} from 'immutable';
 import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
 import {IUser} from '../../models/IUser';
 
 export interface IChannelsStateProps {
     readonly loggedUser: IUser | null;
     readonly authToken: AuthToken;
+    readonly nextOrder: number;
 }
 
 export interface IChannelsDispatchProps {
@@ -23,7 +23,7 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
         super(props);
         this.state = {
             value: '',
-            nextOrder: List(this.props.loggedUser!.channels).count(),
+            nextOrder: this.props.nextOrder,
         };
     }
 

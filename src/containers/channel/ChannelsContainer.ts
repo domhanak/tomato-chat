@@ -8,9 +8,12 @@ import {IState} from '../../common/IState';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 
 const mapStateToProps = (state: IState): IChannelsStateProps => {
+    const loggedUser = state.tomatoApp.loggedUser;
+    const nextOrder = 0;
     return {
-        loggedUser: state.tomatoApp.loggedUser,
+        loggedUser,
         authToken: state.tomatoApp.authToken,
+        nextOrder,
     };
 };
 
@@ -19,7 +22,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IChannelsDispatchProps => {
         onChannelAdd: (name: string, order: number, user: IUser | null, authToken: AuthToken) => {
             const owner = user!.id;
             createChannel(authToken, {name,
-                customData: {name, order, messages: List(), users: List(), owner}} as IChannelServerModel, user)(dispatch);
+                customData: {name, order, messages: List(), users: List(), owner}} as IChannelServerModel)(dispatch);
         }
     };
 };

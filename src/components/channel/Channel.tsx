@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 import {IChannel} from '../../models/IChannel';
-import * as Autocomplete from 'react-autocomplete';
 import * as Immutable from 'immutable';
 import {IUser} from '../../models/IUser';
 import {UserListItemContainer} from '../../containers/user/UserListItemContainer';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {validateEmail} from '../../common/utils/utilFunctions';
+import {IUserServerModel} from '../../models/IUserServerModel';
+import * as uuid from 'uuid';
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
@@ -20,14 +22,13 @@ export interface IChannelOwnProps {
 export interface IChannelCallBackProps {
     readonly onChannelNameChange: (channelId: Uuid, channel: IChannelServerModel, authToken: AuthToken) => void;
     readonly onStartEditing: () => void;
-    readonly updateChannelUsers:
-        (channelId: Uuid, channel: IChannelServerModel, user: IUser, channels: Immutable.List<Uuid>, authToken: AuthToken) => void;
+    readonly onChannelChange: (channelId: Uuid, channel: IChannelServerModel, authToken: AuthToken) => void;
+    readonly onUserRegistration: (authToken: AuthToken, user: IUserServerModel) => void;
 }
 
 interface IState {
     readonly channelName: string;
-    readonly user: IUser;
-    readonly userName: string;
+    readonly userEmail: string;
 }
 
 type IProps = IChannelOwnProps & IChannelStateProps & IChannelCallBackProps;
@@ -38,8 +39,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
         super(props);
         this.state = {
             channelName: this.props.channel.name,
-            user: {} as IUser,
-            userName: '',
+            userEmail: '',
         };
     }
 
@@ -58,78 +58,55 @@ export class Channel extends React.PureComponent<IProps, IState> {
 
     onUserRemove = (userId: Uuid) => {
         const filteredUsers = this.props.channel.users.filter(id => { return id !== userId; } );
-        const user = this.props.allUsers.find((item: IUser) => { return item.id !== userId; } );
-        const filteredChannels = user!.channels.filter(id => { return id !== this.props.channel.id; } );
         const channel: IChannelServerModel = {name: this.props.channel.name, customData: {
                 ...this.props.channel, users: Immutable.List(filteredUsers)
             }} as IChannelServerModel;
-        this.props.updateChannelUsers(
+        this.props.onChannelChange(
             this.props.channel.id,
             channel,
-            user,
-            Immutable.List(filteredChannels), this.props.authToken);
+            this.props.authToken);
     }
 
     addParticipant = (event: any) => {
         event.preventDefault();
-        if (this.state.user.id !== undefined) {
-            this.props.onStartEditing();
-            const user = this.props.allUsers.find((item: IUser) => { return item.id === this.state.user.id; } );
 
-            if (Immutable.List(user.channels).contains(this.props.channel.id)
-                || Immutable.List(this.props.channel.users).contains(this.state.user.id)) {
-                return;
-            }
-
-            const channel: IChannelServerModel = {name: this.props.channel.name, customData: {
-                    ...this.props.channel, users: Immutable.List(this.props.channel.users).push(this.state.user.id)
-                }} as IChannelServerModel;
-            this.props.updateChannelUsers(
-                this.props.channel.id,
-                channel,
-                this.state.user,
-                Immutable.List(user.channels).push(this.props.channel.id),
-                this.props.authToken);
-
-            this.setState(() => ({
-                user: {} as IUser,
-                userName: ''
-            }));
+        if (!validateEmail(this.state.userEmail)) {
+            return;
         }
+
+        this.props.onStartEditing();
+        let user = this.props.allUsers.find((item: IUser) => { return item.email === this.state.userEmail; } );
+
+        if (!user) {
+            const userServerModel = {email: this.state.userEmail, customData: {id: uuid(), nickname: '',
+                                     selectedChannel: this.props.channel.id, avatarId: ''}} as IUserServerModel;
+            user = {...userServerModel.customData, email: userServerModel.email};
+            this.props.onUserRegistration(this.props.authToken, userServerModel);
+        }
+
+
+        if (Immutable.List(this.props.channel.users).contains(user.id)) {
+            return;
+        }
+
+        const channel: IChannelServerModel = {name: this.props.channel.name, customData: {
+                ...this.props.channel, users: Immutable.List(this.props.channel.users).push(user.id)
+            }} as IChannelServerModel;
+        this.props.onChannelChange(
+            this.props.channel.id,
+            channel,
+            this.props.authToken);
+
+        this.setState(() => ({
+            userEmail: ''
+        }));
+
     }
 
-    getItemValue = (item: IUser) => {
-        return `${item.nickname}`;
-    }
-
-    onSelect = (_: string, item: IUser) => {
-        this.setState((__) => ({
-            userName: item.nickname,
-            user: item}));
-
-        return item;
-    }
-
-    renderMenu = (children: any) => {
-        return (
-          <div className="autocomplete-menu">
-              {children}
-          </div>
-        );
-    }
-
-    renderItem = (item: IUser, isHighlighted: boolean) => {
-        return (
-            <div className="autocomplete-item" style={{ background: isHighlighted ? 'lightgray' : 'white' }} key={item.id}>
-                {item.nickname}
-            </div>
-        );
-    }
-
-    onChange = (event: any) => {
+    onParticipantEmailChange = (event: any) => {
         event.persist();
         this.setState(_ => ({
-            userName: event.target.value
+            userEmail: event.target.value
         }));
     }
 
@@ -158,15 +135,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
                             <ControlLabel> New participant </ControlLabel>
                             <div className="row">
                                 <div className="col-8 autocomplete">
-                                    <Autocomplete
-                                        getItemValue={this.getItemValue}
-                                        items={this.props.allUsers.filter((user: IUser) => { return user.id !== this.props.channel.owner; }).toArray()}
-                                        renderMenu={this.renderMenu}
-                                        renderItem={this.renderItem}
-                                        value={this.state.userName}
-                                        onSelect={this.onSelect}
-                                        onChange={this.onChange}
-                                    />
+                                    <input onChange={this.onParticipantEmailChange} placeholder="email@email.com"/>
                                 </div>
                                 <button type="submit" className="col-1 glyphicon glyphicon-plus" />
                             </div>
