@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
-import {Profile} from '../profile/Profile';
 import * as React from 'react';
 import {ChatWindowContainer} from '../../containers/chat/ChatWindowContainer';
+import {ProfileContainer} from '../../containers/user/ProfileContainer';
 
 export const Navigation = () => (
     <Router>
@@ -24,7 +24,7 @@ export const Navigation = () => (
             <hr className="hr"/>
 
             <Route path="/"/>
-            <Route path="/profile" component={Profile}/>
+            <Route path="/profile" component={ProfileContainer}/>
             <Route path="/messages" component={ChatWindowContainer}/>
         </div>
     </Router>

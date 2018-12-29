@@ -3,6 +3,7 @@ import '../../styles/base.scss';
 import '../../styles/login.scss';
 import {IUser} from '../../models/IUser';
 import * as Immutable from 'immutable';
+import {validateEmail} from '../../common/utils/utilFunctions';
 
 export interface ILoginFormOwnProps {
     readonly users: Immutable.List<IUser>;
@@ -10,7 +11,7 @@ export interface ILoginFormOwnProps {
 }
 
 export interface ILoginFormDispatchProps {
-    readonly onUserAdd: (username: string) => void;
+    // readonly onUserAdd: (username: string) => void;
     readonly onUserAuthentication: (email: string) => void;
 }
 
@@ -35,7 +36,7 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
     handleSubmit = (event: any) => {
         event.preventDefault();
 
-        if (!this.validateEmail(this.state.username)) {
+        if (!validateEmail(this.state.username)) {
             return;
         }
 
@@ -43,15 +44,6 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
 
         this.setState(_ => ({ username: '', password: '' }));
     };
-
-    validateEmail = (email: string) => {
-        if (!email) {
-            return false;
-        }
-
-        return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email);
-    };
-
 
     constructor(props: IProps) {
         super(props);

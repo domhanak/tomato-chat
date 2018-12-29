@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {List} from 'immutable';
 import {ChannelListContainer} from '../../containers/channel/ChannelListContainer';
 import {IUser} from '../../models/IUser';
 
 export interface IChannelsStateProps {
     readonly loggedUser: IUser | null;
     readonly authToken: AuthToken;
+    readonly nextOrder: number;
 }
 
 export interface IChannelsDispatchProps {
@@ -23,13 +23,12 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
         super(props);
         this.state = {
             value: '',
-            nextOrder: List(this.props.loggedUser!.channels).count(),
+            nextOrder: this.props.nextOrder,
         };
     }
 
     handleChannelCreation = (event: any) => {
         event.preventDefault();
-
         this.props.onChannelAdd(this.state.value, this.state.nextOrder, this.props.loggedUser, this.props.authToken);
         this.setState(prevState => ({ value: '', nextOrder: prevState.nextOrder + 1 }));
     };
@@ -39,13 +38,18 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
         this.setState(_ => ({ value }));
     };
 
+    onChannelDeleteOrderUpdate = () => {
+        this.setState(prevState => ({ nextOrder: prevState.nextOrder - 2 }));
+        console.log(this.state.nextOrder);
+    }
+
     render(): JSX.Element {
         return (
             <div className="channels">
                 <header>
                     <h4>Channels</h4>
                 </header>
-                <ChannelListContainer />
+                <ChannelListContainer onChannelDeleteOrderUpdate={this.onChannelDeleteOrderUpdate} />
                 <div className="channel-creation">
                     <form onSubmit={this.handleChannelCreation}>
                         <input

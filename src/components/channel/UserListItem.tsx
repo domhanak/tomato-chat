@@ -23,11 +23,17 @@ export class UserListItem extends React.Component<IUserListItemStateProps & IUse
     }
 
     render(): JSX.Element {
-        return (
-            <li key={this.props.user.id}>
-                <h6>{this.props.user.nickname}</h6>
-                <a onClick={this.handleUserRemove} className="glyphicon glyphicon-minus"/>
-            </li>
-        );
+        return this.props.user ?
+                (
+                    <li key={this.props.user.id}>
+                        <h6>{this.props.user.nickname}</h6>
+                        <a onClick={this.handleUserRemove} className="glyphicon glyphicon-minus"/>
+                    </li>
+                )
+            :
+            (
+                <li/>
+            )
+        ;
     }
 }

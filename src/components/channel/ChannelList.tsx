@@ -3,23 +3,33 @@ import {IChannel} from '../../models/IChannel';
 import * as Immutable from 'immutable';
 import {ChannelListItemContainer} from '../../containers/channel/ChannelListItemContainer';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {IUser} from '../../models/IUser';
+import {List} from 'immutable';
 
 export interface IChannelListProps {
     readonly allChannels: Immutable.List<IChannel>;
     readonly authToken: AuthToken;
+    readonly loggedUser: IUser | null;
+    readonly allUsers: Immutable.List<IUser>;
+}
+
+export interface IChannelListCallBackProps {
+    readonly onChannelDeleteOrderUpdate: () => void;
 }
 
 export interface IChannelListDispatchProps {
     readonly updateChannelOrder: (authToken: AuthToken,
                                   channelId: Uuid, channel: IChannelServerModel,
                                   neighbourId: Uuid, neighbour: IChannelServerModel) => void;
+    readonly onChannelDelete: (deletedChannelId: Uuid, channels: List<IChannel>,
+                               authToken: AuthToken) => void;
 }
 
 interface IState {
     readonly value: string;
 }
 
-export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps, IState> {
+export class ChannelList extends React.Component<IChannelListProps & IChannelListDispatchProps & IChannelListCallBackProps, IState> {
 
     constructor(props: any) {
         super(props);
@@ -60,6 +70,23 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
         this.handleOrderChange(channel, channel.order + 1);
     };
 
+    onChannelDelete = (channelToDelete: IChannel) => {
+        let channelsToUpdate = List<IChannel>();
+        this.props.allChannels.forEach((channel: IChannel) => {
+           if (channel.id === channelToDelete.id) {
+               return;
+           }
+
+           if (channel.order > channelToDelete.order) {
+               const channelToUpdate: IChannel = {...channel, order: channel.order - 1} as IChannel;
+               channelsToUpdate = channelsToUpdate.push(channelToUpdate);
+           }
+        });
+
+        this.props.onChannelDelete(channelToDelete.id, channelsToUpdate, this.props.authToken);
+        this.props.onChannelDeleteOrderUpdate();
+    }
+
     render(): JSX.Element {
         return (
             <div className="channel-list">
@@ -69,7 +96,8 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
                         .map((channel: IChannel) => (
                         <ChannelListItemContainer key={channel.id} id={channel.id} ownerId={channel.owner}
                                                   onMoveDown={this.onMoveDown}
-                                                  onMoveUp={this.onMoveUp} />
+                                                  onMoveUp={this.onMoveUp}
+                                                  onChannelDelete={this.onChannelDelete}/>
                     ))}
                 </ul>
             </div>

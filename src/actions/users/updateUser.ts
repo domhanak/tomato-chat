@@ -36,7 +36,6 @@ const updateUsersSuccess = (users: Immutable.List<IUser>): Action => ({
     }
 });
 
-
 const userUpdate = (authToken: AuthToken, user: IUserServerModel) => {
     return axios.put(GET_USER_URI(user.email), JSON.stringify(user), endpointConfigHeader(authToken));
 };
@@ -60,7 +59,7 @@ interface IUpdateUserFactoryDependencies {
 const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =>
     (authToken: AuthToken, user: IUserServerModel) => (dispatch: Dispatch) => {
     dispatch(dependencies.updateUserStarted());
-    return userUpdate(authToken, user)
+    return dependencies.userUpdate(authToken, user)
         .then((response: any) => {
             return loadAllUsers(authToken)
                 .then((responseAllUsers: any) => {
@@ -72,9 +71,7 @@ const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =
                     const responseUser: IUserServerModel = (response.data as IUserServerModel);
 
                     dispatch(dependencies.updateUsersSuccess(users));
-                    dispatch(dependencies.updateUserSuccess({
-                        email: responseUser.email,
-                        ...responseUser.customData} as IUser));
+                    dispatch(dependencies.updateUserSuccess({email: responseUser.email, ...responseUser.customData} as IUser));
                 })
                 .catch((error: any) => {
                     console.log(error);

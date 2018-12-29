@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {IMessage} from '../../models/IMessage';
-import {MessageEdit} from "./MessageEdit";
-import {MessageDisplay} from "./MessageDisplay";
+import {MessageEdit} from './MessageEdit';
+import {MessageDisplay} from './MessageDisplay';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
@@ -12,7 +12,7 @@ export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
     readonly username: string;
-    readonly selectedChannel: Uuid
+    readonly selectedChannel: Uuid;
     readonly authToken: AuthToken;
 }
 

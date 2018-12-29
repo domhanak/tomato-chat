@@ -12,6 +12,7 @@ import {GET_USER_URI, USER_AUTH_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUser} from '../../models/IUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {getDownloadLink} from '../files/getDownloadLink';
 
 const userAuthenticateSuccess = (authenticationToken: String): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED,
@@ -82,15 +83,21 @@ const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryD
     return dependencies.authenticateUser(email)
         .then((response: any) => {
             const authToken = `Bearer ${response.data.token}`;
-            dispatch(dependencies.authenticateSuccess(authToken));
 
+            dispatch(dependencies.authenticateSuccess(authToken));
             dispatch(dependencies.logUserStarted());
+
             return dependencies.logUser(email, authToken)
                 .then((responselogUser: any) => {
                     const logUserResponse: IUserServerModel = responselogUser.data as IUserServerModel;
+
                     dispatch(dependencies.logUserSuccess({
                         email: logUserResponse.email,
                         ...logUserResponse.customData} as IUser));
+
+                    if (logUserResponse.customData.avatarId) {
+                        getDownloadLink(authToken, logUserResponse.customData.avatarId)(dispatch);
+                    }
                 })
                 .catch((error: any) => {
                     console.log(error);

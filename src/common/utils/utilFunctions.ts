@@ -24,6 +24,16 @@ export const endpointConfigHeader = (authToken?: string | null) => {
     };
 };
 
+export const endpointFileConfigHeader = (authToken: AuthToken) => {
+    return {
+        headers: {
+            accept: 'text/plain',
+            'Content-Type': 'multipart/form-data',
+            authorization: authToken,
+        }
+    };
+};
+
 export const responseChannelMapper = (channelResponse: IChannelServerModelResponse) => {
     return {id: channelResponse.id, ...channelResponse.customData} as IChannel;
 };
@@ -40,21 +50,9 @@ export const responseMessageMapper = (messageResponse: IMessageServerModelRespon
 };
 
 export const serverModelChannelMapper = (channel: IChannel) => {
-    return {name: channel.name, customData: {...channel}} as IChannelServerModel;
+    return {name: channel.name, customData: {order: channel.order, name: channel.name, users: channel.users,
+            messages: channel.messages, owner: channel.owner}} as IChannelServerModel;
 };
-
-export const storeChannelId = (channelId: Uuid) => {
-    localStorage.setItem('channelId', channelId);
-};
-
-export const getStoredChannelId = () => {
-    return localStorage.getItem('channelId');
-};
-
-export const clearStoredChannelId = () => {
-    localStorage.removeItem('channelId');
-};
-
 
 export const requestBody = (authToken?: string | null, text?: string) => {
     return {
@@ -68,4 +66,12 @@ export const requestBody = (authToken?: string | null, text?: string) => {
             messageUpdate: text
         }
     };
+};
+
+export const validateEmail = (email: string) => {
+    if (!email) {
+        return false;
+    }
+
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email);
 };
