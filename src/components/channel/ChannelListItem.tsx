@@ -3,6 +3,9 @@ import {ChannelContainer} from '../../containers/channel/ChannelContainer';
 import {IChannel} from '../../models/IChannel';
 import {IUser} from '../../models/IUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {userToServerModelMapper} from '../../common/utils/utilFunctions';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {List} from 'immutable';
 
 export interface IChannelListItemProps {
     readonly id: Uuid;
@@ -21,12 +24,13 @@ export interface IChannelListItemCallBackProps {
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
     readonly onChannelSelection: (authToken: AuthToken, user: IUserServerModel) => void;
+    readonly onChannelDelete: (deletedChannelId: Uuid, authToken: AuthToken, user: IUserServerModel) => void;
+    readonly onChannelRemove: (channel: IChannelServerModel, channelId: Uuid, user: IUserServerModel, authToken: AuthToken) => void;
 }
 
 interface IChannelListItemDispatchProps {
     readonly onMoveDown: (channel: IChannel) => void;
     readonly onMoveUp: (channel: IChannel) => void;
-    readonly onChannelDelete: (channelToDelete: IChannel) => void;
 }
 
 interface IState {
@@ -40,16 +44,36 @@ export class ChannelListItem extends React.Component<IProps, IState> {
     handleMoveDown = (event: any) => {
         event.preventDefault();
         this.props.onMoveDown(this.props.channel);
+        // todo
     }
 
     handleMoveUp = (event: any) => {
         event.preventDefault();
         this.props.onMoveUp(this.props.channel);
+        // todo
     }
 
     handleDelete = (event: any) => {
         event.preventDefault();
-        this.props.onChannelDelete(this.props.channel);
+        if (this.isChannelDeletable()) {
+            this.props.onChannelDelete(this.props.channel.id, this.props.authToken, userToServerModelMapper(this.props.loggedUser!));
+        }
+        else {
+            const users: List<Uuid> = List(this.props.channel.users)
+                .filter((value: Uuid) => { return value !== this.props.loggedUser!.id; }).toList();
+
+            const channelToUpdate: IChannelServerModel = {name: this.props.channel.name,
+                customData: {owner: this.props.channel.owner, messages: this.props.channel.messages, name: this.props.channel.name, users}};
+
+            const channelsToUpdate: List<Uuid> = List(this.props.loggedUser!.channels)
+                .filter((value: Uuid) => { return value !== this.props.channel.id; }).toList();
+
+            const userToUpdate: IUserServerModel = {email: this.props.loggedUser!.email,
+                customData: {selectedChannel: this.props.loggedUser!.selectedChannel, channels: channelsToUpdate,
+                avatarId: this.props.loggedUser!.avatarId, id: this.props.loggedUser!.id, nickname: this.props.loggedUser!.nickname} };
+
+            this.props.onChannelRemove(channelToUpdate, this.props.channel.id, userToUpdate, this.props.authToken);
+        }
     }
 
     handleClick = () => {
@@ -66,7 +90,12 @@ export class ChannelListItem extends React.Component<IProps, IState> {
         return `${className}${this.props.channel.id === this.props.loggedUser!.selectedChannel ? ` ${className}-selected` : ''}`;
     }
 
+    isChannelDeletable = () => {
+        return this.props.loggedUser!.id === this.props.channel.owner;
+    }
+
     render(): JSX.Element {
+        const classNames  = this.isChannelDeletable() ? 'delete glyphicon glyphicon-trash' : 'delete glyphicon glyphicon-minus';
         return (
             <li className={this.getSassClassName('channel-list-item__container')}>
                 <div onClick={this.handleChannelSelection} className="channel-list-item">
@@ -76,8 +105,8 @@ export class ChannelListItem extends React.Component<IProps, IState> {
                     <div className="channel-options visible">
                         <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog" />
                         <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
-                        <a onClick={this.handleMoveDown} className="arrowDown glyphicon glyphicon-arrow-down" />
-                        <a onClick={this.handleDelete} className="delete glyphicon glyphicon-minus"/>
+                        <a onClick={this.handleMoveDown} className="arrowdown glyphicon glyphicon-arrow-down" />
+                        <a onClick={this.handleDelete} className={classNames}/>
                     </div>
                     <div className="owner-nickname">
                         <p>{this.props.ownerNickname}</p>

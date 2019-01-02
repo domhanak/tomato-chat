@@ -12,6 +12,9 @@ import {updateUser} from '../../actions/users/updateUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {loadMessages} from '../../actions/message/loadMessages';
 import {IUser} from '../../models/IUser';
+import {deleteChannel} from '../../actions/channel/deleteChannel';
+import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {updateChannel} from '../../actions/channel/updateChannel';
 
 const mapStateToProps = (state: IState, ownProps: IChannelListItemProps) => {
     const user: IUser | null = state.tomatoApp.users.usersById.find((_, key: Uuid) => { return key === ownProps.ownerId; });
@@ -32,6 +35,11 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelListItemProps)
         onChannelSelection: (authToken: AuthToken, user: IUserServerModel) => {
             updateUser(authToken, user)(dispatch);
             loadMessages(authToken, user.customData.selectedChannel);
+        },
+        onChannelDelete: (deletedChannelId: Uuid, authToken: AuthToken, user: IUserServerModel) => deleteChannel(authToken, deletedChannelId, user)(dispatch),
+        onChannelRemove: (channel: IChannelServerModel, channelId: Uuid, user: IUserServerModel, authToken: AuthToken) => {
+            updateChannel(authToken, channel, channelId)(dispatch);
+            updateUser(authToken, user)(dispatch);
         },
     };
 };

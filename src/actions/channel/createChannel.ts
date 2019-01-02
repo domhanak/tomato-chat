@@ -9,6 +9,8 @@ import axios from 'axios';
 import {BASE_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/utilFunctions';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
+import {updateUser} from '../users/updateUser';
+import {IUserServerModel} from '../../models/IUserServerModel';
 
 const channelCreateStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,
@@ -43,7 +45,7 @@ interface ICreateChannelFactoryDependencies {
     readonly channelCreate: (authToken: AuthToken, channel: IChannelServerModel) => any;
 }
 
-const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependencies) => (authToken: AuthToken, channel: IChannelServerModel) =>
+const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependencies) => (authToken: AuthToken, channel: IChannelServerModel, user: IUserServerModel) =>
    (dispatch: Dispatch): any => {
         dispatch(dependencies.channelCreateStarted());
 
@@ -51,6 +53,9 @@ const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependenc
             .then((response: any) => {
                 const createdChannel: IChannel = responseChannelMapper(response.data);
                 dispatch(dependencies.channelCreateSuccess(createdChannel));
+
+                const userToUpdate: IUserServerModel = {email: user.email, customData: {...user.customData}} as IUserServerModel;
+                updateUser(authToken, userToUpdate)(dispatch);
             })
             .catch((error: any) => {
                 console.log(error);

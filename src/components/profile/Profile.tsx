@@ -36,7 +36,7 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
 
         const updatedUser: IUserServerModel = {email: this.props.user!.email,
             customData: {selectedChannel: this.props.user!.selectedChannel, nickname: this.state.nickname,
-                         id: this.props.user!.id, avatarId: this.props.user!.avatarId!}};
+                         id: this.props.user!.id, avatarId: this.props.user!.avatarId!, channels: this.props.user!.channels}};
 
         this.props.updateUserProfile(this.props.authToken, updatedUser, this.state.avatar);
     }

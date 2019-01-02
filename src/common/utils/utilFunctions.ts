@@ -3,6 +3,8 @@ import {IChannel} from '../../models/IChannel';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {IMessage} from '../../models/IMessage';
 import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
+import {IUser} from '../../models/IUser';
+import {IUserServerModel} from '../../models/IUserServerModel';
 
 export const endpointConfigHeader = (authToken?: string | null) => {
     return authToken ?
@@ -52,8 +54,12 @@ export const responseMessageMapper = (messageResponse: IMessageServerModelRespon
 };
 
 export const serverModelChannelMapper = (channel: IChannel) => {
-    return {name: channel.name, customData: {order: channel.order, name: channel.name, users: channel.users,
+    return {name: channel.name, customData: {name: channel.name, users: channel.users,
             messages: channel.messages, owner: channel.owner}} as IChannelServerModel;
+};
+
+export const userToServerModelMapper = (user: IUser) => {
+    return {email: user.email, customData: {...user}} as IUserServerModel;
 };
 
 
