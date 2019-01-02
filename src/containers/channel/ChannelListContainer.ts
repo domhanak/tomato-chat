@@ -7,8 +7,6 @@ import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {deleteChannel} from '../../actions/channel/deleteChannel';
 import {List} from 'immutable';
 import {IChannel} from '../../models/IChannel';
-import {updateChannel} from '../../actions/channel/updateChannel';
-import {serverModelChannelMapper} from '../../common/utils/utilFunctions';
 
 const mapStateToProps = (state: IState): IChannelListProps => {
     let channels = List<IChannel>();
@@ -36,13 +34,8 @@ const mapDispatchToProps = (dispatch: Dispatch): IChannelListDispatchProps => {
                              neighbourId: Uuid, neighbour: IChannelServerModel) => {
             updateChannelOrder(authToken, channelId, channel, neighbourId, neighbour)(dispatch);
         },
-        onChannelDelete: (deletedChannelId: Uuid,
-                          channels: List<IChannel>, authToken: AuthToken) => {
+        onChannelDelete: (deletedChannelId: Uuid, authToken: AuthToken) => {
             deleteChannel(authToken, deletedChannelId)(dispatch);
-
-            channels.forEach((channel: IChannel) => {
-               updateChannel(authToken, serverModelChannelMapper(channel), channel.id)(dispatch);
-            });
         },
     };
 };

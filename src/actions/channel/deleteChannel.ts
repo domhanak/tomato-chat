@@ -7,6 +7,7 @@ import {
 import axios from 'axios';
 import {GET_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
+import {loadChannels} from './loadChannels';
 
 const channelDeleteStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_DELETE_STARTED,
@@ -48,6 +49,7 @@ const createChannelDeleteFactory = (dependencies: IDeleteChannelFactoryDependenc
         return channelDelete(authToken, channelId)
             .then((_) => {
                 dispatch(dependencies.channelDeleteSuccess(channelId));
+                loadChannels(authToken)(dispatch);
             })
             .catch((error: any) => {
                 console.error(error);

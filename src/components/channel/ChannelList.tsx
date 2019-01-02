@@ -4,7 +4,6 @@ import * as Immutable from 'immutable';
 import {ChannelListItemContainer} from '../../containers/channel/ChannelListItemContainer';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {IUser} from '../../models/IUser';
-import {List} from 'immutable';
 
 export interface IChannelListProps {
     readonly allChannels: Immutable.List<IChannel>;
@@ -21,7 +20,7 @@ export interface IChannelListDispatchProps {
     readonly updateChannelOrder: (authToken: AuthToken,
                                   channelId: Uuid, channel: IChannelServerModel,
                                   neighbourId: Uuid, neighbour: IChannelServerModel) => void;
-    readonly onChannelDelete: (deletedChannelId: Uuid, channels: List<IChannel>,
+    readonly onChannelDelete: (deletedChannelId: Uuid,
                                authToken: AuthToken) => void;
 }
 
@@ -71,19 +70,7 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
     };
 
     onChannelDelete = (channelToDelete: IChannel) => {
-        let channelsToUpdate = List<IChannel>();
-        this.props.allChannels.forEach((channel: IChannel) => {
-           if (channel.id === channelToDelete.id) {
-               return;
-           }
-
-           if (channel.order > channelToDelete.order) {
-               const channelToUpdate: IChannel = {...channel, order: channel.order - 1} as IChannel;
-               channelsToUpdate = channelsToUpdate.push(channelToUpdate);
-           }
-        });
-
-        this.props.onChannelDelete(channelToDelete.id, channelsToUpdate, this.props.authToken);
+        this.props.onChannelDelete(channelToDelete.id, this.props.authToken);
         this.props.onChannelDeleteOrderUpdate();
     };
 

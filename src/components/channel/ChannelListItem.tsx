@@ -69,9 +69,9 @@ export class ChannelListItem extends React.Component<IProps, IState> {
     render(): JSX.Element {
         return (
             <li className={this.getSassClassName('channel-list-item__container')}>
-                <div className="channel-list-item">
+                <div onClick={this.handleChannelSelection} className="channel-list-item">
                     <div className={this.getSassClassName('channel-name')}>
-                        <h6 onClick={this.handleChannelSelection}>{this.props.channel.name}</h6>
+                        <h6>{this.props.channel.name}</h6>
                     </div>
                     <div className="channel-options visible">
                         <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog" />

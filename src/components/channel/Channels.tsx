@@ -40,7 +40,6 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
 
     onChannelDeleteOrderUpdate = () => {
         this.setState(prevState => ({ nextOrder: prevState.nextOrder - 2 }));
-        console.log(this.state.nextOrder);
     }
 
     render(): JSX.Element {
