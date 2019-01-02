@@ -1,14 +1,11 @@
-.list-group {
-  max-height: 400px;
-  margin-bottom: 10px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
 .message-list {
   background-color: white;
   text-align: left;
   height: auto;
+  max-height: 400px;
+  margin-bottom: 10px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .message-container {

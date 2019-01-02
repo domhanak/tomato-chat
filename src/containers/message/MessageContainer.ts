@@ -5,11 +5,14 @@ import {IMessageDispatchProps, IMessageOwnProps, IMessageStateProps, Message} fr
 import {cancelEditingMessage, startEditingMessage} from '../../actions/actionCreators';
 import {updateMessage} from '../../actions/message/updateMessage';
 import {IMessage} from '../../models/IMessage';
+import {deleteMessage} from "../../actions/message/deleteMessage";
+
 const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
     return {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedMessageId === ownProps.id,
         username: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.nickname : '',
+        avatarId: state.tomatoApp.avatarUri ? state.tomatoApp.avatarUri : '',
         selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : '',
         authToken: state.tomatoApp.authToken,
     };
@@ -21,7 +24,10 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IMessageOwnProps) => {
         onCancelEditing: () => dispatch(cancelEditingMessage(ownProps.id)),
         onEdit:  (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: string) => {
             updateMessage(authToken, message, channelId, newMessage)(dispatch);
-        }
+        },
+        onDelete:  (authToken: string | null, messageId: Uuid, channelId: Uuid) => {
+            deleteMessage(authToken, messageId, channelId)(dispatch);
+        },
     };
 };
 

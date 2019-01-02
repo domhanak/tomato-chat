@@ -12,12 +12,14 @@ export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
     readonly username: string;
+    readonly avatarId: string;
     readonly selectedChannel: Uuid;
     readonly authToken: AuthToken;
 }
 
 export interface IMessageDispatchProps {
     readonly onEdit: (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: string) => void;
+    readonly onDelete: (authToken: string | null, messageId: Uuid, channelId: Uuid) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
 }
@@ -31,14 +33,17 @@ export class Message extends React.PureComponent<IProps, IState> {
         this.props.onStartEditing();
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, newValue);
     };
+    onDeleteMessage = () => {
+        this.props.onDelete(this.props.authToken, this.props.message.id, this.props.selectedChannel);
+    };
     render(): JSX.Element {
-        const { index, username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
+        const {  username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
         return (
-            <div key={index} id="message-container" >
+            <div key={message.id} className="message-container" >
                 <div className="message">
                     <div className="message-author-img">
                         <a className="username-head thumbnail fill">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/827672/Screen%20Shot%202016-11-21%20at%209.58.01%20AM.png" alt="sunil"/>
+                            <img src={this.props.avatarId} alt="sunil"/>
                         </a>
                     </div>
 
@@ -46,6 +51,9 @@ export class Message extends React.PureComponent<IProps, IState> {
                         <div className="message-header">
                             <span>
                                 <a id="username">{username}</a>
+                            </span>
+                            <span>
+                                 <a onClick={this.onDeleteMessage} className="glyphicon glyphicon-minus"/>
                             </span>
                         </div>
                         {

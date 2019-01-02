@@ -20,7 +20,7 @@ export class UserListItem extends React.Component<IUserListItemStateProps & IUse
     handleUserRemove = (event: any) => {
         event.preventDefault();
         this.props.onUserRemove(this.props.userId);
-    }
+    };
 
     render(): JSX.Element {
         return this.props.user ?

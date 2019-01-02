@@ -85,7 +85,7 @@ export class ChannelList extends React.Component<IChannelListProps & IChannelLis
 
         this.props.onChannelDelete(channelToDelete.id, channelsToUpdate, this.props.authToken);
         this.props.onChannelDeleteOrderUpdate();
-    }
+    };
 
     render(): JSX.Element {
         return (
