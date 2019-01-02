@@ -46,6 +46,8 @@ export const responseMessageMapper = (messageResponse: IMessageServerModelRespon
         createdBy: messageResponse.createdBy,
         updatedAt: messageResponse.updatedAt,
         updatedBy: messageResponse.updatedBy,
+        upvotes: messageResponse.customData.upvotes,
+        downvotes: messageResponse.customData.downvotes,
     } as IMessage;
 };
 
@@ -54,19 +56,6 @@ export const serverModelChannelMapper = (channel: IChannel) => {
             messages: channel.messages, owner: channel.owner}} as IChannelServerModel;
 };
 
-export const requestBody = (authToken?: string | null, text?: string) => {
-    return {
-        headers: {
-            accept: 'application/json',
-                'Content-Type': 'application/json',
-                charset: 'utf-8',
-                authorization: authToken,
-        },
-        body: {
-            messageUpdate: text
-        }
-    };
-};
 
 export const validateEmail = (email: string) => {
     if (!email) {

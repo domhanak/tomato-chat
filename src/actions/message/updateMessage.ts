@@ -48,16 +48,11 @@ interface IUpdateMessageFactoryDependencies {
 }
 
 const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies): any =>
-    (authToken: string | null, message: IMessage, channelId: Uuid, newValue: string): any =>
+    (authToken: string | null, message: IMessage, channelId: Uuid, newValue: IMessageServerModel): any =>
         async (dispatch: Dispatch): Promise<IMessage> => {
             dispatch(dependencies.updateMessageStarted(message.id));
 
-            const serverMessage: IMessageServerModel = {
-                value: newValue,
-                customData: {},
-            };
-
-            return dependencies.updateMessageFromChannel(authToken, channelId, message.id, serverMessage)
+            return dependencies.updateMessageFromChannel(authToken, channelId, message.id, newValue)
                 .then((response: any) => {
                     const messageResponse: IMessageServerModelResponse = response.data as IMessageServerModelResponse;
                     dispatch(dependencies.updateMessageSuccess(responseMessageMapper(messageResponse)));

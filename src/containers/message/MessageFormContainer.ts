@@ -4,7 +4,7 @@ import { createMessage} from '../../actions/message/createMessage';
 import { IMessageFormDispatchProps, IMessageFormOwnProps, MessageForm} from '../../components/message/MessageForm';
 import { IState} from '../../common/IState';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
-import {IUser} from "../../models/IUser";
+import {IUser} from '../../models/IUser';
 
 const mapStateToProps = (state: IState): IMessageFormOwnProps => {
     return {

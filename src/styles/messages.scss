@@ -13,6 +13,22 @@
   box-shadow: grey;
 }
 
+.message-menu {
+  margin-left: 10px;
+}
+
+.message-menu a {
+  margin: 5px;
+}
+
+.message-menu span#positive-count-text {
+  color: green;
+}
+
+.message-menu span#negative-count-text {
+  color: crimson;
+}
+
 .message-text {
   alignment: left;
   margin-left: 20px;
@@ -72,6 +88,10 @@
   display: block;
   font-size: 12px;
   margin: 8px 0 0;
+}
+
+.time-date span {
+  margin-left: 10px;
 }
 
 .message-input {

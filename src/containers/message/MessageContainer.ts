@@ -5,7 +5,8 @@ import {IMessageDispatchProps, IMessageOwnProps, IMessageStateProps, Message} fr
 import {cancelEditingMessage, startEditingMessage} from '../../actions/actionCreators';
 import {updateMessage} from '../../actions/message/updateMessage';
 import {IMessage} from '../../models/IMessage';
-import {deleteMessage} from "../../actions/message/deleteMessage";
+import {deleteMessage} from '../../actions/message/deleteMessage';
+import {IMessageServerModel} from '../../models/IMessageServerModel';
 
 const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
     return {
@@ -22,7 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IMessageOwnProps) => {
     return {
         onStartEditing: () => dispatch(startEditingMessage(ownProps.id)),
         onCancelEditing: () => dispatch(cancelEditingMessage(ownProps.id)),
-        onEdit:  (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: string) => {
+        onEdit:  (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: IMessageServerModel) => {
             updateMessage(authToken, message, channelId, newMessage)(dispatch);
         },
         onDelete:  (authToken: string | null, messageId: Uuid, channelId: Uuid) => {

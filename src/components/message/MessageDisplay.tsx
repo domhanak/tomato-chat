@@ -12,7 +12,8 @@ export const MessageDisplay: React.SFC<IProps> = ({ message, onClick }) => (
             <p>{message.value}</p>
             <a>
                 <span className="time-date">
-                    { message.createdAt }
+                    <span>{new Date(message.createdAt.toLocaleString()).toLocaleDateString()}</span>
+                    <span>{new Date(message.createdAt.toLocaleString()).toLocaleTimeString()}</span>
                 </span>
             </a>
         </div>

@@ -5,4 +5,6 @@ export interface IMessage {
     readonly createdAt: Date;
     readonly updatedAt: Date;
     readonly updatedBy: Uuid;
+    readonly upvotes: number;
+    readonly downvotes: number;
 }
