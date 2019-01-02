@@ -6,6 +6,7 @@ export interface IMessageServerModelResponse {
     readonly updatedAt: Date;
     readonly updatedBy: Uuid;
     readonly customData: {
-
+        upvotes: number;
+        downvotes: number;
     }
 }

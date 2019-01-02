@@ -35,7 +35,10 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
         event.preventDefault();
         const newMessage = {
             value: this.state.value,
-            customData: {}
+            customData: {
+                upvotes: 0,
+                downvotes: 0,
+            }
         };
 
         this.props.onMessageAdd(newMessage, this.props.selectedChannel, this.props.authToken);

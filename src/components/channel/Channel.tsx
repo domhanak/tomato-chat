@@ -65,7 +65,7 @@ export class Channel extends React.PureComponent<IProps, IState> {
             this.props.channel.id,
             channel,
             this.props.authToken);
-    }
+    };
 
     addParticipant = (event: any) => {
         event.preventDefault();
@@ -101,14 +101,14 @@ export class Channel extends React.PureComponent<IProps, IState> {
             userEmail: ''
         }));
 
-    }
+    };
 
     onParticipantEmailChange = (event: any) => {
         event.persist();
         this.setState(_ => ({
             userEmail: event.target.value
         }));
-    }
+    };
 
     render(): JSX.Element {
         return (

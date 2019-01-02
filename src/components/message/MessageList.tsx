@@ -9,9 +9,10 @@ export interface IMessageListProps {
 export class MessageList extends React.PureComponent<IMessageListProps> {
     render(): JSX.Element {
         return (
-            <div className="message-list list-group" >
+            <div className="message-list" >
                 {
-                    this.props.messageIds.map((id: Uuid, index: number) => {
+                    this.props.messageIds
+                    && this.props.messageIds.map((id: Uuid, index: number) => {
                             return (
                                 <MessageContainer
                                     key={id}

@@ -36,23 +36,26 @@ const createLoadAllMessagesFactoryDependencies = {
     loadAllMessages
 };
 
-interface ILoadAllMesagesFactoryDependencies {
+interface ILoadAllMessagesFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (messages: ReadonlyArray<IMessage>) => Action;
     readonly loadingFailed: () => Action;
     readonly loadAllMessages: (authToken: string | null, channelId: Uuid) => any;
 }
 
-const createLoadAllMessagesFactory = (dependencies: ILoadAllMesagesFactoryDependencies) => (authToken: string | null, channelId: Uuid) =>
+const createLoadAllMessagesFactory = (dependencies: ILoadAllMessagesFactoryDependencies) => (authToken: string | null, channelId: Uuid) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
 
         return dependencies.loadAllMessages(authToken, channelId)
             .then((response: any) => {
                 const messages: IMessage[] = [];
-                response.data.forEach((serverData: IMessageServerModelResponse) => {
-                    messages.push(responseMessageMapper(serverData));
-                });
+                response.data
+                    .sort((
+                        msg1: IMessageServerModelResponse, msg2: IMessageServerModelResponse) => (msg1.createdAt > msg2.createdAt)
+                    ).forEach((serverData: IMessageServerModelResponse) => {
+                        messages.push(responseMessageMapper(serverData));
+                    });
 
                 dispatch(dependencies.loadingSuccess(messages));
             })

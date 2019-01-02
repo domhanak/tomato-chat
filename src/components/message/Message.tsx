@@ -2,6 +2,7 @@ import * as React from 'react';
 import {IMessage} from '../../models/IMessage';
 import {MessageEdit} from './MessageEdit';
 import {MessageDisplay} from './MessageDisplay';
+import {IMessageServerModel} from '../../models/IMessageServerModel';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
@@ -12,12 +13,14 @@ export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
     readonly username: string;
+    readonly avatarId: string;
     readonly selectedChannel: Uuid;
     readonly authToken: AuthToken;
 }
 
 export interface IMessageDispatchProps {
-    readonly onEdit: (authToken: string | null, message: IMessage, channelId: Uuid, newMessage: string) => void;
+    readonly onEdit: (authToken: string | null, message: IMessage, channelId: Uuid, serverMessage: IMessageServerModel) => void;
+    readonly onDelete: (authToken: string | null, messageId: Uuid, channelId: Uuid) => void;
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
 }
@@ -29,16 +32,43 @@ export interface IState {}
 export class Message extends React.PureComponent<IProps, IState> {
     onSubmitMessageTextChange = (newValue: string) => {
         this.props.onStartEditing();
-        this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, newValue);
+        this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
+            value: newValue,
+            customData: {
+                upvotes: this.props.message.upvotes,
+                downvotes: this.props.message.downvotes,
+            }
+        });
+    };
+    onDeleteMessage = () => {
+        this.props.onDelete(this.props.authToken, this.props.message.id, this.props.selectedChannel);
+    };
+    onUpvoteMessage = () => {
+        this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
+            value: this.props.message.value,
+            customData: {
+                upvotes: this.props.message.upvotes + 1,
+                downvotes: this.props.message.downvotes,
+            }
+        });
+    };
+    onDownvoteMessage = () => {
+        this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
+            value: this.props.message.value,
+            customData: {
+                upvotes: this.props.message.upvotes,
+                downvotes: this.props.message.downvotes + 1,
+            }
+        });
     };
     render(): JSX.Element {
-        const { index, username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
+        const {  username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
         return (
-            <div key={index} id="message-container" >
+            <div key={message.id} className="message-container" >
                 <div className="message">
                     <div className="message-author-img">
                         <a className="username-head thumbnail fill">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/827672/Screen%20Shot%202016-11-21%20at%209.58.01%20AM.png" alt="sunil"/>
+                            <img src={this.props.avatarId} alt="tomato"/>
                         </a>
                     </div>
 
@@ -46,6 +76,13 @@ export class Message extends React.PureComponent<IProps, IState> {
                         <div className="message-header">
                             <span>
                                 <a id="username">{username}</a>
+                            </span>
+                            <span className="message-menu">
+                                <a id="delete" onClick={this.onDeleteMessage} className="glyphicon glyphicon-trash"/>
+                                <a id="upvote" onClick={this.onUpvoteMessage} className="glyphicon glyphicon-plus-sign"/>
+                                <span id="positive-count-text"> {message.upvotes} </span>
+                                <a id="downvote" onClick={this.onDownvoteMessage} className="glyphicon glyphicon-minus-sign"/>
+                                <span id="negative-count-text"> {message.downvotes} </span>
                             </span>
                         </div>
                         {
