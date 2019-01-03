@@ -29,16 +29,11 @@ export interface IChannelListItemCallBackProps {
     readonly updateChannelOrder: (user: IUserServerModel, authToken: AuthToken) => void;
 }
 
-interface IChannelListItemDispatchProps {
-    readonly onMoveDown: (channel: IChannel) => void;
-    readonly onMoveUp: (channel: IChannel) => void;
-}
-
 interface IState {
 
 }
 
-type IProps = IChannelListItemProps & IChannelListItemStateProps & IChannelListItemCallBackProps & IChannelListItemDispatchProps;
+type IProps = IChannelListItemProps & IChannelListItemStateProps & IChannelListItemCallBackProps;
 
 export class ChannelListItem extends React.Component<IProps, IState> {
 

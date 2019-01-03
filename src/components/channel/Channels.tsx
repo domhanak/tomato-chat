@@ -38,17 +38,13 @@ export class Channels extends React.Component<IChannelsStateProps & IChannelsDis
         this.setState(_ => ({ value }));
     };
 
-    onChannelDeleteOrderUpdate = () => {
-        this.setState(prevState => ({ nextOrder: prevState.nextOrder - 2 }));
-    }
-
     render(): JSX.Element {
         return (
             <div className="channels">
                 <header>
                     <h4>Channels</h4>
                 </header>
-                <ChannelListContainer onChannelDeleteOrderUpdate={this.onChannelDeleteOrderUpdate} />
+                <ChannelListContainer/>
                 <div className="channel-creation">
                     <form onSubmit={this.handleChannelCreation}>
                         <input
