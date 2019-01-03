@@ -1,3 +1,5 @@
+import * as Immutable from 'immutable';
+
 export interface IUserServerModel {
     readonly email: string;
     readonly customData: {
@@ -5,5 +7,6 @@ export interface IUserServerModel {
         readonly nickname: string;
         readonly selectedChannel: Uuid;
         readonly avatarId: Uuid;
+        readonly channels: Immutable.List<Uuid>;
     };
 }
