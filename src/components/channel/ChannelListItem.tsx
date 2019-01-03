@@ -39,8 +39,6 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
     handleMoveDown = (event: any) => {
         event.preventDefault();
-        // this.props.onMoveDown(this.props.channel);
-        // todo
 
         const index: number = List(this.props.loggedUser!.channels)
             .findIndex((value: Uuid) => { return value === this.props.channel.id; });
@@ -56,8 +54,6 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
     handleMoveUp = (event: any) => {
         event.preventDefault();
-        // this.props.onMoveUp(this.props.channel);
-        // todo
 
         const index: number = List(this.props.loggedUser!.channels)
             .findIndex((value: Uuid) => { return value === this.props.channel.id; });
