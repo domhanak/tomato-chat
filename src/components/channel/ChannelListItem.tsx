@@ -26,6 +26,7 @@ export interface IChannelListItemCallBackProps {
     readonly onChannelSelection: (authToken: AuthToken, user: IUserServerModel) => void;
     readonly onChannelDelete: (deletedChannelId: Uuid, authToken: AuthToken, user: IUserServerModel) => void;
     readonly onChannelRemove: (channel: IChannelServerModel, channelId: Uuid, user: IUserServerModel, authToken: AuthToken) => void;
+    readonly updateChannelOrder: (user: IUserServerModel, authToken: AuthToken) => void;
 }
 
 interface IChannelListItemDispatchProps {
@@ -43,14 +44,48 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
     handleMoveDown = (event: any) => {
         event.preventDefault();
-        this.props.onMoveDown(this.props.channel);
+        // this.props.onMoveDown(this.props.channel);
         // todo
+
+        const index: number = List(this.props.loggedUser!.channels)
+            .findIndex((value: Uuid) => { return value === this.props.channel.id; });
+
+        const user: IUserServerModel = {email: this.props.loggedUser!.email,
+            customData: {nickname: this.props.loggedUser!.nickname, id: this.props.loggedUser!.id,
+                avatarId: this.props.loggedUser!.avatarId, selectedChannel: this.props.loggedUser!.selectedChannel,
+                channels: List(this.getNewChannelsOrder(List(this.props.loggedUser!.channels).toArray(),
+                    index, index + 1, this.props.channel.id))}};
+
+        this.props.updateChannelOrder(user, this.props.authToken);
     }
 
     handleMoveUp = (event: any) => {
         event.preventDefault();
-        this.props.onMoveUp(this.props.channel);
+        // this.props.onMoveUp(this.props.channel);
         // todo
+
+        const index: number = List(this.props.loggedUser!.channels)
+            .findIndex((value: Uuid) => { return value === this.props.channel.id; });
+
+        const user: IUserServerModel = {email: this.props.loggedUser!.email,
+            customData: {nickname: this.props.loggedUser!.nickname, id: this.props.loggedUser!.id,
+                avatarId: this.props.loggedUser!.avatarId, selectedChannel: this.props.loggedUser!.selectedChannel,
+                channels: List(this.getNewChannelsOrder(List(this.props.loggedUser!.channels).toArray(),
+                    index, index - 1, this.props.channel.id))}};
+
+        this.props.updateChannelOrder(user, this.props.authToken);
+    }
+
+    getNewChannelsOrder = (channels: Array<Uuid>, originalIndex: number, newIndex: number, channelId: Uuid) => {
+        if (newIndex < 0 || newIndex >= channels.length) {
+            return channels;
+        }
+
+        const tmp = channels[newIndex];
+        channels[newIndex] = channelId;
+        channels[originalIndex] = tmp;
+
+        return channels;
     }
 
     handleDelete = (event: any) => {

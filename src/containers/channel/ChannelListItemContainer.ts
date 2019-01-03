@@ -41,6 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: IChannelListItemProps)
             updateChannel(authToken, channel, channelId)(dispatch);
             updateUser(authToken, user)(dispatch);
         },
+        updateChannelOrder: (user: IUserServerModel, authToken: AuthToken) => updateUser(authToken, user)(dispatch),
     };
 };
 

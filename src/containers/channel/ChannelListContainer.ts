@@ -13,7 +13,8 @@ const mapStateToProps = (state: IState): IChannelListProps => {
 
     state.tomatoApp.channels.channelsById.forEach((value: IChannel, _) => {
         if (List(value.users).contains(loggedUser!.id) || value.owner === loggedUser!.id) {
-            allChannels = allChannels.push(value);
+            const index = List(state.tomatoApp.loggedUser!.channels).indexOf(value.id);
+            allChannels = allChannels.insert(index, value);
        }
     });
 
