@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as Immutable from 'immutable';
 import {MessageListContainer} from '../../containers/message/MessageListContainer';
-import {MessageFormContainer} from '../../containers/message/MessageFormContainer';
 import {ChannelsContainer} from '../../containers/channel/ChannelsContainer';
+import {MessageFormContainer} from '../../containers/message/MessageFormContainer';
 
 export interface IChatWindowStateProps {
     readonly isTyping: boolean;
@@ -34,17 +34,17 @@ export class ChatWindow extends React.Component<IChatWindowDispatchProps & IChat
     render(): JSX.Element {
 
         return (
-            <div id="chat-container">
+            <div>
                 <div className="col-lg-4 col-md-4 col-sm-4">
                     <div className="channel-container">
                         <ChannelsContainer />
                     </div>
                 </div>
-                <div className="col-lg-8 col-md-8 col-sm-8 chat">
+                <div>
                     <div className="message-container">
                         <MessageListContainer />
                     </div>
-                    <div className="new-message-container">
+                    <div>
                         <MessageFormContainer />
                     </div>
                 </div>

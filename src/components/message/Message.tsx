@@ -3,6 +3,7 @@ import {IMessage} from '../../models/IMessage';
 import {MessageEdit} from './MessageEdit';
 import {MessageDisplay} from './MessageDisplay';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
+import {RawDraftContentState} from 'draft-js';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
@@ -30,10 +31,14 @@ type IProps = IMessageOwnProps & IMessageStateProps & IMessageDispatchProps;
 export interface IState {}
 
 export class Message extends React.PureComponent<IProps, IState> {
-    onSubmitMessageTextChange = (newValue: string) => {
+    constructor(props: any) {
+        super(props);
+    }
+
+    onSubmitMessageTextChange = (text: RawDraftContentState ) => {
         this.props.onStartEditing();
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
-            value: newValue,
+            value: JSON.stringify(text),
             customData: {
                 upvotes: this.props.message.upvotes,
                 downvotes: this.props.message.downvotes,
@@ -45,7 +50,7 @@ export class Message extends React.PureComponent<IProps, IState> {
     };
     onUpvoteMessage = () => {
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
-            value: this.props.message.value,
+            value: JSON.stringify(this.props.message.value),
             customData: {
                 upvotes: this.props.message.upvotes + 1,
                 downvotes: this.props.message.downvotes,
@@ -54,13 +59,14 @@ export class Message extends React.PureComponent<IProps, IState> {
     };
     onDownvoteMessage = () => {
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
-            value: this.props.message.value,
+            value: JSON.stringify(this.props.message.value),
             customData: {
                 upvotes: this.props.message.upvotes,
                 downvotes: this.props.message.downvotes + 1,
             }
         });
     };
+
     render(): JSX.Element {
         const {  username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
         return (
@@ -87,7 +93,9 @@ export class Message extends React.PureComponent<IProps, IState> {
                         </div>
                         {
                             isBeingEdited
-                            ? <MessageEdit message={message} onSave={this.onSubmitMessageTextChange} onCancel={onCancelEditing}/>
+                            ? <MessageEdit message={message}
+                                           onSave={this.onSubmitMessageTextChange}
+                                           onCancel={onCancelEditing}/>
                             : <MessageDisplay message={message} onClick={onStartEditing} />
                         }
                     </div>

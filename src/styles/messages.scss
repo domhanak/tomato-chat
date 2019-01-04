@@ -5,12 +5,37 @@
   max-height: 400px;
   margin-bottom: 10px;
   overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
 }
 
 .message-container {
   border: 0;
   box-shadow: grey;
+}
+
+.rich-text-editor {
+  background-color: white;
+}
+
+.message-editor {
+  background-color: white;
+}
+
+.message-toolbar {
+  display: flex;
+}
+
+.message-submit-button {
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  color: darkblue;
+  background-color: #b7cbe3;
+  border-radius: 15px;
+  cursor: pointer;
+  z-index: 1;
 }
 
 .message-menu {
@@ -94,24 +119,15 @@
   margin-left: 10px;
 }
 
-.message-input {
-  position: relative;
-  background: white;
-  border: 0;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.075);
-}
-
-.message-input input {
-  border: medium;
-  font-size: 15px;
-  min-height: 48px;
-  width: 90%;
-}
-
 .message-input-button {
   background: crimson  none repeat scroll 0 0;
   border: medium none;
   font-size: 17px;
-  alignment: top;
+  alignment: right;
+  float: right;
+  z-index: 2;
+}
+
+.editor-without-toolbar {
+  display: none !important;
 }

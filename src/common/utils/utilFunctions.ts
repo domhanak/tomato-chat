@@ -43,7 +43,7 @@ export const responseChannelMapper = (channelResponse: IChannelServerModelRespon
 export const responseMessageMapper = (messageResponse: IMessageServerModelResponse): IMessage => {
     return {
         id: messageResponse.id,
-        value: messageResponse.value,
+        value: JSON.parse(messageResponse.value),
         createdAt: messageResponse.createdAt,
         createdBy: messageResponse.createdBy,
         updatedAt: messageResponse.updatedAt,

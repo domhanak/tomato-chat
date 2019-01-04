@@ -5,7 +5,7 @@ import {ProfileContainer} from '../../containers/user/ProfileContainer';
 
 export const Navigation = () => (
     <Router>
-        <div className="container">
+        <div className="container app-container">
             <ul className="nav-container-list list-inline">
                 <li>
                     <Link to="/">Home</Link>
