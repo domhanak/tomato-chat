@@ -11,8 +11,6 @@ import axios from 'axios';
 import {GET_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
-import {loadAllUsers} from './loadUsers';
-import {List} from 'immutable';
 
 const updateUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
@@ -61,22 +59,8 @@ const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =
     dispatch(dependencies.updateUserStarted());
     return dependencies.userUpdate(authToken, user)
         .then((response: any) => {
-            return loadAllUsers(authToken)
-                .then((responseAllUsers: any) => {
-                    let users: List<IUser> = List<IUser>();
-                    responseAllUsers.data.forEach((serverData: IUserServerModel) => {
-                        users = users.push({email: serverData.email, ...serverData.customData} as IUser);
-                    });
-
-                    const responseUser: IUserServerModel = (response.data as IUserServerModel);
-
-                    dispatch(dependencies.updateUsersSuccess(users));
-                    dispatch(dependencies.updateUserSuccess({email: responseUser.email, ...responseUser.customData} as IUser));
-                })
-                .catch((error: any) => {
-                    console.log(error);
-                    dispatch(dependencies.updateUserFailed());
-                });
+            const responseUser: IUserServerModel = (response.data as IUserServerModel);
+            dispatch(dependencies.updateUserSuccess({email: responseUser.email, ...responseUser.customData} as IUser));
         })
         .catch((error: any) => {
             console.log(error);

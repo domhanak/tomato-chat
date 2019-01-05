@@ -13,6 +13,7 @@ export interface IChannelStateProps {
     readonly channel: IChannel;
     readonly allUsers: Immutable.List<IUser>;
     readonly authToken: AuthToken;
+    readonly loggedUser: IUser;
 }
 
 export interface IChannelOwnProps {
@@ -57,6 +58,10 @@ export class Channel extends React.PureComponent<IProps, IState> {
     };
 
     onUserRemove = (userId: Uuid) => {
+        if (this.props.channel.owner !== this.props.loggedUser.id) {
+            return;
+        }
+
         const filteredUsers = this.props.channel.users.filter(id => { return id !== userId; } );
         const channel: IChannelServerModel = {name: this.props.channel.name, customData: {
                 ...this.props.channel, users: Immutable.List(filteredUsers)

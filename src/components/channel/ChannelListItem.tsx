@@ -23,9 +23,9 @@ export interface IChannelListItemStateProps {
 export interface IChannelListItemCallBackProps {
     readonly onStartEditing: () => void;
     readonly onCancelEditing: () => void;
-    readonly onChannelSelection: (authToken: AuthToken, user: IUserServerModel) => void;
     readonly onChannelDelete: (deletedChannelId: Uuid, authToken: AuthToken, user: IUserServerModel) => void;
     readonly onChannelRemove: (channel: IChannelServerModel, channelId: Uuid, user: IUserServerModel, authToken: AuthToken) => void;
+    readonly onChannelSelection: (authToken: AuthToken, user: IUserServerModel) => void;
     readonly updateChannelOrder: (user: IUserServerModel, authToken: AuthToken) => void;
 }
 
@@ -43,9 +43,13 @@ export class ChannelListItem extends React.Component<IProps, IState> {
         const index: number = List(this.props.loggedUser!.channels)
             .findIndex((value: Uuid) => { return value === this.props.channel.id; });
 
+        if (index >= List(this.props.loggedUser!.channels).count() - 1) {
+            return;
+        }
+
         const user: IUserServerModel = {email: this.props.loggedUser!.email,
             customData: {nickname: this.props.loggedUser!.nickname, id: this.props.loggedUser!.id,
-                avatarId: this.props.loggedUser!.avatarId, selectedChannel: this.props.loggedUser!.selectedChannel,
+                avatarId: this.props.loggedUser!.avatarId, selectedChannel: this.props.channel.id,
                 channels: List(this.getNewChannelsOrder(List(this.props.loggedUser!.channels).toArray(),
                     index, index + 1, this.props.channel.id))}};
 
@@ -58,9 +62,13 @@ export class ChannelListItem extends React.Component<IProps, IState> {
         const index: number = List(this.props.loggedUser!.channels)
             .findIndex((value: Uuid) => { return value === this.props.channel.id; });
 
+        if (index === 0) {
+            return;
+        }
+
         const user: IUserServerModel = {email: this.props.loggedUser!.email,
             customData: {nickname: this.props.loggedUser!.nickname, id: this.props.loggedUser!.id,
-                avatarId: this.props.loggedUser!.avatarId, selectedChannel: this.props.loggedUser!.selectedChannel,
+                avatarId: this.props.loggedUser!.avatarId, selectedChannel: this.props.channel.id,
                 channels: List(this.getNewChannelsOrder(List(this.props.loggedUser!.channels).toArray(),
                     index, index - 1, this.props.channel.id))}};
 
@@ -104,12 +112,19 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
     handleClick = () => {
         this.props.isBeingEdited ? this.props.onCancelEditing() : this.props.onStartEditing();
-        this.handleChannelSelection();
     }
 
     handleChannelSelection = () => {
         this.props.onChannelSelection(this.props.authToken, {email: this.props.loggedUser!.email,
             customData: {...this.props.loggedUser, selectedChannel: this.props.channel.id}} as IUserServerModel);
+    }
+
+    onChannelSelectionChanged = (event: any) => {
+        event.preventDefault();
+        event.persist();
+        if (event.target.className.indexOf('channel-selection') !== -1) {
+            this.handleChannelSelection();
+        }
     }
 
     getSassClassName = (className: string) => {
@@ -124,20 +139,20 @@ export class ChannelListItem extends React.Component<IProps, IState> {
         const classNames  = this.isChannelDeletable() ? 'delete glyphicon glyphicon-trash' : 'delete glyphicon glyphicon-minus';
         return (
             <li className={this.getSassClassName('channel-list-item__container')}>
-                <div onClick={this.handleChannelSelection} className="channel-list-item">
-                    <div className={this.getSassClassName('channel-name')}>
+                <div onClick={this.onChannelSelectionChanged} className="channel-list-item channel-selection">
+                    <div className={this.getSassClassName('channel-name') + ' channel-selection'}>
                         <h6>{this.props.channel.name}</h6>
                     </div>
-                    <div className="channel-options visible">
-                        <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog" />
+                    <div className="channel-options visible channel-selection">
+                        <a onClick={this.handleClick} className="settings glyphicon glyphicon-cog channel-selection" />
                         <a onClick={this.handleMoveUp} className="arrowUp glyphicon glyphicon-arrow-up" />
                         <a onClick={this.handleMoveDown} className="arrowdown glyphicon glyphicon-arrow-down" />
                         <a onClick={this.handleDelete} className={classNames}/>
                     </div>
-                    <div className="owner-nickname">
-                        <p>{this.props.ownerNickname}</p>
+                    <div className="owner-nickname channel-selection">
+                        <p className="channel-selection">{this.props.ownerNickname}</p>
                     </div>
-                    <div>
+                    <div className="channel-selection">
                         {this.props.isBeingEdited ? <ChannelContainer id={this.props.id}/> : <div />}
                     </div>
                 </div>

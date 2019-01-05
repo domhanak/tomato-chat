@@ -11,6 +11,7 @@ import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/ut
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {updateUser} from '../users/updateUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {List} from 'immutable';
 
 const channelCreateStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,
@@ -54,7 +55,8 @@ const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependenc
                 const createdChannel: IChannel = responseChannelMapper(response.data);
                 dispatch(dependencies.channelCreateSuccess(createdChannel));
 
-                const userToUpdate: IUserServerModel = {email: user.email, customData: {...user.customData}} as IUserServerModel;
+                const userToUpdate: IUserServerModel = {email: user.email, customData: {...user.customData,
+                        channels: List(user.customData.channels).push(createdChannel.id)}} as IUserServerModel;
                 updateUser(authToken, userToUpdate)(dispatch);
             })
             .catch((error: any) => {

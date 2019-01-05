@@ -13,6 +13,10 @@ import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUser} from '../../models/IUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getDownloadLink} from '../files/getDownloadLink';
+import {loadAllChannels} from '../channel/loadChannels';
+import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
+import {List} from 'immutable';
+import {updateUser} from './updateUser';
 
 const userAuthenticateSuccess = (authenticationToken: String): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED,
@@ -76,6 +80,32 @@ interface ICreateAuthenticationFactoryDependencies {
     readonly logUserFailed: () => Action;
 }
 
+const updateChannelsOnUser = (authToken: AuthToken, user: IUserServerModel, dispatch: Dispatch, dependencies: ICreateAuthenticationFactoryDependencies) => {
+    return loadAllChannels(authToken)
+        .then((response: any) => {
+            let channels: List<Uuid> = List();
+            response.data.forEach((serverData: IChannelServerModelResponse) => {
+                if (List(serverData.customData.users).contains(user.customData.id) || serverData.customData.owner === user.customData.id) {
+                    channels = channels.push(serverData.id);
+                }
+            });
+
+            if (channels.count() !== List(user.customData.channels).count()) {
+                updateUser(authToken,
+                    {email: user.email, customData: {...user.customData, channels}} as IUserServerModel)(dispatch);
+            }
+            else {
+                dispatch(dependencies.logUserSuccess({
+                    email: user.email,
+                    ...user.customData} as IUser));
+            }
+        })
+        .catch((error: any) => {
+            console.log(error);
+            dispatch(dependencies.logUserFailed());
+        });
+};
+
 const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryDependencies) => (email: string) =>
     (dispatch: Dispatch): any => {
     dispatch(dependencies.authenticationStarted());
@@ -91,9 +121,7 @@ const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryD
                 .then((responselogUser: any) => {
                     const logUserResponse: IUserServerModel = responselogUser.data as IUserServerModel;
 
-                    dispatch(dependencies.logUserSuccess({
-                        email: logUserResponse.email,
-                        ...logUserResponse.customData} as IUser));
+                    updateChannelsOnUser(authToken, logUserResponse, dispatch, dependencies);
 
                     if (logUserResponse.customData.avatarId) {
                         getDownloadLink(authToken, logUserResponse.customData.avatarId)(dispatch);
