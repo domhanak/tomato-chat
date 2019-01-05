@@ -13,6 +13,7 @@ const mapStateToProps = (state: IState, ownProps: IChannelOwnProps) => {
         channel: state.tomatoApp.channels.channelsById.get(ownProps.id),
         allUsers: state.tomatoApp.users.usersById.toList(),
         authToken: state.tomatoApp.authToken,
+        loggedUser: state.tomatoApp.loggedUser!,
     };
 };
 

@@ -11,27 +11,18 @@ export interface IChannelListProps {
     readonly allUsers: Immutable.List<IUser>;
 }
 
-interface IState {
-    readonly value: string;
-}
-
-export class ChannelList extends React.Component<IChannelListProps, IState> {
-
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            value: '',
-        };
-    }
+export class ChannelList extends React.Component<IChannelListProps> {
 
     render(): JSX.Element {
+
         return (
             <div className="channel-list">
                 <ul className="list-group">
                     {this.props.allChannels && this.props.allChannels
-                        .map((channel: IChannel) => (
-                        <ChannelListItemContainer key={channel.id} id={channel.id} ownerId={channel.owner}/>
-                    ))}
+                        .map((channel: IChannel, index: number) => {
+                            return channel ? <ChannelListItemContainer key={index} id={channel.id} ownerId={channel.owner}/> : <div key={index}/>;
+                        }
+                    )}
                 </ul>
             </div>
         );

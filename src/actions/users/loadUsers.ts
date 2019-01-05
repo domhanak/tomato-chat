@@ -25,7 +25,7 @@ const loadingSuccess = (users: ReadonlyArray<IUser>): Action => ({
     }
 });
 
-export const loadAllUsers = (authToken: string | null) => {
+const loadAllUsers = (authToken: string | null) => {
     return axios.get(BASE_USER_URI, endpointConfigHeader(authToken));
 };
 
