@@ -8,6 +8,7 @@ import {IMessage} from '../../models/IMessage';
 import {deleteMessage} from '../../actions/message/deleteMessage';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
 import {IUserAnnotation} from '../../models/IUserAnnotation';
+import {IUser} from '../../models/IUser';
 
 const getAvailableUsersToAnnotate = (state: IState): any => {
     const annotatedUsers: IUserAnnotation[] = [];
@@ -22,11 +23,18 @@ const getAvailableUsersToAnnotate = (state: IState): any => {
     return annotatedUsers;
 };
 
+const getMessageAuthorName = (state: IState, ownProps: IMessageOwnProps): string => {
+    return state.tomatoApp.users
+            ? state.tomatoApp.users.usersById.find((user: IUser) =>
+                (user.email === state.tomatoApp.messages.messagesById.get(ownProps.id).createdBy)).nickname
+            : '';
+};
+
 const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
     return {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedMessageId === ownProps.id,
-        username: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.nickname : '',
+        username: getMessageAuthorName(state, ownProps),
         avatarId: state.tomatoApp.avatarUri ? state.tomatoApp.avatarUri : '',
         selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : '',
         authToken: state.tomatoApp.authToken,
