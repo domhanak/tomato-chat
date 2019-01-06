@@ -54,7 +54,7 @@ export class ChannelListItem extends React.Component<IProps, IState> {
                     index, index + 1, this.props.channel.id))}};
 
         this.props.updateChannelOrder(user, this.props.authToken);
-    }
+    };
 
     handleMoveUp = (event: any) => {
         event.preventDefault();
@@ -73,7 +73,7 @@ export class ChannelListItem extends React.Component<IProps, IState> {
                     index, index - 1, this.props.channel.id))}};
 
         this.props.updateChannelOrder(user, this.props.authToken);
-    }
+    };
 
     getNewChannelsOrder = (channels: Array<Uuid>, originalIndex: number, newIndex: number, channelId: Uuid) => {
         if (newIndex < 0 || newIndex >= channels.length) {
@@ -85,7 +85,7 @@ export class ChannelListItem extends React.Component<IProps, IState> {
         channels[originalIndex] = tmp;
 
         return channels;
-    }
+    };
 
     handleDelete = (event: any) => {
         event.preventDefault();
@@ -108,16 +108,16 @@ export class ChannelListItem extends React.Component<IProps, IState> {
 
             this.props.onChannelRemove(channelToUpdate, this.props.channel.id, userToUpdate, this.props.authToken);
         }
-    }
+    };
 
     handleClick = () => {
         this.props.isBeingEdited ? this.props.onCancelEditing() : this.props.onStartEditing();
-    }
+    };
 
     handleChannelSelection = () => {
         this.props.onChannelSelection(this.props.authToken, {email: this.props.loggedUser!.email,
             customData: {...this.props.loggedUser, selectedChannel: this.props.channel.id}} as IUserServerModel);
-    }
+    };
 
     onChannelSelectionChanged = (event: any) => {
         event.preventDefault();
@@ -125,15 +125,15 @@ export class ChannelListItem extends React.Component<IProps, IState> {
         if (event.target.className.indexOf('channel-selection') !== -1) {
             this.handleChannelSelection();
         }
-    }
+    };
 
     getSassClassName = (className: string) => {
         return `${className}${this.props.channel.id === this.props.loggedUser!.selectedChannel ? ` ${className}-selected` : ''}`;
-    }
+    };
 
     isChannelDeletable = () => {
         return this.props.loggedUser!.id === this.props.channel.owner;
-    }
+    };
 
     render(): JSX.Element {
         const classNames  = this.isChannelDeletable() ? 'delete glyphicon glyphicon-trash' : 'delete glyphicon glyphicon-minus';

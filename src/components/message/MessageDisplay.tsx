@@ -5,9 +5,11 @@ import {
     convertFromRaw,
     EditorState,
 } from 'draft-js';
+import {IUserAnnotation} from '../../models/IUserAnnotation';
 
 interface IProps {
     readonly message: IMessage;
+    readonly usersForAnnotation: ReadonlyArray<IUserAnnotation>;
     readonly onClick?: () => void;
 }
 
@@ -36,6 +38,14 @@ export class MessageDisplay extends React.PureComponent<IProps> {
                         toolbarClassName="editor-without-toolbar"
                         wrapperClassName="wrapperClassName"
                         editorClassName="editorClassName"
+                        toolbar={{
+                            image: { alignmentEnabled: false }
+                        }}
+                        mention={{
+                            separator: ' ',
+                            trigger: '@',
+                            suggestions: this.props.usersForAnnotation,
+                        }}
                     />
                     <a>
                         <span className="time-date">
