@@ -7,12 +7,35 @@ export interface IMessageListProps {
 }
 
 export class MessageList extends React.PureComponent<IMessageListProps> {
+
+    private messageListRef = React.createRef<HTMLDivElement>();
+    private listShouldAutoScroll: boolean = true;
+
+    componentDidMount(): void {
+        window.onload = () => {
+            this.messageListRef.current!.scrollTop = this.messageListRef.current!.scrollHeight;
+        };
+    }
+
+    componentDidUpdate(): void {
+        if (this.listShouldAutoScroll) {
+            this.messageListRef.current!.scrollTop = this.messageListRef.current!.scrollHeight;
+        }
+    }
+
+    private handleScroll = () => {
+        const scroll = Math.round(this.messageListRef.current!.scrollTop + this.messageListRef.current!.offsetHeight);
+        const scrollHeight =  Math.round(this.messageListRef.current!.scrollHeight);
+        this.listShouldAutoScroll = (scroll === scrollHeight);
+    };
+
     render(): JSX.Element {
         return (
-            <div className="message-list" >
-                {
-                    this.props.messageIds
-                    && this.props.messageIds.map((id: Uuid, index: number) => {
+            <div className="message-list" ref={this.messageListRef} onScroll={this.handleScroll} >
+                {this.props.messageIds.isEmpty() ?
+                    <span>No messages in this channel! Be the first!</span> :
+                    (
+                        this.props.messageIds && this.props.messageIds.map((id: Uuid, index: number) => {
                             return (
                                 <MessageContainer
                                     key={id}
@@ -20,7 +43,7 @@ export class MessageList extends React.PureComponent<IMessageListProps> {
                                     index={index + 1}
                                 />
                             );
-                        }
+                        })
                     )
                 }
             </div>

@@ -39,24 +39,24 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
                          id: this.props.user!.id, avatarId: this.props.user!.avatarId!, channels: this.props.user!.channels}};
 
         this.props.updateUserProfile(this.props.authToken, updatedUser, this.state.avatar);
-    }
+    };
 
     avatarUpdate = (event: any) => {
         event.persist();
         this.setState((_) => ({
             avatar: event.target.files[0]
         }));
-    }
+    };
 
     nameChanged = (event: any) => {
         event.persist();
         event.preventDefault();
         this.setState((_) => ({nickname: event.target.value}));
-    }
+    };
 
     getAvatarLink = () => {
         return this.props.avatarUri ? this.props.avatarUri : 'http://placehold.it/200x200';
-    }
+    };
 
 
     render(): JSX.Element {

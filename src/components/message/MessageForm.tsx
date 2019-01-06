@@ -7,11 +7,13 @@ import {
     convertToRaw,
     EditorState,
 } from 'draft-js';
+import {IUserAnnotation} from '../../models/IUserAnnotation';
 
 export interface IMessageFormOwnProps {
     readonly loggedUser: IUser;
     readonly authToken: AuthToken;
     readonly selectedChannel: Uuid;
+    readonly usersForAnnotation: ReadonlyArray<IUserAnnotation>;
 }
 
 export interface IMessageFormDispatchProps {
@@ -44,19 +46,10 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
         document.addEventListener('keydown', (e: KeyboardEvent) => this.onKeyDown(e));
     }
 
-    /**
-     * Submit the message and send it to server.
-     *
-     * @param event
-     */
     private onSubmit = (): void => {
         const contentState = this.state.editorState.getCurrentContent();
         const rawContent = convertToRaw(contentState);
-       /* const hasText = !!rawContent.blocks[0].text;
-        if (!hasText) {
-            return;
-        }
-*/
+
         const newMessage = {
             value: JSON.stringify(rawContent),
             customData: {
@@ -76,7 +69,7 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
     private onEditorStateChange = (editorState: EditorState) => (this.setState(() => ({ editorState })));
 
     private onKeyDown(e: KeyboardEvent): void {
-        if (document.activeElement.className !== 'MessageEditor__textArea') {
+        if (document.activeElement.className !== 'message-editor') {
             return;
         }
         if (!e.ctrlKey || e.key !== 'Enter') {
@@ -97,16 +90,16 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
                 xhr.addEventListener('load', () => {
                     const response = JSON.parse(xhr.responseText);
                     resolve(response);
-                    this.setState({
+                    this.setState(_ => ({
                         imageSrc: response.link || response.url,
-                    });
+                    }));
                 });
                 xhr.addEventListener('error', () => {
                     const error = JSON.parse(xhr.responseText);
                     reject(error);
                 });
             }
-        )
+        );
     };
 
     public render(): JSX.Element | null {
@@ -119,15 +112,21 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
                         editorClassName="message-editor"
                         onEditorStateChange={this.onEditorStateChange}
                         toolbar={{
-                            inline: { inDropdown: true, },
+                            inline: { inDropdown: true },
                             blockType: {inDropdown: true},
                             list: { inDropdown: true },
                             textAlign: { inDropdown: true },
                             link: { inDropdown: true },
                             history: { inDropdown: true },
-                            image: { uploadCallback: this.uploadImageCallback, alt: { present: true, mandatory: false } },
+                            image: { uploadCallback: this.uploadImageCallback, alt: { present: true, mandatory: false },  alignmentEnabled: false },
                         }}
                         placeholder="Tell us your message..."
+
+                        mention={{
+                            separator: ' ',
+                            trigger: '@',
+                            suggestions: this.props.usersForAnnotation,
+                        }}
                     />
                     <div id="message-submit-button">
                         <button type={'submit'} className={'btn btn-primary message-input-button'}

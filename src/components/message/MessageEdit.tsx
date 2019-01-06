@@ -2,9 +2,11 @@ import * as React from 'react';
 import {IMessage} from '../../models/IMessage';
 import {Editor} from 'react-draft-wysiwyg';
 import {convertFromRaw, convertToRaw, EditorState, RawDraftContentState} from 'draft-js';
+import {IUserAnnotation} from '../../models/IUserAnnotation';
 
 interface IProps {
     readonly message: IMessage;
+    readonly usersForAnnotation: ReadonlyArray<IUserAnnotation>;
     readonly onSave: (text: RawDraftContentState) => void;
     readonly onCancel: () => void;
 }
@@ -25,9 +27,9 @@ export class MessageEdit extends React.PureComponent<IProps, IState> {
     }
 
     private onEditorStateChange = (editorState: EditorState) => {
-        this.setState({
-            editorState,
-        });
+        this.setState(_ => ({
+            editorState
+        }));
     };
 
     private onSave = () => {
@@ -59,6 +61,20 @@ export class MessageEdit extends React.PureComponent<IProps, IState> {
                     toolbarClassName="toolbar-editor"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
+                    toolbar={{
+                        inline: { inDropdown: true },
+                        blockType: {inDropdown: true},
+                        list: { inDropdown: true },
+                        textAlign: { inDropdown: true },
+                        link: { inDropdown: true },
+                        history: { inDropdown: true },
+                        image: { alignmentEnabled: false }
+                    }}
+                    mention={{
+                        separator: ' ',
+                        trigger: '@',
+                        suggestions: this.props.usersForAnnotation,
+                    }}
                 />
                 <button type="submit" className="btn btn-primary">Save</button>
                 <button type="button" className="btn btn-default" onClick={onCancel}>Cancel</button>

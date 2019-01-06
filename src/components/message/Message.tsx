@@ -4,6 +4,7 @@ import {MessageEdit} from './MessageEdit';
 import {MessageDisplay} from './MessageDisplay';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
 import {RawDraftContentState} from 'draft-js';
+import {IUserAnnotation} from '../../models/IUserAnnotation';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
@@ -17,6 +18,7 @@ export interface IMessageStateProps {
     readonly avatarId: string;
     readonly selectedChannel: Uuid;
     readonly authToken: AuthToken;
+    readonly usersForAnnotation: ReadonlyArray<IUserAnnotation>;
 }
 
 export interface IMessageDispatchProps {
@@ -35,7 +37,7 @@ export class Message extends React.PureComponent<IProps, IState> {
         super(props);
     }
 
-    onSubmitMessageTextChange = (text: RawDraftContentState ) => {
+    onSubmitMessageTextChange = (text: RawDraftContentState): void => {
         this.props.onStartEditing();
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
             value: JSON.stringify(text),
@@ -45,10 +47,10 @@ export class Message extends React.PureComponent<IProps, IState> {
             }
         });
     };
-    onDeleteMessage = () => {
+    onDeleteMessage = (): void => {
         this.props.onDelete(this.props.authToken, this.props.message.id, this.props.selectedChannel);
     };
-    onUpvoteMessage = () => {
+    onUpvoteMessage = (): void => {
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
             value: JSON.stringify(this.props.message.value),
             customData: {
@@ -57,7 +59,7 @@ export class Message extends React.PureComponent<IProps, IState> {
             }
         });
     };
-    onDownvoteMessage = () => {
+    onDownvoteMessage = (): void => {
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
             value: JSON.stringify(this.props.message.value),
             customData: {
@@ -68,7 +70,7 @@ export class Message extends React.PureComponent<IProps, IState> {
     };
 
     render(): JSX.Element {
-        const {  username, message, isBeingEdited, onCancelEditing, onStartEditing } = this.props;
+        const {  username, message, isBeingEdited, onCancelEditing, onStartEditing, usersForAnnotation } = this.props;
         return (
             <div key={message.id} className="message-container" >
                 <div className="message">
@@ -94,9 +96,12 @@ export class Message extends React.PureComponent<IProps, IState> {
                         {
                             isBeingEdited
                             ? <MessageEdit message={message}
+                                           usersForAnnotation={usersForAnnotation}
                                            onSave={this.onSubmitMessageTextChange}
-                                           onCancel={onCancelEditing}/>
-                            : <MessageDisplay message={message} onClick={onStartEditing} />
+                                           onCancel={onCancelEditing} />
+                            : <MessageDisplay message={message}
+                                              onClick={onStartEditing}
+                                              usersForAnnotation={usersForAnnotation} />
                         }
                     </div>
                 </div>
