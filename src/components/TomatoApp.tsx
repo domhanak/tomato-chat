@@ -27,7 +27,7 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
         super(props);
     }
 
-    componentDidMount(): void {
+   componentDidMount(): void {
         if (this.props.authToken && this.props.loggedUser) {
             this.props.loadUsers(this.props.authToken);
             this.props.loadChannels(this.props.authToken);
