@@ -30,12 +30,17 @@ const getMessageAuthorName = (state: IState, ownProps: IMessageOwnProps): string
             : '';
 };
 
+const getMessageAuthorAvatar = (state: IState, ownProps: IMessageOwnProps): string => {
+    return state.tomatoApp.users.usersById.find((user: IUser) =>
+        (user.email === state.tomatoApp.messages.messagesById.get(ownProps.id).createdBy)).avatarId;
+};
+
 const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
     return {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedMessageId === ownProps.id,
         username: getMessageAuthorName(state, ownProps),
-        avatarId: state.tomatoApp.avatarUri ? state.tomatoApp.avatarUri : '',
+        avatarId: getMessageAuthorAvatar(state, ownProps),
         selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : '',
         authToken: state.tomatoApp.authToken,
         usersForAnnotation: getAvailableUsersToAnnotate(state),
