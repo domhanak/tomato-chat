@@ -55,7 +55,7 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
     };
 
     getAvatarLink = () => {
-        return this.props.avatarUri ? this.props.avatarUri : 'http://placehold.it/200x200';
+        return this.props.user!.avatarUrl && this.props.user!.avatarUrl.length > 0 ? this.props.user!.avatarUrl : 'http://placehold.it/200x200';
     };
 
 

@@ -15,6 +15,8 @@ code {
 }
 
 .page-nav {
+  background: $tomato-colour;
+  width: 100%;
 
   & > div  {
     margin: 0 auto;
@@ -36,12 +38,19 @@ code {
     }
   }
 
+  & .nav-container-list {
+    margin-top: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid $tomato-colour;
+  }
+
   & li {
     margin-top: 10px;
     font-size: 1.3em;
 
     & a {
-      color: $tomato-items-colour;
+      color: $tomato-colour;
       padding: 10px;
     }
 

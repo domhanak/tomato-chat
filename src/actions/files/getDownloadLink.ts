@@ -23,7 +23,7 @@ const getAvatarLinkSuccess = (avatarLink: string): Action => ({
     }
 });
 
-const getDownloadLinkApiCall = (fileId: Uuid, authToken: AuthToken) => {
+export const getDownloadLinkApiCall = (fileId: Uuid, authToken: AuthToken) => {
     return axios.get(GET_FILE_DOWNLOADLINK_URI(fileId), endpointConfigHeader(authToken));
 };
 

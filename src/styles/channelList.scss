@@ -1,19 +1,20 @@
 .channels {
 
   margin-left: 20px;
-  border: 4px solid $channel-li-hover-colour;
+  border: 4px solid $tomato-colour;
   border-radius: 8px;
 
   & header h4 {
-    border-bottom: 4px solid $tomato-chat-items-hover-colour;
+    border-bottom: 4px solid $tomato-colour;
     margin-top: 20px;
     padding-bottom: 20px;
     margin-bottom: 0px;
   }
 
   & .channel-list {
-
+    max-height: 400px;
     width: 100%;
+    overflow-y: scroll;
 
     & ul {
       width: 100%;
@@ -23,7 +24,7 @@
 
     & ul .channel-list-item__container {
       padding: 18px 16px 10px;
-      border-bottom: 2px solid $tomato-chat-items-hover-colour;
+      border-bottom: 2px solid $tomato-colour;
       margin: 0;
       box-sizing: border-box;
       display: block;
@@ -51,12 +52,12 @@
         margin-left: 20px;
 
         & a {
-          color: $tomato-items-colour;
+          color: $tomato-colour;
         }
 
         & a:hover {
           text-decoration: none;
-          color: $channel-li-hover-colour;
+          color: $tomato-colour;
           cursor: pointer;
         }
       }
@@ -68,13 +69,18 @@
     }
 
     & ul .channel-list-item__container-selected {
-      background: $tomato-chat-items-hover-colour;
+      background: $tomato-colour;
       border-radius: 0px;
-      border-top: 1px solid #b10a2c;
+      border-top: 1px solid $tomato-colour;
+
+      & div .channel-selection a {
+        color: $tomato-items-colour;
+      }
     }
   }
 
   .channel-creation {
+    border-top: 1px solid $tomato-colour;
 
     & input {
       margin: 20px 0 25px 0;

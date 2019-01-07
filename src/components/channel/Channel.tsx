@@ -85,10 +85,9 @@ export class Channel extends React.PureComponent<IProps, IState> {
         if (!user) {
             const userServerModel = {email: this.state.userEmail, customData: {id: uuid(), nickname: '',
                                      selectedChannel: this.props.channel.id, avatarId: ''}} as IUserServerModel;
-            user = {...userServerModel.customData, email: userServerModel.email};
+            user = {...userServerModel.customData, email: userServerModel.email, avatarUrl: ''};
             this.props.onUserRegistration(this.props.authToken, userServerModel);
         }
-
 
         if (Immutable.List(this.props.channel.users).contains(user.id)) {
             return;
@@ -135,14 +134,14 @@ export class Channel extends React.PureComponent<IProps, IState> {
                         {this.props.channel.users  && Immutable.List(this.props.channel.users).map((id: Uuid) => (
                             <UserListItemContainer key={id} isHighlighted={false} userId={id} onUserRemove={this.onUserRemove} />))}
                     </ul>
-                    <form onSubmit={this.addParticipant}>
+                    <form>
                         <FormGroup className="autocomplete-form">
                             <ControlLabel> New participant </ControlLabel>
                             <div className="row">
                                 <div className="col-8 autocomplete">
-                                    <input onChange={this.onParticipantEmailChange} placeholder="email@email.com"/>
+                                    <input value={this.state.userEmail} onChange={this.onParticipantEmailChange} placeholder="email@email.com"/>
                                 </div>
-                                <button type="submit" className="col-1 glyphicon glyphicon-plus" />
+                                <button onClick={this.addParticipant} type="submit" className="col-1 glyphicon glyphicon-plus" />
                             </div>
                         </FormGroup>
                     </form>

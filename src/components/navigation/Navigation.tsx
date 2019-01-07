@@ -21,7 +21,7 @@ export const Navigation = () => (
                 </li>
             </ul>
 
-            <hr className="hr"/>
+            {/*<hr className="hr"/>*/}
 
             <Route path="/"/>
             <Route path="/profile" component={ProfileContainer}/>

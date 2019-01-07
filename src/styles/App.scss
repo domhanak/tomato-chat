@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  background: tomato;
 }
 
 .App-logo {
@@ -20,6 +19,9 @@
 
 .app-container {
   width: 100%;
+  min-height: 700px;
+  background: white;
+  border-radius: 10px 10px 0px 0px;
 }
 
 @keyframes App-logo-spin {

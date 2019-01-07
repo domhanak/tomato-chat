@@ -11,7 +11,6 @@ export interface ILoginFormOwnProps {
 }
 
 export interface ILoginFormDispatchProps {
-    // readonly onUserAdd: (username: string) => void;
     readonly onUserAuthentication: (email: string) => void;
 }
 

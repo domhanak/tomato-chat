@@ -8,6 +8,11 @@
     margin: 15px 0px 15px 15px;
     text-align: center;
 
+    & img {
+      max-height: 100%;
+      width: 100%;
+    }
+
     & .profile-avatar-btn {
       text-align: center;
       margin-top: 20px;

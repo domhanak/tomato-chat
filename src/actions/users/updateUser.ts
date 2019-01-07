@@ -11,6 +11,7 @@ import axios from 'axios';
 import {GET_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
 const updateUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
@@ -60,7 +61,15 @@ const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =
     return dependencies.userUpdate(authToken, user)
         .then((response: any) => {
             const responseUser: IUserServerModel = (response.data as IUserServerModel);
-            dispatch(dependencies.updateUserSuccess({email: responseUser.email, ...responseUser.customData} as IUser));
+            return getDownloadLinkApiCall(responseUser.customData.avatarId, authToken)
+                .then((responseDownLink: any) => {
+                    dispatch(dependencies.updateUserSuccess({email: responseUser.email,
+                        ...responseUser.customData, avatarUrl: responseDownLink.data.fileUri} as IUser));
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                    dispatch(dependencies.updateUserFailed());
+                });
         })
         .catch((error: any) => {
             console.log(error);

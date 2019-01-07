@@ -6,5 +6,6 @@ export interface IUser {
     readonly email: string;
     readonly selectedChannel: Uuid;
     readonly avatarId: Uuid;
+    readonly avatarUrl: string;
     readonly channels: Immutable.List<Uuid>;
 }

@@ -9,6 +9,7 @@ import {BASE_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {Dispatch} from 'redux';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
 const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_FAILED,
@@ -46,14 +47,31 @@ interface ILoadAllUsersFactoryDependencies {
 const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: string | null) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
-
+        const users: IUser[] = [];
         return dependencies.loadAllUsers(authToken)
             .then((response: any) => {
-                const users: IUser[] = [];
-                response.data.forEach((serverData: IUserServerModel) => {
-                    users.push({email: serverData.email, ...serverData.customData} as IUser);
-                });
 
+                response.data.forEach((serverData: IUserServerModel) => {
+
+                    if (serverData.customData.avatarId) {
+                        getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
+                            .then((responseDownLink: any) => {
+                                users.push({email: serverData.email, ...serverData.customData,
+                                    avatarUrl: responseDownLink.data.fileUri} as IUser);
+                            })
+                            .catch((error: any) => {
+                                console.log(error);
+                                dispatch(dependencies.loadingFailed());
+                            });
+                    }
+                    else {
+                        users.push({email: serverData.email, ...serverData.customData,
+                            avatarUrl: ''} as IUser);
+                    }
+                });
+            })
+            .then((_: any) => {
+                console.log(users);
                 dispatch(dependencies.loadingSuccess(users));
             })
             .catch((error: any) => {
