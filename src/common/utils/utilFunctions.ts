@@ -36,7 +36,7 @@ export const endpointFileConfigHeader = (authToken: AuthToken) => {
     };
 };
 
-export const responseChannelMapper = (channelResponse: IChannelServerModelResponse) => {
+export const responseChannelMapper = (channelResponse: IChannelServerModelResponse): IChannel => {
     return {id: channelResponse.id, name: channelResponse.customData.name,
         messages: channelResponse.customData.messages, users: channelResponse.customData.users,
         owner: channelResponse.customData.owner} as IChannel;
@@ -60,13 +60,13 @@ export const responseMessageMapper = (messageResponse: IMessageServerModelRespon
 //             messages: channel.messages, owner: channel.owner}} as IChannelServerModel;
 // };
 
-export const userToServerModelMapper = (user: IUser) => {
+export const userToServerModelMapper = (user: IUser): IUserServerModel => {
     return {email: user.email,
         customData: {avatarId: user.avatarId, nickname: user.nickname, selectedChannel: user.selectedChannel,
             id: user.id, channels: user.channels}} as IUserServerModel;
 };
 
-export const validateEmail = (email: string) => {
+export const validateEmail = (email: string): boolean => {
     if (!email) {
         return false;
     }
