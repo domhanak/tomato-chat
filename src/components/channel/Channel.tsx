@@ -8,6 +8,7 @@ import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {validateEmail} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import * as uuid from 'uuid';
+import {defaultAvatarId, defaultAvatarUri} from '../../constants/apiConstants';
 
 export interface IChannelStateProps {
     readonly channel: IChannel;
@@ -83,9 +84,11 @@ export class Channel extends React.PureComponent<IProps, IState> {
         let user = this.props.allUsers.find((item: IUser) => { return item.email === this.state.userEmail; } );
 
         if (!user) {
-            const userServerModel = {email: this.state.userEmail, customData: {id: uuid(), nickname: '',
-                                     selectedChannel: this.props.channel.id, avatarId: ''}} as IUserServerModel;
-            user = {...userServerModel.customData, email: userServerModel.email, avatarUrl: ''};
+            const userServerModel = {email: this.state.userEmail, customData: {id: uuid(), nickname: this.state.userEmail,
+                                     selectedChannel: this.props.channel.id, avatarId: defaultAvatarId,
+                                     channels: Immutable.List().push(this.props.channel.id)}} as IUserServerModel;
+
+            user = {...userServerModel.customData, email: userServerModel.email, avatarUrl: defaultAvatarUri};
             this.props.onUserRegistration(this.props.authToken, userServerModel);
         }
 

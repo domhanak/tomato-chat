@@ -130,10 +130,6 @@ const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryD
                     const logUserResponse: IUserServerModel = responselogUser.data as IUserServerModel;
 
                     updateChannelsOnUser(authToken, logUserResponse, dispatch, dependencies);
-
-                    // if (logUserResponse.customData.avatarId) {
-                    //     getDownloadLink(authToken, logUserResponse.customData.avatarId)(dispatch);
-                    // }
                 })
                 .catch((error: any) => {
                     console.log(error);

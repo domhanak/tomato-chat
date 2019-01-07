@@ -19,14 +19,14 @@ const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_STARTED,
 });
 
-const loadingSuccess = (users: ReadonlyArray<IUser>): Action => ({
+const loadingSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_LOADING_USERS_SUCCESS,
     payload: {
-        users,
+        user,
     }
 });
 
-const loadAllUsers = (authToken: string | null) => {
+const loadAllUsers = (authToken: AuthToken) => {
     return axios.get(BASE_USER_URI, endpointConfigHeader(authToken));
 };
 
@@ -39,40 +39,30 @@ const createLoadAllUsersFactoryDependencies = {
 
 interface ILoadAllUsersFactoryDependencies {
     readonly loadingStarted: () => Action;
-    readonly loadingSuccess: (users: ReadonlyArray<IUser>) => Action;
+    readonly loadingSuccess: (user: IUser) => Action;
     readonly loadingFailed: () => Action;
     readonly loadAllUsers: (authToken: string | null) => any;
 }
 
-const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: string | null) =>
+const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
-        const users: IUser[] = [];
+        // const users: IUser[] = [];
         return dependencies.loadAllUsers(authToken)
             .then((response: any) => {
-
                 response.data.forEach((serverData: IUserServerModel) => {
-
-                    if (serverData.customData.avatarId) {
-                        getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
+                    return getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
                             .then((responseDownLink: any) => {
-                                users.push({email: serverData.email, ...serverData.customData,
-                                    avatarUrl: responseDownLink.data.fileUri} as IUser);
+                                dispatch(dependencies.loadingSuccess(({email: serverData.email, ...serverData.customData,
+                                    avatarUrl: responseDownLink.data.fileUri} as IUser)));
                             })
                             .catch((error: any) => {
                                 console.log(error);
                                 dispatch(dependencies.loadingFailed());
                             });
-                    }
-                    else {
-                        users.push({email: serverData.email, ...serverData.customData,
-                            avatarUrl: ''} as IUser);
-                    }
                 });
-            })
-            .then((_: any) => {
-                console.log(users);
-                dispatch(dependencies.loadingSuccess(users));
+
+
             })
             .catch((error: any) => {
                 console.log(error);
