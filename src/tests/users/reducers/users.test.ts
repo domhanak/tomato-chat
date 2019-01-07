@@ -3,11 +3,11 @@ import {IUser} from "../../../models/IUser";
 import {users} from "../../../reducers/users/users";
 import {
     TOMATO_APP_LOADING_USERS_STARTED, TOMATO_APP_LOADING_USERS_SUCCESS,
-    TOMATO_APP_USER_CHANNELS_STARTED, TOMATO_APP_USER_CHANNELS_SUCCESS
+    TOMATO_APP_USER_CHANNELS_STARTED
 } from "../../../constants/actionTypes";
 
 const userInitial = ({
-     id: '123-456',
+     id: 'f9529c4a-7875-45a9-8a5e-606f682f435e',
      nickname: 'tomato',
      email: 'tomato@tomato.com',
      selectedChannel: '0',
@@ -22,13 +22,8 @@ const dummyEmptyState = () => ({
 });
 
 const dummyStateWithOneUser = () => ({
-    allUserIds: Immutable.List<Uuid>(['123-456']),
-    usersById: Immutable.Map<Uuid, IUser>({'123-456': userInitial}),
-});
-
-const dummyStateWithoutUpdatedIds = () => ({
-    allUserIds: Immutable.List<Uuid>(),
-    usersById: Immutable.Map<Uuid, IUser>({'123-456': userInitial}),
+    allUserIds: Immutable.List<Uuid>(['f9529c4a-7875-45a9-8a5e-606f682f435e']),
+    usersById: Immutable.Map<Uuid, IUser>({'f9529c4a-7875-45a9-8a5e-606f682f435e': userInitial}),
 });
 
 describe('users reducer tests', () => {
@@ -55,15 +50,8 @@ describe('users reducer tests', () => {
     it('should handle TOMATO_APP_LOADING_USERS_SUCCESS', () => {
        // const users = dummyStateWithOneUser();
         expect(users(dummyEmptyState(), {type: TOMATO_APP_LOADING_USERS_SUCCESS, payload: {
-                users: [userInitial],
+                user: userInitial,
             }}))
             .toEqual(dummyStateWithOneUser())
-    });
-
-    it('should handle TOMATO_APP_USER_CHANNELS_SUCCESS', () => {
-        expect(users(dummyEmptyState(), {type: TOMATO_APP_USER_CHANNELS_SUCCESS, payload: {
-                users: [userInitial],
-            }}))
-            .toEqual(dummyStateWithoutUpdatedIds())
     });
 });
