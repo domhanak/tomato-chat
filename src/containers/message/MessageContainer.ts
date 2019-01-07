@@ -24,15 +24,17 @@ const getAvailableUsersToAnnotate = (state: IState): any => {
 };
 
 const getMessageAuthorName = (state: IState, ownProps: IMessageOwnProps): string => {
-    return state.tomatoApp.users
-            ? state.tomatoApp.users.usersById.find((user: IUser) =>
-                (user.email === state.tomatoApp.messages.messagesById.get(ownProps.id).createdBy)).nickname
-            : '';
+    const user = state.tomatoApp.users.usersById.find((item: IUser) =>
+        (item.email === state.tomatoApp.messages.messagesById.get(ownProps.id).createdBy));
+
+    return user ? user.nickname : '';
 };
 
 const getMessageAuthorAvatar = (state: IState, ownProps: IMessageOwnProps): string => {
-    return state.tomatoApp.users.usersById.find((user: IUser) =>
-        (user.email === state.tomatoApp.messages.messagesById.get(ownProps.id).createdBy)).avatarId;
+    const user = state.tomatoApp.users.usersById.find((item: IUser) =>
+        (item.email === state.tomatoApp.messages.messagesById.get(ownProps.id).createdBy));
+
+    return user ? user.avatarId : '';
 };
 
 const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {

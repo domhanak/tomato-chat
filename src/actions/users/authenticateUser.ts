@@ -12,7 +12,7 @@ import {GET_USER_URI, USER_AUTH_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUser} from '../../models/IUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
-import {getDownloadLink} from '../files/getDownloadLink';
+import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 import {loadAllChannels} from '../channel/loadChannels';
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
 import {List} from 'immutable';
@@ -93,11 +93,19 @@ const updateChannelsOnUser = (authToken: AuthToken, user: IUserServerModel, disp
             if (channels.count() !== List(user.customData.channels).count()) {
                 updateUser(authToken,
                     {email: user.email, customData: {...user.customData, channels}} as IUserServerModel)(dispatch);
+                return;
             }
             else {
-                dispatch(dependencies.logUserSuccess({
-                    email: user.email,
-                    ...user.customData} as IUser));
+                return getDownloadLinkApiCall(user.customData.avatarId, authToken)
+                    .then((responseDownLink: any) => {
+                        dispatch(dependencies.logUserSuccess({
+                            email: user.email,
+                            ...user.customData, avatarUrl: responseDownLink.data.fileUri} as IUser));
+                    })
+                    .catch((error: any) => {
+                        console.log(error);
+                        dispatch(dependencies.logUserFailed());
+                    });
             }
         })
         .catch((error: any) => {
@@ -122,10 +130,6 @@ const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryD
                     const logUserResponse: IUserServerModel = responselogUser.data as IUserServerModel;
 
                     updateChannelsOnUser(authToken, logUserResponse, dispatch, dependencies);
-
-                    if (logUserResponse.customData.avatarId) {
-                        getDownloadLink(authToken, logUserResponse.customData.avatarId)(dispatch);
-                    }
                 })
                 .catch((error: any) => {
                     console.log(error);

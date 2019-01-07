@@ -8,7 +8,6 @@ import axios from 'axios';
 import {BASE_FILE_URI} from '../../constants/apiConstants';
 import {endpointFileConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
-import {getDownloadLink} from './getDownloadLink';
 import {getFile} from './getFile';
 import {updateUser} from '../users/updateUser';
 
@@ -56,8 +55,6 @@ const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies)
             .then((response: any) => {
                 // storeData(appFileType, response.data[0].id);
                 const avatarId = response.data[0].id;
-
-                getDownloadLink(authToken, avatarId as string)(dispatch);
 
                 const updatedUser = {email: user.email, customData: {...user.customData, avatarId}};
 

@@ -3,14 +3,13 @@ import {
     TOMATO_APP_USER_LOGIN_SUCCESS,
     TOMATO_APP_USER_CHANNELS_STARTED,
     TOMATO_APP_USER_CHANNELS_FAILED,
-    TOMATO_APP_LOADING_USERS_SUCCESS
 } from '../../constants/actionTypes';
 import {IUser} from '../../models/IUser';
-import * as Immutable from 'immutable';
 import axios from 'axios';
 import {GET_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
 const updateUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
@@ -27,13 +26,6 @@ const updateUserFailed = (): Action => ({
     type: TOMATO_APP_USER_CHANNELS_FAILED,
 });
 
-const updateUsersSuccess = (users: Immutable.List<IUser>): Action => ({
-    type: TOMATO_APP_LOADING_USERS_SUCCESS,
-    payload: {
-        users,
-    }
-});
-
 const userUpdate = (authToken: AuthToken, user: IUserServerModel) => {
     return axios.put(GET_USER_URI(user.email), JSON.stringify(user), endpointConfigHeader(authToken));
 };
@@ -41,7 +33,6 @@ const userUpdate = (authToken: AuthToken, user: IUserServerModel) => {
 const createUpdateUserFactoryDependencies = {
     updateUserSuccess,
     updateUserStarted,
-    updateUsersSuccess,
     userUpdate,
     updateUserFailed,
 };
@@ -49,7 +40,6 @@ const createUpdateUserFactoryDependencies = {
 interface IUpdateUserFactoryDependencies {
     readonly updateUserFailed: () => Action;
     readonly updateUserStarted: () => Action;
-    readonly updateUsersSuccess: (users: Immutable.List<IUser>) => Action;
     readonly updateUserSuccess: (user: IUser) => Action;
     readonly userUpdate: (authToken: AuthToken, user: IUserServerModel) => any;
 }
@@ -60,7 +50,15 @@ const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =
     return dependencies.userUpdate(authToken, user)
         .then((response: any) => {
             const responseUser: IUserServerModel = (response.data as IUserServerModel);
-            dispatch(dependencies.updateUserSuccess({email: responseUser.email, ...responseUser.customData} as IUser));
+            return getDownloadLinkApiCall(responseUser.customData.avatarId, authToken)
+                .then((responseDownLink: any) => {
+                    dispatch(dependencies.updateUserSuccess({email: responseUser.email,
+                        ...responseUser.customData, avatarUrl: responseDownLink.data.fileUri} as IUser));
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                    dispatch(dependencies.updateUserFailed());
+                });
         })
         .catch((error: any) => {
             console.log(error);

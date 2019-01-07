@@ -17,7 +17,9 @@
 }
 
 .message-editor {
-  background-color: white;
+  background: #efeded;
+  border-radius: 2px;
+  margin-right: 2px;
   height: 20%;
 }
 
@@ -88,8 +90,10 @@
 
 .received-message {
   display: inline-block;
-  padding: 0 0 0 10px;
+  padding: 0 10px 0 10px;
   vertical-align: top;
+  background: #efeded;
+  border-radius: 5px;
 }
 
 .received-message-container {
@@ -125,8 +129,10 @@
   border: medium none;
   font-size: 17px;
   alignment: right;
-  float: right;
+  //float: right;
+  margin: 20px 0px 10px 0px;
   z-index: 2;
+  width: 10%;
 }
 
 .editor-without-toolbar {

@@ -9,6 +9,7 @@ import {BASE_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {Dispatch} from 'redux';
 import {IUserServerModel} from '../../models/IUserServerModel';
+import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
 const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_FAILED,
@@ -18,14 +19,14 @@ const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_STARTED,
 });
 
-const loadingSuccess = (users: ReadonlyArray<IUser>): Action => ({
+const loadingSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_LOADING_USERS_SUCCESS,
     payload: {
-        users,
+        user,
     }
 });
 
-const loadAllUsers = (authToken: string | null) => {
+const loadAllUsers = (authToken: AuthToken) => {
     return axios.get(BASE_USER_URI, endpointConfigHeader(authToken));
 };
 
@@ -38,23 +39,30 @@ const createLoadAllUsersFactoryDependencies = {
 
 interface ILoadAllUsersFactoryDependencies {
     readonly loadingStarted: () => Action;
-    readonly loadingSuccess: (users: ReadonlyArray<IUser>) => Action;
+    readonly loadingSuccess: (user: IUser) => Action;
     readonly loadingFailed: () => Action;
     readonly loadAllUsers: (authToken: string | null) => any;
 }
 
-const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: string | null) =>
+const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
-
+        // const users: IUser[] = [];
         return dependencies.loadAllUsers(authToken)
             .then((response: any) => {
-                const users: IUser[] = [];
                 response.data.forEach((serverData: IUserServerModel) => {
-                    users.push({email: serverData.email, ...serverData.customData} as IUser);
+                    return getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
+                            .then((responseDownLink: any) => {
+                                dispatch(dependencies.loadingSuccess(({email: serverData.email, ...serverData.customData,
+                                    avatarUrl: responseDownLink.data.fileUri} as IUser)));
+                            })
+                            .catch((error: any) => {
+                                console.log(error);
+                                dispatch(dependencies.loadingFailed());
+                            });
                 });
 
-                dispatch(dependencies.loadingSuccess(users));
+
             })
             .catch((error: any) => {
                 console.log(error);
