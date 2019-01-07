@@ -5,8 +5,6 @@ import {user, userId} from './users/userId';
 import { isEditing } from './isEditing';
 import { isTyping } from './isTyping';
 import { users } from './users/users';
-import { messageFilter } from './message/messageFilter';
-import { channelFilter } from './channel/channelFilter';
 import { channels } from './channel/channels';
 import { messages } from './message/messages';
 import {userAuthentication} from './users/userAuthentication';
@@ -19,8 +17,6 @@ export const tomatoApp = (prevState = {} as ITomatoApp, action: Action): ITomato
     channels: channels(prevState.channels, action),
     editedMessageId: editedMessageId(prevState.editedMessageId, action),
     editedChannelId: editedChannelId(prevState.editedChannelId, action),
-    messageFilter: messageFilter(prevState.messageFilter, action),
-    channelFilter: channelFilter(prevState.channelFilter, action),
     isEditing: isEditing(prevState.isEditing, action),
     isTyping: isTyping(prevState.isTyping, action),
     isLoading: isLoading(prevState.isLoading, action),

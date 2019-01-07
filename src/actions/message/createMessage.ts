@@ -10,33 +10,33 @@ import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/ut
 import axios from 'axios';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
 
-const createMessageStarted = (): Action => ({
+export const createMessageStarted = (): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_STARTED,
 });
 
-const createMessageFailed = (): Action => ({
+export const createMessageFailed = (): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_FAILED,
 });
 
-const createMessageSuccess = (message: IMessage): Action => ({
+export const createMessageSuccess = (message: IMessage): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_SUCCESS,
     payload: {
         message,
     }
 });
 
-const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
+export const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
     return axios.post(BASE_MESSAGE_URI(channelId), JSON.stringify(message), endpointConfigHeader(authToken));
 };
 
-const createMessageCreateFactoryDependencies = {
+export const createMessageCreateFactoryDependencies = {
     createMessageStarted,
     createMessageFailed,
     createMessageSuccess,
     messageCreate
 };
 
-interface ICreateMessageFactoryDependencies {
+export interface ICreateMessageFactoryDependencies {
     readonly createMessageStarted: () => Action;
     readonly createMessageFailed: () => Action;
     readonly createMessageSuccess: (message: IMessage) => Action;
@@ -44,7 +44,7 @@ interface ICreateMessageFactoryDependencies {
 }
 
 
-const createMessageCreateFactory = (dependencies: ICreateMessageFactoryDependencies) => (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) =>
+export const createMessageCreateFactory = (dependencies: ICreateMessageFactoryDependencies) => (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) =>
     async (dispatch: Dispatch): Promise<IMessage> => {
         dispatch(dependencies.createMessageStarted());
 

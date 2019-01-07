@@ -1,8 +1,6 @@
 import * as Immutable from 'immutable';
-import { MessageFilter } from '../constants/MessageFilter';
 import {IChannel} from './IChannel';
 import {IMessage} from './IMessage';
-import {ChannelFilter} from '../constants/ChannelFilter';
 import {IUser} from './IUser';
 
 export interface IUsers {
@@ -28,8 +26,6 @@ export interface ITomatoApp {
   loggedUser: IUser | null;
   editedMessageId: Uuid | null;
   editedChannelId: Uuid | null;
-  messageFilter: MessageFilter;
-  channelFilter: ChannelFilter;
   isEditing: boolean;
   isTyping: boolean;
   isLoading: boolean;
