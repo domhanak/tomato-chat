@@ -35,19 +35,19 @@ const createUpdateChannelFactoryDependencies = {
     updateChannelApiCall
 };
 
-interface IUpdateChannelFactoryDependencies {
+export interface IUpdateChannelFactoryDependencies {
     readonly updateChannelStarted: (id: Uuid) => Action;
     readonly updateChannelSuccess: (channel: IChannel) => Action;
     readonly updateChannelFailed: () => Action;
     readonly updateChannelApiCall: (authToken: AuthToken, channel: IChannelServerModel, channelId: Uuid) => any;
 }
 
-const createUpdateChannelFactory = (dependencies: IUpdateChannelFactoryDependencies) =>
+export const createUpdateChannelFactory = (dependencies: IUpdateChannelFactoryDependencies) =>
     (authToken: AuthToken, channel: IChannelServerModel, channelId: Uuid) =>
     (dispatch: Dispatch): any => {
     dispatch(dependencies.updateChannelStarted(channelId));
 
-    return updateChannelApiCall(authToken, channel, channelId)
+    return dependencies.updateChannelApiCall(authToken, channel, channelId)
         .then((response: any) => {
             const channelResponse: IChannelServerModelResponse = response.data;
             dispatch(dependencies.updateChannelSuccess(responseChannelMapper(channelResponse)));
