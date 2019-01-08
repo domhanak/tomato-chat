@@ -62,10 +62,10 @@ export class MessageEdit extends React.PureComponent<IProps, IState> {
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
                     toolbar={{
-                        inline: { inDropdown: true },
+                        inline: { inDropdown: false },
                         blockType: {inDropdown: true},
                         list: { inDropdown: true },
-                        textAlign: { inDropdown: true },
+                        textAlign: { inDropdown: false},
                         link: { inDropdown: true },
                         history: { inDropdown: true },
                         image: { alignmentEnabled: false }
