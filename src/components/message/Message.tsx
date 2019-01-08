@@ -15,6 +15,7 @@ export interface IMessageStateProps {
     readonly message: IMessage;
     readonly isBeingEdited: boolean;
     readonly username: string;
+    readonly ownerId: string;
     readonly avatarId: string;
     readonly selectedChannel: Uuid;
     readonly authToken: AuthToken;
@@ -38,6 +39,9 @@ export class Message extends React.PureComponent<IProps, IState> {
     }
 
     onSubmitMessageTextChange = (text: RawDraftContentState): void => {
+        if (this.props.message.createdBy !== this.props.ownerId) {
+            return;
+        }
         this.props.onStartEditing();
         this.props.onEdit(this.props.authToken, this.props.message, this.props.selectedChannel, {
             value: JSON.stringify(text),
@@ -48,6 +52,9 @@ export class Message extends React.PureComponent<IProps, IState> {
         });
     };
     onDeleteMessage = (): void => {
+        if (this.props.message.createdBy !== this.props.ownerId) {
+            return;
+        }
         this.props.onDelete(this.props.authToken, this.props.message.id, this.props.selectedChannel);
     };
     onUpvoteMessage = (): void => {
@@ -68,9 +75,15 @@ export class Message extends React.PureComponent<IProps, IState> {
             }
         });
     };
+    onClickMessage = (): void => {
+        if (this.props.message.createdBy !== this.props.ownerId) {
+            return;
+        }
+        this.props.onStartEditing();
+    };
 
     render(): JSX.Element {
-        const {  username, message, isBeingEdited, onCancelEditing, onStartEditing, usersForAnnotation } = this.props;
+        const {  username, message, isBeingEdited, onCancelEditing, usersForAnnotation } = this.props;
         return (
             <div key={message.id} className="message-container" >
                 <div className="message">
@@ -100,7 +113,7 @@ export class Message extends React.PureComponent<IProps, IState> {
                                            onSave={this.onSubmitMessageTextChange}
                                            onCancel={onCancelEditing} />
                             : <MessageDisplay message={message}
-                                              onClick={onStartEditing}
+                                              onClick={this.onClickMessage}
                                               usersForAnnotation={usersForAnnotation} />
                         }
                     </div>

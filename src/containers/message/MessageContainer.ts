@@ -42,6 +42,7 @@ const mapStateToProps = (state: IState, ownProps: IMessageOwnProps) => {
         message: state.tomatoApp.messages.messagesById.get(ownProps.id),
         isBeingEdited: state.tomatoApp.editedMessageId === ownProps.id,
         username: getMessageAuthorName(state, ownProps),
+        ownerId: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.email : '',
         avatarId: getMessageAuthorAvatar(state, ownProps),
         selectedChannel: state.tomatoApp.loggedUser ? state.tomatoApp.loggedUser.selectedChannel : '',
         authToken: state.tomatoApp.authToken,
