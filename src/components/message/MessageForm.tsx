@@ -50,6 +50,10 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
         const contentState = this.state.editorState.getCurrentContent();
         const rawContent = convertToRaw(contentState);
 
+        if (rawContent.blocks[0].text === '') {
+            return;
+        }
+
         const newMessage = {
             value: JSON.stringify(rawContent),
             customData: {
@@ -112,10 +116,10 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
                         editorClassName="message-editor"
                         onEditorStateChange={this.onEditorStateChange}
                         toolbar={{
-                            inline: { inDropdown: true },
+                            inline: { inDropdown: false },
                             blockType: {inDropdown: true},
                             list: { inDropdown: true },
-                            textAlign: { inDropdown: true },
+                            textAlign: { inDropdown: false},
                             link: { inDropdown: true },
                             history: { inDropdown: true },
                             image: { uploadCallback: this.uploadImageCallback, alt: { present: true, mandatory: false },  alignmentEnabled: false },
