@@ -5,6 +5,7 @@ import {MessageDisplay} from './MessageDisplay';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
 import {RawDraftContentState} from 'draft-js';
 import {IUserAnnotation} from '../../models/IUserAnnotation';
+import {ScaleLoader} from 'react-spinners';
 
 export interface IMessageOwnProps {
     readonly id: Uuid;
@@ -88,9 +89,19 @@ export class Message extends React.PureComponent<IProps, IState> {
             <div key={message.id} className="message-container" >
                 <div className="message">
                     <div className="message-author-img">
-                        <a className="username-head thumbnail fill">
-                            <img src={this.props.avatarId} alt="tomato"/>
-                        </a>
+                        {
+                        this.props.avatarId ?
+                            <a className="username-head thumbnail fill">
+                                <img src={this.props.avatarId} alt="tomato"/>
+                            </a>
+                            : <div className="container">
+                                <div className="row">
+                                    <div className="col-sm-12 text-center">
+                                        <ScaleLoader/>
+                                    </div>
+                                </div>
+                            </div>
+                         }
                     </div>
 
                     <div className="received-message-container">
