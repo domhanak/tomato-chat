@@ -99,7 +99,6 @@ const channel: IChannel = {
     id: 'sda56-d6asd',
     owner: 'sdasd-dasd',
     users: List(['sdasd-dasd', 'sad5a-dssd']),
-    messages: List<IMessage>(),
     name: 'channel'
 } as IChannel;
 
@@ -109,7 +108,6 @@ const channelServerModelResponse: IChannelServerModelResponse = {
     customData: {
         owner: 'sdasd-dasd',
         users: List(['sdasd-dasd', 'sad5a-dssd']),
-        messages: List<IMessage>(),
         name: 'channel'
     }
 } as IChannelServerModelResponse;

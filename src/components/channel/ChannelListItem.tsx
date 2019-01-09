@@ -97,7 +97,7 @@ export class ChannelListItem extends React.Component<IProps, IState> {
                 .filter((value: Uuid) => { return value !== this.props.loggedUser!.id; }).toList();
 
             const channelToUpdate: IChannelServerModel = {name: this.props.channel.name,
-                customData: {owner: this.props.channel.owner, messages: this.props.channel.messages, name: this.props.channel.name, users}};
+                customData: {owner: this.props.channel.owner, name: this.props.channel.name, users}};
 
             const channelsToUpdate: List<Uuid> = List(this.props.loggedUser!.channels)
                 .filter((value: Uuid) => { return value !== this.props.channel.id; }).toList();
