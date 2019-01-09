@@ -11,15 +11,15 @@ import {IUserServerModel} from '../../models/IUserServerModel';
 import {getFile} from './getFile';
 import {updateUser} from '../users/updateUser';
 
-const fileCreateStarted = (): Action => ({
+export const fileCreateStarted = (): Action => ({
     type: TOMATO_APP_FILE_CREATE_STARTED,
 });
 
-const fileCreateFailed = (): Action => ({
+export const fileCreateFailed = (): Action => ({
     type: TOMATO_APP_FILE_CREATE_FAILED,
 });
 
-const fileCreateSuccess = (fileId: Uuid): Action => ({
+export const fileCreateSuccess = (fileId: Uuid): Action => ({
     type: TOMATO_APP_FILE_CREATE_SUCCESS,
     payload: {
         fileId,
@@ -47,9 +47,9 @@ interface ICreateFileFactoryDependencies {
     readonly fileCreate: (file: File, authToken: AuthToken) => any;
 }
 
-const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies) => (authToken: AuthToken, file: File, user: IUserServerModel) =>
+export const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDependencies) => (authToken: AuthToken, file: File, user: IUserServerModel) =>
     (dispatch: Dispatch): any => {
-        dependencies.fileCreateStarted();
+        dispatch(dependencies.fileCreateStarted());
 
         return dependencies.fileCreate(file, authToken)
             .then((response: any) => {
