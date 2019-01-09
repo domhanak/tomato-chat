@@ -66,7 +66,9 @@ const createAuthenticationFactoryDependencies = {
     logUser,
     logUserStarted,
     logUserSuccess,
-    logUserFailed
+    logUserFailed,
+    getDownloadLinkApiCall,
+    loadAllChannels
 };
 
 interface ICreateAuthenticationFactoryDependencies {
@@ -78,10 +80,12 @@ interface ICreateAuthenticationFactoryDependencies {
     readonly logUserStarted: () => Action;
     readonly logUserSuccess: (user: IUser) => Action;
     readonly logUserFailed: () => Action;
+    readonly getDownloadLinkApiCall: (fileId: Uuid, authToken: AuthToken) => any;
+    readonly loadAllChannels: (authToken: AuthToken) => any;
 }
 
 const updateChannelsOnUser = (authToken: AuthToken, user: IUserServerModel, dispatch: Dispatch, dependencies: ICreateAuthenticationFactoryDependencies) => {
-    return loadAllChannels(authToken)
+    return dependencies.loadAllChannels(authToken)
         .then((response: any) => {
             let channels: List<Uuid> = List();
             response.data.forEach((serverData: IChannelServerModelResponse) => {
@@ -96,7 +100,7 @@ const updateChannelsOnUser = (authToken: AuthToken, user: IUserServerModel, disp
                 return;
             }
             else {
-                return getDownloadLinkApiCall(user.customData.avatarId, authToken)
+                return dependencies.getDownloadLinkApiCall(user.customData.avatarId, authToken)
                     .then((responseDownLink: any) => {
                         dispatch(dependencies.logUserSuccess({
                             email: user.email,

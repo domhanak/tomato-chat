@@ -18,3 +18,8 @@ export const channelHelper = { id: 'd5dfs-dfd', messages: List(), name: 'name', 
 export const dispatch = jest.fn((action) => action);
 
 export const expectedLoadingChannelsStarted = {type: TOMATO_APP_LOADING_CHANNELS_STARTED};
+
+export const loadAllChannelsTest = (authToken: AuthToken) => {
+    console.log(authToken);
+    return Promise.resolve({data: [channelServerModelResponse]});
+};

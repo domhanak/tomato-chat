@@ -4,9 +4,8 @@ import {
 import {
     authTokenHelper,
     channelHelper,
-    channelServerModelResponse,
     dispatch,
-    expectedLoadingChannelsStarted
+    expectedLoadingChannelsStarted, loadAllChannelsTest
 } from '../helpers/helpers';
 import {
     createLoadAllChannelFactory,
@@ -21,16 +20,13 @@ describe('Load channels thunk tests.', () => {
             channels: [channelHelper],
         }};
 
-    const loadAllChannels = (authToken: AuthToken) => {
-        console.log(authToken);
-        return Promise.resolve({data: [channelServerModelResponse]});
-    };
+
 
     const createTestLoadChannelsDependencies = {
         loadingStarted,
         loadingSuccess,
         loadingFailed,
-        loadAllChannels
+        loadAllChannels: loadAllChannelsTest
     };
 
     test('Dispatch thunks in correct order: loadChannels.', async done => {
