@@ -1,6 +1,10 @@
 import {
     authTokenHelper,
-    dispatch, expectedUserChannelStarted, expectedLoginSuccess, userServerModelHelper, userHelper
+    dispatch,
+    expectedUserChannelStarted,
+    expectedLoginSuccess,
+    userServerModelHelper,
+    getDownloadLinkApiCallTest,
 } from '../helpers/helpers';
 import {createUserUpdateFactory, updateUserFailed, updateUserStarted, updateUserSuccess} from '../../../actions/users/updateUser';
 import {IUserServerModel} from '../../../models/IUserServerModel';
@@ -10,11 +14,6 @@ describe('Update user thunk action tests.', () => {
         console.log(authToken + user.email);
         return Promise.resolve({data: userServerModelHelper});
     };
-
-    const getDownloadLinkApiCallTest = (fileId: Uuid, authToken: AuthToken) => {
-        console.log(authToken + fileId);
-        return Promise.resolve({data: {fileUri: userHelper.avatarUrl}});
-    }
 
     const createTestUpdateUserDependencies = {
         updateUserStarted,
