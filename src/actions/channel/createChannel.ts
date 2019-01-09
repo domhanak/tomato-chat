@@ -13,15 +13,15 @@ import {updateUser} from '../users/updateUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {List} from 'immutable';
 
-const channelCreateStarted = (): Action => ({
+export const channelCreateStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,
 });
 
-const channelCreateFailed = (): Action => ({
+export const channelCreateFailed = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_FAILED,
 });
 
-const channelCreateSuccess = (channel: IChannel): Action => ({
+export const channelCreateSuccess = (channel: IChannel): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_SUCCESS,
     payload: {
         channel,
@@ -39,18 +39,18 @@ const createChannelCreateFactoryDependencies = {
     channelCreate
 };
 
-interface ICreateChannelFactoryDependencies {
+export interface ICreateChannelFactoryDependencies {
     readonly channelCreateStarted: () => Action;
     readonly channelCreateFailed: () => Action;
     readonly channelCreateSuccess: (channel: IChannel) => Action;
     readonly channelCreate: (authToken: AuthToken, channel: IChannelServerModel) => any;
 }
 
-const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependencies) => (authToken: AuthToken, channel: IChannelServerModel, user: IUserServerModel) =>
+export const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDependencies) => (authToken: AuthToken, channel: IChannelServerModel, user: IUserServerModel) =>
    (dispatch: Dispatch): any => {
         dispatch(dependencies.channelCreateStarted());
 
-        return channelCreate(authToken, channel)
+        return dependencies.channelCreate(authToken, channel)
             .then((response: any) => {
                 const createdChannel: IChannel = responseChannelMapper(response.data);
                 dispatch(dependencies.channelCreateSuccess(createdChannel));
