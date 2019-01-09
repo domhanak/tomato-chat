@@ -1,8 +1,13 @@
 import {
-    TOMATO_APP_LOADING_CHANNELS_STARTED,
     TOMATO_APP_LOADING_CHANNELS_SUCCESS
 } from '../../../constants/actionTypes';
-import {authTokenHelper, channelHelper, channelServerModelResponse, dispatch} from '../helpers/helpers';
+import {
+    authTokenHelper,
+    channelHelper,
+    channelServerModelResponse,
+    dispatch,
+    expectedLoadingChannelsStarted
+} from '../helpers/helpers';
 import {
     createLoadAllChannelFactory,
     loadingFailed,
@@ -11,8 +16,6 @@ import {
 } from '../../../actions/channel/loadChannels';
 
 describe('Load channels thunk tests.', () => {
-    const expectedLoadChannelsStarted = {type: TOMATO_APP_LOADING_CHANNELS_STARTED};
-
     const expectedLoadChannelsSuccess = {type: TOMATO_APP_LOADING_CHANNELS_SUCCESS,
         payload: {
             channels: [channelHelper],
@@ -32,7 +35,7 @@ describe('Load channels thunk tests.', () => {
 
     test('Dispatch thunks in correct order: loadChannels.', async done => {
         await createLoadAllChannelFactory(createTestLoadChannelsDependencies)(authTokenHelper)(dispatch);
-        expect(dispatch.mock.calls[0][0]).toEqual(expectedLoadChannelsStarted);
+        expect(dispatch.mock.calls[0][0]).toEqual(expectedLoadingChannelsStarted);
         expect(dispatch.mock.calls[1][0]).toEqual(expectedLoadChannelsSuccess);
         done();
     });
