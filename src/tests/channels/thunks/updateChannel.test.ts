@@ -25,7 +25,7 @@ describe('Channel update thunk action tests.', () => {
         return Promise.resolve({data: channelServerModelResponse});
     };
 
-    const createFakeUpdateDependencies = {
+    const createTestUpdateDependencies = {
         updateChannelStarted,
         updateChannelFailed,
         updateChannelSuccess,
@@ -34,7 +34,7 @@ describe('Channel update thunk action tests.', () => {
 
     test('Dispatch thunks in correct order: updateChannel.', async done => {
 
-        await createUpdateChannelFactory(createFakeUpdateDependencies)(authTokenHelper, channelServerModel, channelHelper.id)(dispatch);
+        await createUpdateChannelFactory(createTestUpdateDependencies)(authTokenHelper, channelServerModel, channelHelper.id)(dispatch);
         expect(dispatch.mock.calls[0][0]).toEqual(expectedUpdateChannelStarted);
         expect(dispatch.mock.calls[1][0]).toEqual(expectedUpdateChannelSuccess);
         done();
