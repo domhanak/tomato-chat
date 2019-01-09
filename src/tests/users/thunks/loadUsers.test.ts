@@ -1,6 +1,5 @@
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 import {
-    authTokenHelper,
-    dispatch,
     userServerModelHelper,
     userHelper,
     getDownloadLinkApiCallTest,

@@ -1,10 +1,9 @@
 import {IChannelServerModel} from '../../../models/IChannelServerModel';
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 import {
-    authTokenHelper,
     channelHelper,
     channelServerModel,
     channelServerModelResponse,
-    dispatch
 } from '../helpers/helpers';
 import {
     TOMATO_APP_CHANNEL_CREATE_STARTED,

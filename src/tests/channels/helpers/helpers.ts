@@ -4,8 +4,6 @@ import {IChannel} from '../../../models/IChannel';
 import {IChannelServerModelResponse} from '../../../models/IChannelServerModelResponse';
 import {TOMATO_APP_LOADING_CHANNELS_STARTED} from '../../../constants/actionTypes';
 
-export const authTokenHelper = 'Bearer jwtSecret';
-
 export const channelServerModel = {name: 'name', customData: {name: 'name', messages: List(), owner: 'as6d4as',
         users: List(['as6d4as'])}} as IChannelServerModel;
 
@@ -14,8 +12,6 @@ export const channelServerModelResponse = {id: 'd5dfs-dfd', name: 'name', custom
 
 export const channelHelper = { id: 'd5dfs-dfd', messages: List(), name: 'name', owner: 'as6d4as',
                          users: List(['as6d4as'])} as IChannel;
-
-export const dispatch = jest.fn((action) => action);
 
 export const expectedLoadingChannelsStarted = {type: TOMATO_APP_LOADING_CHANNELS_STARTED};
 

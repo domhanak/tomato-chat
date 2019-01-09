@@ -1,6 +1,4 @@
 import {
-    authTokenHelper,
-    dispatch,
     userServerModelHelper,
     getDownloadLinkApiCallTest, expectedLoginSuccess, userHelper,
 } from '../helpers/helpers';
@@ -18,6 +16,7 @@ import {
     TOMATO_APP_AUTHENTICATION_TOKEN_STARTED,
     TOMATO_APP_USER_LOGIN_STARTED
 } from '../../../constants/actionTypes';
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 
 describe('Update user thunk action tests.', () => {
     const authenticateUser = (email: String) => {

@@ -1,6 +1,6 @@
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 import {
-    authTokenHelper,
-    dispatch, IfileHelper,
+    IfileHelper,
     fileIdHelper
 } from '../helpers/helpers';
 import {

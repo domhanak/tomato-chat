@@ -1,6 +1,4 @@
 import {
-    authTokenHelper,
-    dispatch,
     userServerModelHelper, userHelper, userServerModelHelperWithUri,
 } from '../helpers/helpers';
 import {IUserServerModel} from '../../../models/IUserServerModel';
@@ -11,6 +9,7 @@ import {
     registerUserSuccess
 } from '../../../actions/users/registerUser';
 import {TOMATO_APP_USER_REGISTER_STARTED, TOMATO_APP_USER_REGISTER_SUCCESS} from '../../../constants/actionTypes';
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 
 describe('Register user thunk action tests.', () => {
     const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {

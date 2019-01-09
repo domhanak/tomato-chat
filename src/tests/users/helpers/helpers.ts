@@ -26,10 +26,6 @@ export const expectedLoginSuccess = {type: TOMATO_APP_USER_LOGIN_SUCCESS,
         user: userHelper,
     }};
 
-export const dispatch = jest.fn((action) => action);
-
-export const authTokenHelper = 'Bearer jwtSecret';
-
 export const getDownloadLinkApiCallTest = (fileId: Uuid, authToken: AuthToken) => {
     console.log(authToken + fileId);
     return Promise.resolve({data: {fileUri: userHelper.avatarUrl}});

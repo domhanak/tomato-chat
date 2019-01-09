@@ -1,10 +1,9 @@
 import {
     TOMATO_APP_LOADING_CHANNELS_SUCCESS
 } from '../../../constants/actionTypes';
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 import {
-    authTokenHelper,
     channelHelper,
-    dispatch,
     expectedLoadingChannelsStarted, loadAllChannelsTest
 } from '../helpers/helpers';
 import {
