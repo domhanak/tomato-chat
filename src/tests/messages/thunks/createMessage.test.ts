@@ -1,26 +1,45 @@
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 import {
-    createMessage, createMessageFailed,
-    createMessageStarted,
+    TOMATO_APP_MESSAGE_CREATE_STARTED, TOMATO_APP_MESSAGE_CREATE_SUCCESS,
+} from '../../../constants/actionTypes';
+import {
+    channelIdHelper,
+    messageHelper,
+    messageServerModelHelper,
+    messageServerModelResponseHelper
+} from '../helpers/helpers';
+import {IMessageServerModel} from '../../../models/IMessageServerModel';
+import {
+    createMessageCreateFactory,
+    createMessageFailed,
+    createMessageStarted, createMessageSuccess
 } from '../../../actions/message/createMessage';
-import {IMessageServerModel} from "../../../models/IMessageServerModel";
 
-test('dispatches actions in correct order - message creation fails', async () => {
-    const dispatch = jest.fn();
+describe('Message create thunk action tests.', () => {
+    const expectedCreateMessageStarted = {type: TOMATO_APP_MESSAGE_CREATE_STARTED};
+    const expectedCreateMessageSuccess = {type: TOMATO_APP_MESSAGE_CREATE_SUCCESS,
+        payload: {
+            message: messageHelper,
+        }};
 
-
-    const message: IMessageServerModel = {
-        value: '',
-        customData: {
-            downvotes: 0,
-            upvotes: 0,
-        }
+    const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
+        console.log(authToken + channelId + message.value);
+        return Promise.resolve({data: messageServerModelResponseHelper});
     };
 
-    const dispatchable = createMessage('0', '1', message);
+    const createTestCreateMessageDependencies = {
+        createMessageStarted,
+        createMessageSuccess,
+        createMessageFailed,
+        messageCreate
+    };
 
-    await dispatchable(dispatch);
+    test('Dispatch thunks in correct order: createMessage.', async done => {
+        await createMessageCreateFactory(createTestCreateMessageDependencies)
+            (authTokenHelper, channelIdHelper, messageServerModelHelper)(dispatch);
 
-    expect(dispatch.mock.calls.length).toEqual(2);
-    expect(dispatch).toHaveBeenCalledWith(createMessageStarted());
-    expect(dispatch).toHaveBeenLastCalledWith(createMessageFailed());
+        expect(dispatch.mock.calls[0][0]).toEqual(expectedCreateMessageStarted);
+        expect(dispatch.mock.calls[1][0]).toEqual(expectedCreateMessageSuccess);
+        done();
+    });
 });

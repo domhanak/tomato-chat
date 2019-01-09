@@ -27,7 +27,7 @@ describe('Message update thunk action tests.', () => {
         }};
 
     const updateMessageFromChannel = (authToken: AuthToken, channelId: Uuid, messageId: Uuid, message: IMessageServerModel) => {
-        console.log(authToken + channelId + messageId, + message.value);
+        console.log(authToken + channelId + messageId + message.value);
         return Promise.resolve({data: messageServerModelResponseHelper});
     };
 
