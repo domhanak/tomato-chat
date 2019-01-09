@@ -10,22 +10,22 @@ import {BASE_MESSAGE_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/utilFunctions';
 import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
 
-const loadingFailed = (): Action => ({
+export const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_MESSAGES_FAILED,
 });
 
-const loadingStarted = (): Action => ({
+export const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_MESSAGES_STARTED,
 });
 
-const loadingSuccess = (messages: ReadonlyArray<IMessage>): Action => ({
+export const loadingSuccess = (messages: ReadonlyArray<IMessage>): Action => ({
     type: TOMATO_APP_LOADING_MESSAGES_SUCCESS,
     payload: {
         messages,
     }
 });
 
-const loadAllMessages = (authToken: string | null, channelId: Uuid) => {
+const loadAllMessages = (authToken: AuthToken, channelId: Uuid) => {
     return axios.get(BASE_MESSAGE_URI(channelId), endpointConfigHeader(authToken));
 };
 
@@ -43,7 +43,7 @@ interface ILoadAllMessagesFactoryDependencies {
     readonly loadAllMessages: (authToken: string | null, channelId: Uuid) => any;
 }
 
-const createLoadAllMessagesFactory = (dependencies: ILoadAllMessagesFactoryDependencies) => (authToken: string | null, channelId: Uuid) =>
+export const createLoadAllMessagesFactory = (dependencies: ILoadAllMessagesFactoryDependencies) => (authToken: AuthToken, channelId: Uuid) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
 
