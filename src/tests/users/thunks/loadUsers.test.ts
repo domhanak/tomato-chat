@@ -18,7 +18,7 @@ import {
     loadingSuccess
 } from '../../../actions/users/loadUsers';
 
-describe('Update user thunk action tests.', () => {
+describe('Load user thunk action tests.', () => {
     const loadAllUsers = (authToken: AuthToken) => {
         console.log(authToken);
         return Promise.resolve({data: [userServerModelHelper, userServerModelHelper_2]});
@@ -36,7 +36,7 @@ describe('Update user thunk action tests.', () => {
         getDownloadLinkApiCall: getDownloadLinkApiCallTest
     };
 
-    test('Dispatch thunks in correct order: updateUser.', async done => {
+    test('Dispatch thunks in correct order: loadUsers.', async done => {
         await createLoadAllUsersFactory(createTestLoadUsersDependencies)(authTokenHelper)(dispatch);
 
         expect(dispatch.mock.calls[0][0]).toEqual(expectedUsersLoadStarted);

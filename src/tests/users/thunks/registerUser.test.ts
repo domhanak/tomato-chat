@@ -12,7 +12,7 @@ import {
 } from '../../../actions/users/registerUser';
 import {TOMATO_APP_USER_REGISTER_STARTED, TOMATO_APP_USER_REGISTER_SUCCESS} from '../../../constants/actionTypes';
 
-describe('Update user thunk action tests.', () => {
+describe('Register user thunk action tests.', () => {
     const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {
         console.log(authToken + user.email);
         return Promise.resolve({data: userServerModelHelperWithUri});
@@ -29,7 +29,7 @@ describe('Update user thunk action tests.', () => {
         userRegistration,
     };
 
-    test('Dispatch thunks in correct order: updateUser.', async done => {
+    test('Dispatch thunks in correct order: registerUser.', async done => {
         await createRegisterUserFactory(createTestUpdateUserDependencies)
         (authTokenHelper, userServerModelHelper)(dispatch);
 
