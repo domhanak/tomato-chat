@@ -34,14 +34,16 @@ const createLoadAllUsersFactoryDependencies = {
     loadingStarted,
     loadingSuccess,
     loadingFailed,
-    loadAllUsers
+    loadAllUsers,
+    getDownloadLinkApiCall
 };
 
 interface ILoadAllUsersFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (user: IUser) => Action;
     readonly loadingFailed: () => Action;
-    readonly loadAllUsers: (authToken: string | null) => any;
+    readonly loadAllUsers: (authToken: AuthToken) => any;
+    readonly getDownloadLinkApiCall: (fileId: Uuid, authToken: AuthToken) => any;
 }
 
 export const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
@@ -51,7 +53,7 @@ export const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDepe
         return dependencies.loadAllUsers(authToken)
             .then((response: any) => {
                 response.data.forEach((serverData: IUserServerModel) => {
-                    return getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
+                    return dependencies.getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
                             .then((responseDownLink: any) => {
                                 dispatch(dependencies.loadingSuccess(({email: serverData.email, ...serverData.customData,
                                     avatarUrl: responseDownLink.data.fileUri} as IUser)));
@@ -61,8 +63,6 @@ export const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDepe
                                 dispatch(dependencies.loadingFailed());
                             });
                 });
-
-
             })
             .catch((error: any) => {
                 console.log(error);
