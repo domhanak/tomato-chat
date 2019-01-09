@@ -33,7 +33,6 @@ describe('Channel update thunk action tests.', () => {
     };
 
     test('Dispatch thunks in correct order: updateChannel.', async done => {
-
         await createUpdateChannelFactory(createTestUpdateDependencies)(authTokenHelper, channelServerModel, channelHelper.id)(dispatch);
         expect(dispatch.mock.calls[0][0]).toEqual(expectedUpdateChannelStarted);
         expect(dispatch.mock.calls[1][0]).toEqual(expectedUpdateChannelSuccess);
