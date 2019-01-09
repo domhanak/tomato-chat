@@ -18,33 +18,33 @@ import {IChannelServerModelResponse} from '../../models/IChannelServerModelRespo
 import {List} from 'immutable';
 import {updateUser} from './updateUser';
 
-const userAuthenticateSuccess = (authenticationToken: String): Action => ({
+export const userAuthenticateSuccess = (authenticationToken: String): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED,
     payload: {
         authenticator: authenticationToken
     }
 });
 
-const userAuthenticationStarted = (): Action => ({
+export const userAuthenticationStarted = (): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_STARTED,
 });
 
-const userAuthenticationFailed = (): Action => ({
+export const userAuthenticationFailed = (): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_FAILED,
 });
 
-const logUserStarted = (): Action => ({
+export const logUserStarted = (): Action => ({
     type: TOMATO_APP_USER_LOGIN_STARTED,
 });
 
-const logUserSuccess = (user: IUser): Action => ({
+export const logUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
     payload: {
         user
     }
 });
 
-const logUserFailed = (): Action => ({
+export const logUserFailed = (): Action => ({
     type: TOMATO_APP_USER_LOGIN_FAILED,
 });
 
@@ -114,7 +114,7 @@ const updateChannelsOnUser = (authToken: AuthToken, user: IUserServerModel, disp
         });
 };
 
-const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryDependencies) => (email: string) =>
+export const createAuthenticationFactory = (dependencies: ICreateAuthenticationFactoryDependencies) => (email: string) =>
     (dispatch: Dispatch): any => {
     dispatch(dependencies.authenticationStarted());
 

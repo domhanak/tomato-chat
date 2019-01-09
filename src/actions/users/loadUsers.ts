@@ -11,15 +11,15 @@ import {Dispatch} from 'redux';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
-const loadingFailed = (): Action => ({
+export const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_FAILED,
 });
 
-const loadingStarted = (): Action => ({
+export const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_STARTED,
 });
 
-const loadingSuccess = (user: IUser): Action => ({
+export const loadingSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_LOADING_USERS_SUCCESS,
     payload: {
         user,
@@ -44,7 +44,7 @@ interface ILoadAllUsersFactoryDependencies {
     readonly loadAllUsers: (authToken: string | null) => any;
 }
 
-const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
+export const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
         // const users: IUser[] = [];

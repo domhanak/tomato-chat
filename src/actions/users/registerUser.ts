@@ -9,22 +9,22 @@ import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {loadUsers} from './loadUsers';
 
-const registerUserStarted = (): Action => ({
+export const registerUserStarted = (): Action => ({
     type: TOMATO_APP_USER_REGISTER_STARTED,
 });
 
-const registerUserFailed = (): Action => ({
+export const registerUserFailed = (): Action => ({
     type: TOMATO_APP_USER_REGISTER_FAILED,
 });
 
-const registerUserSuccess = (user: IUser): Action => ({
+export const registerUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_REGISTER_SUCCESS,
     payload: {
         user,
     }
 });
 
-const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {
+export const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {
     return axios.post(BASE_USER_URI, JSON.stringify(user), endpointConfigHeader(authToken));
 };
 
@@ -42,7 +42,7 @@ interface IRegisterUserFactoryDependencies {
     readonly userRegistration: (authToken: AuthToken, user: IUserServerModel) => any;
 }
 
-const createLoadAllUsersFactory = (dependencies: IRegisterUserFactoryDependencies) => (authToken: AuthToken, user: IUserServerModel) =>
+export const createLoadAllUsersFactory = (dependencies: IRegisterUserFactoryDependencies) => (authToken: AuthToken, user: IUserServerModel) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.registerUserStarted());
 
