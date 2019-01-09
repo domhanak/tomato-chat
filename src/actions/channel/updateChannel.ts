@@ -7,8 +7,9 @@ import {
 import {IChannel} from '../../models/IChannel';
 import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
-import {updateChannelApiCall} from './updateChannelApiCall';
-import {responseChannelMapper} from '../../common/utils/utilFunctions';
+import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/utilFunctions';
+import axios from 'axios';
+import {GET_CHANNEL_URI} from '../../constants/apiConstants';
 
 export const updateChannelStarted = (id: Uuid): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_STARTED,
@@ -27,6 +28,10 @@ export const updateChannelSuccess = (channel: IChannel): Action => ({
         channel,
     }
 });
+
+const updateChannelApiCall = (authToken: AuthToken, channel: IChannelServerModel, channelId: Uuid) => {
+    return axios.put(GET_CHANNEL_URI(channelId), channel, endpointConfigHeader(authToken));
+};
 
 const createUpdateChannelFactoryDependencies = {
     updateChannelStarted,
