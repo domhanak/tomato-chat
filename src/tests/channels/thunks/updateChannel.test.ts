@@ -1,5 +1,4 @@
-import {createUpdateChannelFactory} from '../../../actions/channel/updateChannel';
-import {IChannel} from '../../../models/IChannel';
+import {createUpdateChannelFactory, updateChannelSuccess, updateChannelStarted, updateChannelFailed} from '../../../actions/channel/updateChannel';
 import {IChannelServerModel} from '../../../models/IChannelServerModel';
 import {
     authTokenHelper,
@@ -8,35 +7,18 @@ import {
     channelServerModelResponse,
     dispatch
 } from '../helpers/helpers';
+import {TOMATO_APP_CHANNEL_EDITING_STARTED, TOMATO_APP_CHANNEL_EDITING_SUCCESS} from '../../../constants/actionTypes';
 
 describe('Channel update thunk action tests.', () => {
-    const expectedUpdateChannelStarted = {type: 'updateChannelStarted',
+    const expectedUpdateChannelStarted = {type: TOMATO_APP_CHANNEL_EDITING_STARTED,
         payload: {
             id: channelHelper.id,
         }};
 
-    const expectedUpdateChannelSuccess = {type: 'updateChannelSuccess',
+    const expectedUpdateChannelSuccess = {type: TOMATO_APP_CHANNEL_EDITING_SUCCESS,
         payload: {
             channel: channelHelper,
         }};
-
-    const updateChannelStarted = (id: Uuid): Action => ({
-        type: 'updateChannelStarted',
-        payload: {
-            id,
-        }
-    });
-
-    const updateChannelFailed = (): Action => ({
-        type: 'updateChannelFailed',
-    });
-
-    const updateChannelSuccess = (channel: IChannel): Action => ({
-        type: 'updateChannelSuccess',
-        payload: {
-            channel,
-        }
-    });
 
     const updateChannelApiCall = (authToken: AuthToken, channel: IChannelServerModel, channelId: Uuid) => {
         console.log(authToken + channelId + channel.name);

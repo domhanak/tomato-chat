@@ -10,18 +10,18 @@ import {IChannelServerModelResponse} from '../../models/IChannelServerModelRespo
 import {updateChannelApiCall} from './updateChannelApiCall';
 import {responseChannelMapper} from '../../common/utils/utilFunctions';
 
-const updateChannelStarted = (id: Uuid): Action => ({
+export const updateChannelStarted = (id: Uuid): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_STARTED,
     payload: {
         id,
     }
 });
 
-const updateChannelFailed = (): Action => ({
+export const updateChannelFailed = (): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_FAILED,
 });
 
-const updateChannelSuccess = (channel: IChannel): Action => ({
+export const updateChannelSuccess = (channel: IChannel): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_SUCCESS,
     payload: {
         channel,
