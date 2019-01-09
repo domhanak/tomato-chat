@@ -7,6 +7,9 @@ export const userServerModelHelper = {email: 'test@test.com',
     customData: {id: 'as6d4as', selectedChannel: 'qqqqqq', nickname: 'nick',
         avatarId: 'sddadas', channels: List(['aaaaa'])}} as IUserServerModel;
 
+export const userServerModelHelperWithUri = {email: userServerModelHelper.email,
+    customData: {...userServerModelHelper.customData, avatarUrl: 'aa.ddd.cccc'}};
+
 export const userHelper = {id: 'as6d4as', channels: List(['aaaaa']), selectedChannel: 'qqqqqq', nickname: 'nick',
                            avatarId: 'sddadas', email: 'test@test.com', avatarUrl: 'aa.ddd.cccc'} as IUser;
 

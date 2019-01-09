@@ -24,7 +24,7 @@ export const registerUserSuccess = (user: IUser): Action => ({
     }
 });
 
-export const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {
+const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {
     return axios.post(BASE_USER_URI, JSON.stringify(user), endpointConfigHeader(authToken));
 };
 
@@ -42,7 +42,7 @@ interface IRegisterUserFactoryDependencies {
     readonly userRegistration: (authToken: AuthToken, user: IUserServerModel) => any;
 }
 
-export const createLoadAllUsersFactory = (dependencies: IRegisterUserFactoryDependencies) => (authToken: AuthToken, user: IUserServerModel) =>
+export const createRegisterUserFactory = (dependencies: IRegisterUserFactoryDependencies) => (authToken: AuthToken, user: IUserServerModel) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.registerUserStarted());
 
@@ -57,4 +57,4 @@ export const createLoadAllUsersFactory = (dependencies: IRegisterUserFactoryDepe
             });
     };
 
-export const registerUser = createLoadAllUsersFactory(createRegisterUserFactoryDependencies);
+export const registerUser = createRegisterUserFactory(createRegisterUserFactoryDependencies);
