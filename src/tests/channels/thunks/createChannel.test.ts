@@ -37,8 +37,6 @@ describe('Channel create thunk action tests.', () => {
         channelCreate
     };
 
-
-
     test('Dispatch thunks in correct order: createChannel.', async done => {
         await createChannelCreateFactory(createTestCreateDependencies)
             (authTokenHelper, channelServerModel, userServerModelHelper)(dispatch);
@@ -48,4 +46,4 @@ describe('Channel create thunk action tests.', () => {
         expect(dispatch.mock.calls[2][0]).toEqual(expectedUserChannelStarted);
         done();
     });
-})
+});
