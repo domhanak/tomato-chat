@@ -12,15 +12,15 @@ import {IUserServerModel} from '../../models/IUserServerModel';
 import {updateUser} from '../users/updateUser';
 import * as Immutable from 'immutable';
 
-const channelDeleteStarted = (): Action => ({
+export const channelDeleteStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_DELETE_STARTED,
 });
 
-const channelDeleteFailed = (): Action => ({
+export const channelDeleteFailed = (): Action => ({
     type: TOMATO_APP_CHANNEL_DELETE_FAILED,
 });
 
-const channelDeleteSuccess = (deletedChannelId: Uuid): Action => ({
+export const channelDeleteSuccess = (deletedChannelId: Uuid): Action => ({
     type: TOMATO_APP_CHANNEL_DELETE_SUCCESS,
     payload: {
         deletedChannelId,
@@ -45,12 +45,12 @@ interface IDeleteChannelFactoryDependencies {
     readonly channelDelete: (authToken: AuthToken, deletedChannelId: Uuid) => any;
 }
 
-const createChannelDeleteFactory = (dependencies: IDeleteChannelFactoryDependencies) => (authToken: AuthToken, channelId: Uuid, user: IUserServerModel) =>
+export const createChannelDeleteFactory = (dependencies: IDeleteChannelFactoryDependencies) => (authToken: AuthToken, channelId: Uuid, user: IUserServerModel) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.channelDeleteStarted());
 
-        return channelDelete(authToken, channelId)
-            .then((_) => {
+        return dependencies.channelDelete(authToken, channelId)
+            .then((_: any) => {
                 dispatch(dependencies.channelDeleteSuccess(channelId));
                 const channels: Immutable.List<Uuid> = Immutable.List(user.customData.channels).filter((value: Uuid) => { return value !== channelId; }).toList();
                 updateUser(authToken, {email: user.email, customData: {...user.customData,

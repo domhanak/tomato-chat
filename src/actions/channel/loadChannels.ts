@@ -9,22 +9,22 @@ import {BASE_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/utilFunctions';
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
 
-const loadingStarted = (): Action => ({
+export const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_CHANNELS_STARTED,
 });
 
-const loadingFailed = (): Action => ({
+export const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_CHANNELS_FAILED,
 });
 
-const loadingSuccess = (channels: ReadonlyArray<IChannel>): Action => ({
+export const loadingSuccess = (channels: ReadonlyArray<IChannel>): Action => ({
     type: TOMATO_APP_LOADING_CHANNELS_SUCCESS,
     payload: {
         channels,
     }
 });
 
-export const loadAllChannels = (authToken: AuthToken) => {
+const loadAllChannels = (authToken: AuthToken) => {
     return axios.get(BASE_CHANNEL_URI, endpointConfigHeader(authToken));
 };
 
@@ -35,14 +35,14 @@ const createLoadAllChannelsFactoryDependencies = {
     loadAllChannels
 };
 
-interface ILoadAllChannelFactoryDependencies {
+export interface ILoadAllChannelFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (channels: ReadonlyArray<IChannel>) => Action;
     readonly loadingFailed: () => Action;
     readonly loadAllChannels: (authToken: AuthToken) => any;
 }
 
-const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDependencies) => (authToken: AuthToken) =>
+export const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
 
