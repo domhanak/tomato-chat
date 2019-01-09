@@ -9,7 +9,6 @@ const mapStateToProps = (state: IState): IProfileStateProps => {
     return {
         user: state.tomatoApp.loggedUser,
         authToken: state.tomatoApp.authToken,
-        avatarUri: state.tomatoApp.avatarUri
     };
 };
 

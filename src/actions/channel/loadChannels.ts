@@ -24,7 +24,7 @@ export const loadingSuccess = (channels: ReadonlyArray<IChannel>): Action => ({
     }
 });
 
-const loadAllChannels = (authToken: AuthToken) => {
+export const loadAllChannels = (authToken: AuthToken) => {
     return axios.get(BASE_CHANNEL_URI, endpointConfigHeader(authToken));
 };
 
