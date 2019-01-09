@@ -9,15 +9,15 @@ import {GET_FILE_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IFile} from '../../models/IFile';
 
-const getFileStarted = (): Action => ({
+export const getFileStarted = (): Action => ({
     type: TOMATO_APP_GET_FILE_STARTED,
 });
 
-const getFileFailed = (): Action => ({
+export const getFileFailed = (): Action => ({
     type: TOMATO_APP_GET_FILE_FAILED,
 });
 
-const getFileSuccess = (file: IFile): Action => ({
+export const getFileSuccess = (file: IFile): Action => ({
     type: TOMATO_APP_GET_FILE_SUCCESS,
     payload: {
         file,
@@ -42,7 +42,7 @@ interface IGetFileFactoryDependencies {
     readonly getFileApiCall: (fileId: Uuid, authToken: AuthToken) => any;
 }
 
-const createGetFileFactory = (dependencies: IGetFileFactoryDependencies) =>
+export const createGetFileFactory = (dependencies: IGetFileFactoryDependencies) =>
     (authToken: AuthToken, fileId: Uuid) =>
         (dispatch: Dispatch) => {
             dispatch(dependencies.getFileStarted());
