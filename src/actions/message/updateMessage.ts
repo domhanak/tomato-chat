@@ -11,25 +11,25 @@ import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/ut
 import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
 
-const updateMessageStarted = (id: Uuid): Action => ({
+export const updateMessageStarted = (id: Uuid): Action => ({
     type: TOMATO_APP_MESSAGE_UPDATE_STARTED,
     payload: {
         id
     }
 });
 
-const updateMessageFailed = (): Action => ({
+export const updateMessageFailed = (): Action => ({
     type: TOMATO_APP_MESSAGE_UPDATE_FAILED,
 });
 
-const updateMessageSuccess = (message: IMessage): Action => ({
+export const updateMessageSuccess = (message: IMessage): Action => ({
   type: TOMATO_APP_MESSAGE_UPDATE_SUCCESS,
   payload: {
       message,
   }
 });
 
-const updateMessageFromChannel = (authToken: string | null, channelId: Uuid, messageId: Uuid, message: IMessageServerModel): any => {
+const updateMessageFromChannel = (authToken: AuthToken, channelId: Uuid, messageId: Uuid, message: IMessageServerModel): any => {
     return axios.put(BASE_MESSAGE_FROM_CHANNEL_URI(channelId, messageId), message, endpointConfigHeader(authToken));
 };
 
@@ -44,11 +44,11 @@ interface IUpdateMessageFactoryDependencies {
     readonly updateMessageStarted: (id: Uuid) => Action;
     readonly updateMessageSuccess: (message: IMessage) => Action;
     readonly updateMessageFailed: () => Action;
-    readonly updateMessageFromChannel: (authToken: string | null, channelId: Uuid, messageId: Uuid, message: IMessageServerModel) => any;
+    readonly updateMessageFromChannel: (authToken: AuthToken, channelId: Uuid, messageId: Uuid, message: IMessageServerModel) => any;
 }
 
-const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies): any =>
-    (authToken: string | null, message: IMessage, channelId: Uuid, newValue: IMessageServerModel): any =>
+export const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDependencies): any =>
+    (authToken: AuthToken, message: IMessage, channelId: Uuid, newValue: IMessageServerModel): any =>
         async (dispatch: Dispatch): Promise<IMessage> => {
             dispatch(dependencies.updateMessageStarted(message.id));
 
