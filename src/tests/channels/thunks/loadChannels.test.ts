@@ -8,7 +8,7 @@ import {
     loadingFailed,
     loadingStarted,
     loadingSuccess
-} from "../../../actions/channel/loadChannels";
+} from '../../../actions/channel/loadChannels';
 
 describe('Load channels thunk tests.', () => {
     const expectedLoadChannelsStarted = {type: TOMATO_APP_LOADING_CHANNELS_STARTED};
