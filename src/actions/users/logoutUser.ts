@@ -4,6 +4,7 @@ import {
     TOMATO_APP_USER_LOGOUT_SUCCESS
 } from '../../constants/actionTypes';
 import {Dispatch} from 'redux';
+import {errorMessageUserLogout} from '../../constants/errorMessages';
 
 export const userLogoutStarted = (): Action => ({
     type: TOMATO_APP_USER_LOGOUT_STARTED,
@@ -13,8 +14,9 @@ export const userLogoutSuccess = (): Action => ({
     type: TOMATO_APP_USER_LOGOUT_SUCCESS,
 });
 
-export const userLogoutFailed = (): Action => ({
+export const userLogoutFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_USER_LOGOUT_FAILED,
+    payload: errorMessage
 });
 
 const createLogoutFactoryDependencies = {
@@ -26,7 +28,7 @@ const createLogoutFactoryDependencies = {
 interface IUserLogoutFactoryDependencies {
     readonly userLogoutStarted: () => Action;
     readonly userLogoutSuccess: () => Action;
-    readonly userLogoutFailed: () => Action;
+    readonly userLogoutFailed: (errorMessage: string | null) => Action;
 }
 
 export const createLogoutUserFactory = (dependencies: IUserLogoutFactoryDependencies) => (dispatch: Dispatch): any => {
@@ -36,7 +38,7 @@ export const createLogoutUserFactory = (dependencies: IUserLogoutFactoryDependen
     }
     catch (e) {
         console.log(e);
-        dispatch(dependencies.userLogoutFailed());
+        dispatch(dependencies.userLogoutFailed(errorMessageUserLogout));
     }
 };
 

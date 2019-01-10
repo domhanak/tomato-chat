@@ -10,6 +10,7 @@ import {BASE_MESSAGE_FROM_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/utilFunctions';
 import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
+import {errorMessageMessageUpdate} from '../../constants/errorMessages';
 
 export const updateMessageStarted = (id: Uuid): Action => ({
     type: TOMATO_APP_MESSAGE_UPDATE_STARTED,
@@ -18,8 +19,9 @@ export const updateMessageStarted = (id: Uuid): Action => ({
     }
 });
 
-export const updateMessageFailed = (): Action => ({
+export const updateMessageFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_MESSAGE_UPDATE_FAILED,
+    payload: errorMessage
 });
 
 export const updateMessageSuccess = (message: IMessage): Action => ({
@@ -43,7 +45,7 @@ const createUpdateMessageFactoryDependencies = {
 interface IUpdateMessageFactoryDependencies {
     readonly updateMessageStarted: (id: Uuid) => Action;
     readonly updateMessageSuccess: (message: IMessage) => Action;
-    readonly updateMessageFailed: () => Action;
+    readonly updateMessageFailed: (errorMessage: string | null) => Action;
     readonly updateMessageFromChannel: (authToken: AuthToken, channelId: Uuid, messageId: Uuid, message: IMessageServerModel) => any;
 }
 
@@ -59,7 +61,7 @@ export const createUpdateMessageFactory = (dependencies: IUpdateMessageFactoryDe
                 })
                 .catch((error: any) => {
                     console.log(error);
-                    dispatch(dependencies.updateMessageFailed());
+                    dispatch(dependencies.updateMessageFailed(errorMessageMessageUpdate));
                 });
         };
 

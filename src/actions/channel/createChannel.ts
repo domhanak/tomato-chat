@@ -12,13 +12,15 @@ import {IChannelServerModel} from '../../models/IChannelServerModel';
 import {updateUser} from '../users/updateUser';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {List} from 'immutable';
+import {errorMessageChannelCreate} from '../../constants/errorMessages';
 
 export const channelCreateStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_STARTED,
 });
 
-export const channelCreateFailed = (): Action => ({
+export const channelCreateFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_CHANNEL_CREATE_FAILED,
+    payload: errorMessage
 });
 
 export const channelCreateSuccess = (channel: IChannel): Action => ({
@@ -41,7 +43,7 @@ const createChannelCreateFactoryDependencies = {
 
 export interface ICreateChannelFactoryDependencies {
     readonly channelCreateStarted: () => Action;
-    readonly channelCreateFailed: () => Action;
+    readonly channelCreateFailed: (errorMessage: string | null) => Action;
     readonly channelCreateSuccess: (channel: IChannel) => Action;
     readonly channelCreate: (authToken: AuthToken, channel: IChannelServerModel) => any;
 }
@@ -61,7 +63,7 @@ export const createChannelCreateFactory = (dependencies: ICreateChannelFactoryDe
             })
             .catch((error: any) => {
                 console.log(error);
-                dispatch(dependencies.channelCreateFailed());
+                dispatch(dependencies.channelCreateFailed(errorMessageChannelCreate));
             });
     };
 

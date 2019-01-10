@@ -8,13 +8,15 @@ import {BASE_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {loadUsers} from './loadUsers';
+import {errorMessageUserRegistration} from '../../constants/errorMessages';
 
 export const registerUserStarted = (): Action => ({
     type: TOMATO_APP_USER_REGISTER_STARTED,
 });
 
-export const registerUserFailed = (): Action => ({
+export const registerUserFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_USER_REGISTER_FAILED,
+    payload: errorMessage
 });
 
 export const registerUserSuccess = (user: IUser): Action => ({
@@ -38,7 +40,7 @@ const createRegisterUserFactoryDependencies = {
 interface IRegisterUserFactoryDependencies {
     readonly registerUserStarted: () => Action;
     readonly registerUserSuccess: (user: IUser) => Action;
-    readonly registerUserFailed: () => Action;
+    readonly registerUserFailed: (errorMessage: string | null) => Action;
     readonly userRegistration: (authToken: AuthToken, user: IUserServerModel) => any;
 }
 
@@ -53,7 +55,7 @@ export const createRegisterUserFactory = (dependencies: IRegisterUserFactoryDepe
             })
             .catch((error: any) => {
                 console.log(error);
-                dispatch(dependencies.registerUserFailed());
+                dispatch(dependencies.registerUserFailed(errorMessageUserRegistration));
             });
     };
 

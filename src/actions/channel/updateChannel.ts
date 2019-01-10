@@ -10,6 +10,7 @@ import {IChannelServerModelResponse} from '../../models/IChannelServerModelRespo
 import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/utilFunctions';
 import axios from 'axios';
 import {GET_CHANNEL_URI} from '../../constants/apiConstants';
+import {errorMessageChannelEditing} from '../../constants/errorMessages';
 
 export const updateChannelStarted = (id: Uuid): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_STARTED,
@@ -18,8 +19,9 @@ export const updateChannelStarted = (id: Uuid): Action => ({
     }
 });
 
-export const updateChannelFailed = (): Action => ({
+export const updateChannelFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_CHANNEL_EDITING_FAILED,
+    payload: errorMessage
 });
 
 export const updateChannelSuccess = (channel: IChannel): Action => ({
@@ -43,7 +45,7 @@ const createUpdateChannelFactoryDependencies = {
 export interface IUpdateChannelFactoryDependencies {
     readonly updateChannelStarted: (id: Uuid) => Action;
     readonly updateChannelSuccess: (channel: IChannel) => Action;
-    readonly updateChannelFailed: () => Action;
+    readonly updateChannelFailed: (errorMessage: string | null) => Action;
     readonly updateChannelApiCall: (authToken: AuthToken, channel: IChannelServerModel, channelId: Uuid) => any;
 }
 
@@ -59,7 +61,7 @@ export const createUpdateChannelFactory = (dependencies: IUpdateChannelFactoryDe
         })
         .catch((error: any) => {
             console.log(error);
-            dispatch(dependencies.updateChannelFailed());
+            dispatch(dependencies.updateChannelFailed(errorMessageChannelEditing));
         });
 };
 

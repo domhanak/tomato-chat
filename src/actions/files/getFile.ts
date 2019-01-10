@@ -8,13 +8,15 @@ import axios from 'axios';
 import {GET_FILE_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IFile} from '../../models/IFile';
+import {errorMessageGetFile} from '../../constants/errorMessages';
 
 export const getFileStarted = (): Action => ({
     type: TOMATO_APP_GET_FILE_STARTED,
 });
 
-export const getFileFailed = (): Action => ({
+export const getFileFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_GET_FILE_FAILED,
+    payload: errorMessage
 });
 
 export const getFileSuccess = (file: IFile): Action => ({
@@ -37,7 +39,7 @@ const createGetFileFactoryDependencies = {
 
 interface IGetFileFactoryDependencies {
     readonly getFileStarted: () => Action;
-    readonly getFileFailed: () => Action;
+    readonly getFileFailed: (errorMessage: string | null) => Action;
     readonly getFileSuccess: (file: IFile) => Action;
     readonly getFileApiCall: (fileId: Uuid, authToken: AuthToken) => any;
 }
@@ -53,7 +55,7 @@ export const createGetFileFactory = (dependencies: IGetFileFactoryDependencies) 
                 })
                 .catch((error: any) => {
                     console.error(error);
-                    dispatch(dependencies.getFileFailed());
+                    dispatch(dependencies.getFileFailed(errorMessageGetFile));
                 });
         };
 

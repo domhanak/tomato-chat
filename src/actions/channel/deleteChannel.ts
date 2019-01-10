@@ -11,13 +11,15 @@ import {loadChannels} from './loadChannels';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {updateUser} from '../users/updateUser';
 import * as Immutable from 'immutable';
+import {errorMessageChannelDelete} from '../../constants/errorMessages';
 
 export const channelDeleteStarted = (): Action => ({
     type: TOMATO_APP_CHANNEL_DELETE_STARTED,
 });
 
-export const channelDeleteFailed = (): Action => ({
+export const channelDeleteFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_CHANNEL_DELETE_FAILED,
+    payload: errorMessage
 });
 
 export const channelDeleteSuccess = (deletedChannelId: Uuid): Action => ({
@@ -40,7 +42,7 @@ const createChannelDeleteFactoryDependencies = {
 
 interface IDeleteChannelFactoryDependencies {
     readonly channelDeleteStarted: () => Action;
-    readonly channelDeleteFailed: () => Action;
+    readonly channelDeleteFailed: (errorMessage: string | null) => Action;
     readonly channelDeleteSuccess: (deletedChannelId: Uuid) => Action;
     readonly channelDelete: (authToken: AuthToken, deletedChannelId: Uuid) => any;
 }
@@ -60,7 +62,7 @@ export const createChannelDeleteFactory = (dependencies: IDeleteChannelFactoryDe
             })
             .catch((error: any) => {
                 console.error(error);
-                dispatch(dependencies.channelDeleteFailed());
+                dispatch(dependencies.channelDeleteFailed(errorMessageChannelDelete));
             });
     };
 

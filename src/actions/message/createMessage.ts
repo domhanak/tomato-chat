@@ -9,13 +9,15 @@ import {BASE_MESSAGE_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/utilFunctions';
 import axios from 'axios';
 import {IMessageServerModel} from '../../models/IMessageServerModel';
+import {errorMessageMessageCreate} from '../../constants/errorMessages';
 
 export const createMessageStarted = (): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_STARTED,
 });
 
-export const createMessageFailed = (): Action => ({
+export const createMessageFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_MESSAGE_CREATE_FAILED,
+    payload: errorMessage
 });
 
 export const createMessageSuccess = (message: IMessage): Action => ({
@@ -38,7 +40,7 @@ const createMessageCreateFactoryDependencies = {
 
 interface ICreateMessageFactoryDependencies {
     readonly createMessageStarted: () => Action;
-    readonly createMessageFailed: () => Action;
+    readonly createMessageFailed: (errorMessage: string | null) => Action;
     readonly createMessageSuccess: (message: IMessage) => Action;
     readonly messageCreate: (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => any;
 }
@@ -55,7 +57,7 @@ export const createMessageCreateFactory = (dependencies: ICreateMessageFactoryDe
             })
             .catch((error: any) => {
                 console.log(error);
-                dispatch(dependencies.createMessageFailed());
+                dispatch(dependencies.createMessageFailed(errorMessageMessageCreate));
             });
     };
 

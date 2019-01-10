@@ -10,9 +10,11 @@ import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {Dispatch} from 'redux';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getDownloadLinkApiCall} from '../files/getDownloadLink';
+import {errorMessageLoadingUsers} from '../../constants/errorMessages';
 
-export const loadingFailed = (): Action => ({
+export const loadingFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_LOADING_USERS_FAILED,
+    payload: errorMessage
 });
 
 export const loadingStarted = (): Action => ({
@@ -41,7 +43,7 @@ const createLoadAllUsersFactoryDependencies = {
 interface ILoadAllUsersFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (user: IUser) => Action;
-    readonly loadingFailed: () => Action;
+    readonly loadingFailed: (errorMessage: string | null) => Action;
     readonly loadAllUsers: (authToken: AuthToken) => any;
     readonly getDownloadLinkApiCall: (fileId: Uuid, authToken: AuthToken) => any;
 }
@@ -60,13 +62,13 @@ export const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDepe
                             })
                             .catch((error: any) => {
                                 console.log(error);
-                                dispatch(dependencies.loadingFailed());
+                                dispatch(dependencies.loadingFailed(errorMessageLoadingUsers));
                             });
                 });
             })
             .catch((error: any) => {
                 console.log(error);
-                dispatch(dependencies.loadingFailed());
+                dispatch(dependencies.loadingFailed(errorMessageLoadingUsers));
         });
     };
 

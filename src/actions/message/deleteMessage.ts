@@ -7,13 +7,15 @@ import {
 import axios from 'axios';
 import {BASE_MESSAGE_FROM_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
+import {errorMessageMessageDelete} from '../../constants/errorMessages';
 
 export const messageDeleteStarted = (): Action => ({
     type: TOMATO_APP_MESSAGE_DELETE_STARTED,
 });
 
-export const messageDeleteFailed = (): Action => ({
+export const messageDeleteFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_MESSAGE_DELETE_FAILED,
+    payload: errorMessage
 });
 
 export const messageDeleteSuccess = (deletedMessageId: Uuid): Action => ({
@@ -36,7 +38,7 @@ const createMessageDeleteFactoryDependencies = {
 
 interface IDeleteMessageFactoryDependencies {
     readonly messageDeleteStarted: () => Action;
-    readonly messageDeleteFailed: () => Action;
+    readonly messageDeleteFailed: (errorMessage: string | null) => Action;
     readonly messageDeleteSuccess: (deleteMessageId: Uuid) => Action;
     readonly messageDelete: (authToken: AuthToken, deletedMessageId: Uuid, channelId: Uuid) => any;
 }
@@ -51,7 +53,7 @@ export const createMessageDeleteFactory = (dependencies: IDeleteMessageFactoryDe
             })
             .catch((error: any) => {
                 console.error(error);
-                dispatch(dependencies.messageDeleteFailed());
+                dispatch(dependencies.messageDeleteFailed(errorMessageMessageDelete));
             });
     };
 
