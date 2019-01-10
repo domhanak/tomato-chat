@@ -18,7 +18,7 @@ import {
 } from '../../../constants/actionTypes';
 import {authTokenHelper, dispatch} from '../../baseHelpers';
 
-describe('Update user thunk action tests.', () => {
+describe('Authenticate user thunk action tests.', () => {
     const authenticateUser = (email: String) => {
         console.log(email);
         return Promise.resolve({data: {token: 'jwtSecret'}});
@@ -46,7 +46,7 @@ describe('Update user thunk action tests.', () => {
         loadAllChannels: loadAllChannelsTest
     };
 
-    test('Dispatch thunks in correct order: updateUser.', async done => {
+    test('Dispatch thunks in correct order: authenticateUser.', async done => {
         await createAuthenticationFactory(createTestAuthUserDependencies)(userHelper.email)(dispatch);
 
         expect(dispatch.mock.calls[0][0]).toEqual(expectedAuthTokenStarted);

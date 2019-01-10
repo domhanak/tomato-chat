@@ -13,7 +13,6 @@ import {authTokenHelper, dispatch} from '../../baseHelpers';
 
 describe('Register user thunk action tests.', () => {
     const userRegistration = (authToken: AuthToken, user: IUserServerModel) => {
-        console.log(authToken + user.email);
         return Promise.resolve({data: userServerModelHelperWithUri});
     };
 

@@ -5,6 +5,7 @@ import {Dispatch} from 'redux';
 import {loadUsers} from '../actions/users/loadUsers';
 import {loadChannels} from '../actions/channel/loadChannels';
 import {loadMessages} from '../actions/message/loadMessages';
+import {logout} from '../actions/users/logoutUser';
 
 const mapStateToProps = (state: IState): ITomatoAppStateProps => {
     return {
@@ -21,6 +22,7 @@ const mapDispatchToProps = (dispatch: Dispatch): ITomatoAppDispatchProps => {
         loadUsers: (authToken: string | null) => loadUsers(authToken)(dispatch),
         loadChannels: (authToken: string | null) => loadChannels(authToken)(dispatch),
         loadMessages: (authToken: string | null, channelId: Uuid) => loadMessages(authToken, channelId)(dispatch),
+        onUserLogout: () => logout(dispatch),
     };
 };
 

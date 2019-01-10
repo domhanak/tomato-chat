@@ -16,15 +16,25 @@ export interface ITomatoAppStateProps {
     readonly authToken: string | null;
 }
 
+interface ITomatoAppLogoutProps  {
+    readonly isLoggingIn: boolean;
+    readonly history: any;
+}
+
 export interface ITomatoAppDispatchProps {
     readonly loadUsers: (authToken: string | null) => void;
     readonly loadChannels: (authToken: string | null) => void;
     readonly loadMessages: (authToken: string | null, channelId: Uuid) => Immutable.List<Uuid>;
+    readonly onUserLogout: () => void;
 }
 
-export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomatoAppDispatchProps> {
+export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomatoAppDispatchProps & ITomatoAppLogoutProps> {
     constructor(props: any) {
         super(props);
+
+        if (!this.props.isLoggingIn) {
+            this.props.onUserLogout();
+        }
     }
 
    componentDidMount(): void {
@@ -32,6 +42,9 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
             this.props.loadUsers(this.props.authToken);
             this.props.loadChannels(this.props.authToken);
             this.props.loadMessages(this.props.authToken, this.props.loggedUser.selectedChannel);
+        }
+        else if (this.props.history) {
+            this.props.history.replace('');
         }
     }
 
