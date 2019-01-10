@@ -5,7 +5,7 @@ import {
 import {authTokenHelper, rejectedPromise, resolvedPromise} from '../../baseHelpers';
 import {
     channelHelper,
-    expectedLoadingChannelsStarted, loadAllChannelsTest
+    expectedLoadingChannelsStarted, loadAllChannelsTest, loadAllChannelsTestRejected
 } from '../helpers/helpers';
 import {
     createLoadAllChannelFactory,
@@ -23,10 +23,6 @@ describe('Load channels thunk tests.', () => {
 
     const expectedLoadChannelsFailed = {type: TOMATO_APP_LOADING_CHANNELS_FAILED,
         payload: errorMessageLoadingChannels};
-
-    const loadAllChannelsTestRejected = (authToken: AuthToken) => {
-        return Promise.reject({error: {}});
-    };
 
     const createTestLoadChannelsDependencies = (promise: boolean) => {
         return {

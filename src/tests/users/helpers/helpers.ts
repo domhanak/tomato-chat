@@ -28,4 +28,8 @@ export const expectedLoginSuccess = {type: TOMATO_APP_USER_LOGIN_SUCCESS,
 
 export const getDownloadLinkApiCallTest = (fileId: Uuid, authToken: AuthToken) => {
     return Promise.resolve({data: {fileUri: userHelper.avatarUrl}});
-}
+};
+
+export const getDownloadLinkApiCallTestReject = (fileId: Uuid, authToken: AuthToken) => {
+    return Promise.reject({error: {}});
+};

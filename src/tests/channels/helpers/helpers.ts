@@ -18,3 +18,7 @@ export const expectedLoadingChannelsStarted = {type: TOMATO_APP_LOADING_CHANNELS
 export const loadAllChannelsTest = (authToken: AuthToken) => {
     return Promise.resolve({data: [channelServerModelResponse]});
 };
+
+export const loadAllChannelsTestRejected = (authToken: AuthToken) => {
+    return Promise.reject({error: {}});
+};
