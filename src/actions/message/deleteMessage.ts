@@ -8,15 +8,15 @@ import axios from 'axios';
 import {BASE_MESSAGE_FROM_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 
-const messageDeleteStarted = (): Action => ({
+export const messageDeleteStarted = (): Action => ({
     type: TOMATO_APP_MESSAGE_DELETE_STARTED,
 });
 
-const messageDeleteFailed = (): Action => ({
+export const messageDeleteFailed = (): Action => ({
     type: TOMATO_APP_MESSAGE_DELETE_FAILED,
 });
 
-const messageDeleteSuccess = (deletedMessageId: Uuid): Action => ({
+export const messageDeleteSuccess = (deletedMessageId: Uuid): Action => ({
     type: TOMATO_APP_MESSAGE_DELETE_SUCCESS,
     payload: {
         deletedMessageId,
@@ -41,12 +41,12 @@ interface IDeleteMessageFactoryDependencies {
     readonly messageDelete: (authToken: AuthToken, deletedMessageId: Uuid, channelId: Uuid) => any;
 }
 
-const createMessageDeleteFactory = (dependencies: IDeleteMessageFactoryDependencies) => (authToken: AuthToken, messageId: Uuid, channelId: Uuid) =>
+export const createMessageDeleteFactory = (dependencies: IDeleteMessageFactoryDependencies) => (authToken: AuthToken, messageId: Uuid, channelId: Uuid) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.messageDeleteStarted());
 
-        return messageDelete(authToken, messageId, channelId)
-            .then((_) => {
+        return dependencies.messageDelete(authToken, messageId, channelId)
+            .then((_: any) => {
                 dispatch(dependencies.messageDeleteSuccess(messageId));
             })
             .catch((error: any) => {

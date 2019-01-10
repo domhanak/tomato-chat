@@ -1,7 +1,7 @@
+import {authTokenHelper, dispatch} from '../../baseHelpers';
 import {
-    authTokenHelper,
     channelHelper,
-    dispatch, expectedLoadingChannelsStarted
+    expectedLoadingChannelsStarted
 } from '../helpers/helpers';
 import {
     TOMATO_APP_CHANNEL_DELETE_STARTED,

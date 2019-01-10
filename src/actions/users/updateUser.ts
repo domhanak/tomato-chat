@@ -11,18 +11,18 @@ import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
-const updateUserSuccess = (user: IUser): Action => ({
+export const updateUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
     payload: {
         user,
     }
 });
 
-const updateUserStarted = (): Action => ({
+export const updateUserStarted = (): Action => ({
     type: TOMATO_APP_USER_CHANNELS_STARTED,
 });
 
-const updateUserFailed = (): Action => ({
+export const updateUserFailed = (): Action => ({
     type: TOMATO_APP_USER_CHANNELS_FAILED,
 });
 
@@ -35,6 +35,7 @@ const createUpdateUserFactoryDependencies = {
     updateUserStarted,
     userUpdate,
     updateUserFailed,
+    getDownloadLinkApiCall
 };
 
 interface IUpdateUserFactoryDependencies {
@@ -42,15 +43,16 @@ interface IUpdateUserFactoryDependencies {
     readonly updateUserStarted: () => Action;
     readonly updateUserSuccess: (user: IUser) => Action;
     readonly userUpdate: (authToken: AuthToken, user: IUserServerModel) => any;
+    readonly getDownloadLinkApiCall: (fileId: Uuid, authToken: AuthToken) => any;
 }
 
-const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =>
+export const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependencies) =>
     (authToken: AuthToken, user: IUserServerModel) => (dispatch: Dispatch) => {
     dispatch(dependencies.updateUserStarted());
     return dependencies.userUpdate(authToken, user)
         .then((response: any) => {
             const responseUser: IUserServerModel = (response.data as IUserServerModel);
-            return getDownloadLinkApiCall(responseUser.customData.avatarId, authToken)
+            return dependencies.getDownloadLinkApiCall(responseUser.customData.avatarId, authToken)
                 .then((responseDownLink: any) => {
                     dispatch(dependencies.updateUserSuccess({email: responseUser.email,
                         ...responseUser.customData, avatarUrl: responseDownLink.data.fileUri} as IUser));

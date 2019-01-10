@@ -11,15 +11,15 @@ import {Dispatch} from 'redux';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getDownloadLinkApiCall} from '../files/getDownloadLink';
 
-const loadingFailed = (): Action => ({
+export const loadingFailed = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_FAILED,
 });
 
-const loadingStarted = (): Action => ({
+export const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_USERS_STARTED,
 });
 
-const loadingSuccess = (user: IUser): Action => ({
+export const loadingSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_LOADING_USERS_SUCCESS,
     payload: {
         user,
@@ -34,24 +34,26 @@ const createLoadAllUsersFactoryDependencies = {
     loadingStarted,
     loadingSuccess,
     loadingFailed,
-    loadAllUsers
+    loadAllUsers,
+    getDownloadLinkApiCall
 };
 
 interface ILoadAllUsersFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (user: IUser) => Action;
     readonly loadingFailed: () => Action;
-    readonly loadAllUsers: (authToken: string | null) => any;
+    readonly loadAllUsers: (authToken: AuthToken) => any;
+    readonly getDownloadLinkApiCall: (fileId: Uuid, authToken: AuthToken) => any;
 }
 
-const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
+export const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencies) => (authToken: AuthToken) =>
     (dispatch: Dispatch): any => {
         dispatch(dependencies.loadingStarted());
         // const users: IUser[] = [];
         return dependencies.loadAllUsers(authToken)
             .then((response: any) => {
                 response.data.forEach((serverData: IUserServerModel) => {
-                    return getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
+                    return dependencies.getDownloadLinkApiCall(serverData.customData.avatarId, authToken)
                             .then((responseDownLink: any) => {
                                 dispatch(dependencies.loadingSuccess(({email: serverData.email, ...serverData.customData,
                                     avatarUrl: responseDownLink.data.fileUri} as IUser)));
@@ -61,8 +63,6 @@ const createLoadAllUsersFactory = (dependencies: ILoadAllUsersFactoryDependencie
                                 dispatch(dependencies.loadingFailed());
                             });
                 });
-
-
             })
             .catch((error: any) => {
                 console.log(error);

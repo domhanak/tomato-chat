@@ -7,7 +7,6 @@ import {IUserServerModel} from '../../models/IUserServerModel';
 export interface IProfileStateProps {
     readonly user: IUser | null;
     readonly authToken: AuthToken;
-    readonly avatarUri: string | null;
 }
 
 export interface IProfileDispatchProps {

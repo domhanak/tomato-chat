@@ -37,8 +37,7 @@ export const endpointFileConfigHeader = (authToken: AuthToken) => {
 };
 
 export const responseChannelMapper = (channelResponse: IChannelServerModelResponse): IChannel => {
-    return {id: channelResponse.id, name: channelResponse.customData.name,
-        messages: channelResponse.customData.messages, users: channelResponse.customData.users,
+    return {id: channelResponse.id, name: channelResponse.customData.name, users: channelResponse.customData.users,
         owner: channelResponse.customData.owner} as IChannel;
 };
 

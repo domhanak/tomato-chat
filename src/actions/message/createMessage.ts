@@ -25,18 +25,18 @@ export const createMessageSuccess = (message: IMessage): Action => ({
     }
 });
 
-export const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
+const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
     return axios.post(BASE_MESSAGE_URI(channelId), JSON.stringify(message), endpointConfigHeader(authToken));
 };
 
-export const createMessageCreateFactoryDependencies = {
+const createMessageCreateFactoryDependencies = {
     createMessageStarted,
     createMessageFailed,
     createMessageSuccess,
     messageCreate
 };
 
-export interface ICreateMessageFactoryDependencies {
+interface ICreateMessageFactoryDependencies {
     readonly createMessageStarted: () => Action;
     readonly createMessageFailed: () => Action;
     readonly createMessageSuccess: (message: IMessage) => Action;
