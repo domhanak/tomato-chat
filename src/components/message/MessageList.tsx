@@ -17,7 +17,7 @@ export class MessageList extends React.PureComponent<IMessageListProps> {
             this.messageListRef.current!.scrollTop = this.messageListRef.current!.scrollHeight;
         };
     }
-
+// todo order of messages
     componentDidUpdate(): void {
         if (this.listShouldAutoScroll) {
             this.messageListRef.current!.scrollTop = this.messageListRef.current!.scrollHeight;

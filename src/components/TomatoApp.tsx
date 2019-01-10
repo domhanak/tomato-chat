@@ -98,3 +98,4 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
             );
     }
 }
+// todo styling clear error message button
