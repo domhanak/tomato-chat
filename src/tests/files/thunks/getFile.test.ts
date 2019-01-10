@@ -17,7 +17,6 @@ describe('File get thunk action tests.', () => {
         }};
 
     const getFileApiCall = (fileId: Uuid, authToken: AuthToken) => {
-        console.log(authToken + fileId);
         return Promise.resolve({data: IfileHelper});
     };
 

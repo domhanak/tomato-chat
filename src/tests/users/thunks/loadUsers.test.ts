@@ -19,7 +19,6 @@ import {
 
 describe('Load user thunk action tests.', () => {
     const loadAllUsers = (authToken: AuthToken) => {
-        console.log(authToken);
         return Promise.resolve({data: [userServerModelHelper, userServerModelHelper_2]});
     };
 

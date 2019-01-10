@@ -10,7 +10,6 @@ import {IUserServerModel} from '../../../models/IUserServerModel';
 
 describe('Update user thunk action tests.', () => {
     const userUpdate = (authToken: AuthToken, user: IUserServerModel) => {
-        console.log(authToken + user.email);
         return Promise.resolve({data: userServerModelHelper});
     };
 

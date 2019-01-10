@@ -19,7 +19,6 @@ describe('Message delete thunk action tests.', () => {
         }};
 
     const messageDelete = (authToken: AuthToken, deletedMessageId: Uuid, channelId: Uuid) => {
-        console.log(authToken + deletedMessageId + channelId);
         return Promise.resolve({});
     };
 

@@ -23,7 +23,6 @@ describe('Message create thunk action tests.', () => {
         }};
 
     const messageCreate = (authToken: AuthToken, channelId: Uuid, message: IMessageServerModel) => {
-        console.log(authToken + channelId + message.value);
         return Promise.resolve({data: messageServerModelResponseHelper});
     };
 

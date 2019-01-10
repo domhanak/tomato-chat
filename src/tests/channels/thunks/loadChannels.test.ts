@@ -19,8 +19,6 @@ describe('Load channels thunk tests.', () => {
             channels: [channelHelper],
         }};
 
-
-
     const createTestLoadChannelsDependencies = {
         loadingStarted,
         loadingSuccess,

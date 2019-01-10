@@ -20,7 +20,6 @@ describe('Channel update thunk action tests.', () => {
         }};
 
     const updateChannelApiCall = (authToken: AuthToken, channel: IChannelServerModel, channelId: Uuid) => {
-        console.log(authToken + channelId + channel.name);
         return Promise.resolve({data: channelServerModelResponse});
     };
 

@@ -23,7 +23,6 @@ describe('File create thunk action tests.', () => {
         }};
 
     const fileCreate = (file: File, authToken: AuthToken) => {
-        console.log(authToken + file.name);
         return Promise.resolve({data: [{id: fileIdHelper}]});
     };
 

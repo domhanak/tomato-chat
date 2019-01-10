@@ -25,7 +25,6 @@ describe('Channel create thunk action tests.', () => {
         }};
 
     const channelCreate = (authToken: AuthToken, channel: IChannelServerModel) => {
-        console.log(authToken + channel.name);
         return Promise.resolve({data: channelServerModelResponse});
     };
 

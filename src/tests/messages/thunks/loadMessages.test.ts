@@ -18,7 +18,6 @@ describe('Message load thunk action tests.', () => {
         }};
 
     const loadAllMessages = (authToken: AuthToken, channelId: Uuid) => {
-        console.log(authToken + channelId);
         return Promise.resolve({data: [messageServerModelResponseHelper]});
     };
 

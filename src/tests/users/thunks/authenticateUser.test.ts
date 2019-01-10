@@ -20,12 +20,10 @@ import {authTokenHelper, dispatch} from '../../baseHelpers';
 
 describe('Authenticate user thunk action tests.', () => {
     const authenticateUser = (email: String) => {
-        console.log(email);
         return Promise.resolve({data: {token: 'jwtSecret'}});
     };
 
     const logUser = (email: string, authToken: string) => {
-        console.log(email + authToken);
         return Promise.resolve({data: userServerModelHelper});
     };
 

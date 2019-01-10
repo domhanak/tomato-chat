@@ -24,7 +24,6 @@ describe('Channel create thunk action tests.', () => {
         }};
 
     const channelDelete = (authToken: AuthToken, deletedChannelId: Uuid) => {
-        console.log(authToken + deletedChannelId);
         return Promise.resolve({});
     };
 
