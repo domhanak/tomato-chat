@@ -53,9 +53,8 @@ export const createLoadAllMessagesFactory = (dependencies: ILoadAllMessagesFacto
             .then((response: any) => {
                 const messages: IMessage[] = [];
                 response.data
-                    .sort((
-                        msg1: IMessageServerModelResponse, msg2: IMessageServerModelResponse) => (msg1.createdAt > msg2.createdAt)
-                    ).forEach((serverData: IMessageServerModelResponse) => {
+                    .reverse()
+                    .forEach((serverData: IMessageServerModelResponse) => {
                         messages.push(responseMessageMapper(serverData));
                     });
 
