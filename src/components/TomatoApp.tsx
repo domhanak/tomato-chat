@@ -13,18 +13,30 @@ export interface ITomatoAppStateProps {
     readonly loggedUser: IUser | null;
     readonly isLoggedIn: boolean;
     readonly isLoading: boolean;
-    readonly authToken: string | null;
+    readonly authToken: AuthToken;
+    readonly errorMessage: string | null;
+}
+
+interface ITomatoAppLogoutProps  {
+    readonly isLoggingIn: boolean;
+    readonly history: any;
 }
 
 export interface ITomatoAppDispatchProps {
     readonly loadUsers: (authToken: string | null) => void;
     readonly loadChannels: (authToken: string | null) => void;
     readonly loadMessages: (authToken: string | null, channelId: Uuid) => Immutable.List<Uuid>;
+    readonly onUserLogout: () => void;
+    readonly onClearErrorMessage: () => void;
 }
 
-export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomatoAppDispatchProps> {
+export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomatoAppDispatchProps & ITomatoAppLogoutProps> {
     constructor(props: any) {
         super(props);
+
+        if (!this.props.isLoggingIn) {
+            this.props.onUserLogout();
+        }
     }
 
    componentDidMount(): void {
@@ -33,6 +45,14 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
             this.props.loadChannels(this.props.authToken);
             this.props.loadMessages(this.props.authToken, this.props.loggedUser.selectedChannel);
         }
+        else if (this.props.history) {
+            this.props.history.replace('');
+        }
+    }
+
+    clearErrorMessage = (event: any) => {
+        event.preventDefault();
+        this.props.onClearErrorMessage();
     }
 
     render(): JSX.Element {
@@ -68,7 +88,8 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
                             </div>
                             <Navigation/>
                             <div className="panel-footer">
-                                <h4> Footer </h4>
+                                <h4> {this.props.errorMessage ? this.props.errorMessage : 'Tomato chat'} </h4>
+                                {this.props.errorMessage ? <a onClick={this.clearErrorMessage}>clear</a> : <div/>}
                             </div>
                         </header>
                     </div>
@@ -77,3 +98,4 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
             );
     }
 }
+// todo styling clear error message button

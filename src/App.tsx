@@ -14,11 +14,12 @@ const store = createStore(rootReducer, composeEnhancers(
 
 export class App extends React.PureComponent {
     render(): JSX.Element {
+        const isLoggingIn = true;
         return (
             <Provider store={store}>
                 <>
                     <main>
-                        <TomatoAppContainer />
+                        <TomatoAppContainer logout={isLoggingIn} />
                     </main>
                 </>
             </Provider>

@@ -9,6 +9,7 @@ import { channels } from './channel/channels';
 import { messages } from './message/messages';
 import {userAuthentication} from './users/userAuthentication';
 import {isLoading} from './isLoading';
+import {errorMessage} from './errorMessage';
 
 export const tomatoApp = (prevState = {} as ITomatoApp, action: Action): ITomatoApp => ({
     users: users(prevState.users, action),
@@ -22,4 +23,5 @@ export const tomatoApp = (prevState = {} as ITomatoApp, action: Action): ITomato
     userId: userId(prevState.userId, action),
     loggedUser: user(prevState.loggedUser, action),
     authToken: userAuthentication(prevState.authToken, action),
+    errorMessage: errorMessage(prevState.errorMessage, action),
 });

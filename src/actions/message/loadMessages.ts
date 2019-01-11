@@ -9,9 +9,11 @@ import axios from 'axios';
 import {BASE_MESSAGE_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseMessageMapper} from '../../common/utils/utilFunctions';
 import {IMessageServerModelResponse} from '../../models/IMessageServerModelResponse';
+import {errorMessageLoadingMessages} from '../../constants/errorMessages';
 
-export const loadingFailed = (): Action => ({
+export const loadingFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_LOADING_MESSAGES_FAILED,
+    payload: errorMessage
 });
 
 export const loadingStarted = (): Action => ({
@@ -39,7 +41,7 @@ const createLoadAllMessagesFactoryDependencies = {
 interface ILoadAllMessagesFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (messages: ReadonlyArray<IMessage>) => Action;
-    readonly loadingFailed: () => Action;
+    readonly loadingFailed: (errorMessage: string | null) => Action;
     readonly loadAllMessages: (authToken: string | null, channelId: Uuid) => any;
 }
 
@@ -61,7 +63,7 @@ export const createLoadAllMessagesFactory = (dependencies: ILoadAllMessagesFacto
             })
             .catch((error: any) => {
                 console.log(error);
-                dispatch(dependencies.loadingFailed());
+                dispatch(dependencies.loadingFailed(errorMessageLoadingMessages));
             });
     };
 

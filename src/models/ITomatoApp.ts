@@ -30,4 +30,5 @@ export interface ITomatoApp {
   isTyping: boolean;
   isLoading: boolean;
   authToken: string | null;
+  errorMessage: string | null;
 }

@@ -17,6 +17,7 @@ import {loadAllChannels} from '../channel/loadChannels';
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
 import {List} from 'immutable';
 import {updateUser} from './updateUser';
+import {errorMessageUserLogin} from '../../constants/errorMessages';
 
 export const userAuthenticateSuccess = (authenticationToken: String): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED,
@@ -29,8 +30,9 @@ export const userAuthenticationStarted = (): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_STARTED,
 });
 
-export const userAuthenticationFailed = (): Action => ({
+export const userAuthenticationFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_AUTHENTICATION_TOKEN_FAILED,
+    payload: errorMessage
 });
 
 export const logUserStarted = (): Action => ({
@@ -44,8 +46,9 @@ export const logUserSuccess = (user: IUser): Action => ({
     }
 });
 
-export const logUserFailed = (): Action => ({
+export const logUserFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_USER_LOGIN_FAILED,
+    payload: errorMessage
 });
 
 const authenticateUser = (email: String) => {
@@ -74,12 +77,12 @@ const createAuthenticationFactoryDependencies = {
 interface ICreateAuthenticationFactoryDependencies {
     readonly authenticationStarted: () => Action;
     readonly authenticateSuccess: (authenticationToken: String) => Action;
-    readonly authenticationFailed: () => Action;
+    readonly authenticationFailed: (errorMessage: string | null) => Action;
     readonly authenticateUser: (email: string) => any;
     readonly logUser: (email: string, authToken: string) => any;
     readonly logUserStarted: () => Action;
     readonly logUserSuccess: (user: IUser) => Action;
-    readonly logUserFailed: () => Action;
+    readonly logUserFailed: (errorMessage: string | null) => Action;
     readonly getDownloadLinkApiCall: (fileId: Uuid, authToken: AuthToken) => any;
     readonly loadAllChannels: (authToken: AuthToken) => any;
 }
@@ -108,13 +111,13 @@ const updateChannelsOnUser = (authToken: AuthToken, user: IUserServerModel, disp
                     })
                     .catch((error: any) => {
                         console.log(error);
-                        dispatch(dependencies.logUserFailed());
+                        dispatch(dependencies.logUserFailed(errorMessageUserLogin));
                     });
             }
         })
         .catch((error: any) => {
             console.log(error);
-            dispatch(dependencies.logUserFailed());
+            dispatch(dependencies.logUserFailed(errorMessageUserLogin));
         });
 };
 
@@ -137,12 +140,12 @@ export const createAuthenticationFactory = (dependencies: ICreateAuthenticationF
                 })
                 .catch((error: any) => {
                     console.log(error);
-                    dispatch(dependencies.logUserFailed());
+                    dispatch(dependencies.logUserFailed(errorMessageUserLogin));
                 });
         })
         .catch((error: any) => {
             console.log(error);
-            dispatch(dependencies.authenticationFailed());
+            dispatch(dependencies.authenticationFailed(errorMessageUserLogin));
         });
 };
 

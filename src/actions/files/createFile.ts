@@ -10,13 +10,15 @@ import {endpointFileConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getFile} from './getFile';
 import {updateUser} from '../users/updateUser';
+import {errorMessageCreateFile} from '../../constants/errorMessages';
 
 export const fileCreateStarted = (): Action => ({
     type: TOMATO_APP_FILE_CREATE_STARTED,
 });
 
-export const fileCreateFailed = (): Action => ({
+export const fileCreateFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_FILE_CREATE_FAILED,
+    payload: errorMessage
 });
 
 export const fileCreateSuccess = (fileId: Uuid): Action => ({
@@ -42,7 +44,7 @@ const createChannelCreateFactoryDependencies = {
 
 interface ICreateFileFactoryDependencies {
     readonly fileCreateStarted: () => Action;
-    readonly fileCreateFailed: () => Action;
+    readonly fileCreateFailed: (errorMessage: string | null) => Action;
     readonly fileCreateSuccess: (fileId: Uuid) => Action;
     readonly fileCreate: (file: File, authToken: AuthToken) => any;
 }
@@ -65,7 +67,7 @@ export const createAvatarCreateFactory = (dependencies: ICreateFileFactoryDepend
             })
             .catch((error: any) => {
                 console.log(error);
-                dispatch(dependencies.fileCreateFailed());
+                dispatch(dependencies.fileCreateFailed(errorMessageCreateFile));
             });
     };
 

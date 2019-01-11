@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import {
     TOMATO_APP_USER_LOGIN_SUCCESS,
     TOMATO_APP_USER_CHANNELS_STARTED,
-    TOMATO_APP_USER_CHANNELS_FAILED,
+    TOMATO_APP_USER_UPDATE_FAILED,
 } from '../../constants/actionTypes';
 import {IUser} from '../../models/IUser';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import {GET_USER_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader} from '../../common/utils/utilFunctions';
 import {IUserServerModel} from '../../models/IUserServerModel';
 import {getDownloadLinkApiCall} from '../files/getDownloadLink';
+import {errorMessageUserUpdate} from '../../constants/errorMessages';
 
 export const updateUserSuccess = (user: IUser): Action => ({
     type: TOMATO_APP_USER_LOGIN_SUCCESS,
@@ -22,8 +23,9 @@ export const updateUserStarted = (): Action => ({
     type: TOMATO_APP_USER_CHANNELS_STARTED,
 });
 
-export const updateUserFailed = (): Action => ({
-    type: TOMATO_APP_USER_CHANNELS_FAILED,
+export const updateUserFailed = (errorMessage: string | null): Action => ({
+    type: TOMATO_APP_USER_UPDATE_FAILED,
+    payload: errorMessage
 });
 
 const userUpdate = (authToken: AuthToken, user: IUserServerModel) => {
@@ -39,7 +41,7 @@ const createUpdateUserFactoryDependencies = {
 };
 
 interface IUpdateUserFactoryDependencies {
-    readonly updateUserFailed: () => Action;
+    readonly updateUserFailed: (errorMessage: string | null) => Action;
     readonly updateUserStarted: () => Action;
     readonly updateUserSuccess: (user: IUser) => Action;
     readonly userUpdate: (authToken: AuthToken, user: IUserServerModel) => any;
@@ -59,12 +61,12 @@ export const createUserUpdateFactory = (dependencies: IUpdateUserFactoryDependen
                 })
                 .catch((error: any) => {
                     console.log(error);
-                    dispatch(dependencies.updateUserFailed());
+                    dispatch(dependencies.updateUserFailed(errorMessageUserUpdate));
                 });
         })
         .catch((error: any) => {
             console.log(error);
-            dispatch(dependencies.updateUserFailed());
+            dispatch(dependencies.updateUserFailed(errorMessageUserUpdate));
         });
 };
 

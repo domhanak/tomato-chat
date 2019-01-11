@@ -1,9 +1,10 @@
-import {authTokenHelper, dispatch} from '../../baseHelpers';
+import {authTokenHelper, rejectedPromise, resolvedPromise} from '../../baseHelpers';
 import {
     channelHelper,
     expectedLoadingChannelsStarted
 } from '../helpers/helpers';
 import {
+    TOMATO_APP_CHANNEL_DELETE_FAILED,
     TOMATO_APP_CHANNEL_DELETE_STARTED,
     TOMATO_APP_CHANNEL_DELETE_SUCCESS,
 } from '../../../constants/actionTypes';
@@ -14,8 +15,9 @@ import {
     channelDeleteSuccess,
     createChannelDeleteFactory
 } from '../../../actions/channel/deleteChannel';
+import {errorMessageChannelDelete} from '../../../constants/errorMessages';
 
-describe('Channel create thunk action tests.', () => {
+describe('Channel delete thunk action tests.', () => {
     const expectedDeleteChannelStarted = {type: TOMATO_APP_CHANNEL_DELETE_STARTED};
 
     const expectedDeleteChannelSuccess = {type: TOMATO_APP_CHANNEL_DELETE_SUCCESS,
@@ -23,26 +25,45 @@ describe('Channel create thunk action tests.', () => {
             deletedChannelId: channelHelper.id,
         }};
 
+    const expectedDeleteChannelFailed = {type: TOMATO_APP_CHANNEL_DELETE_FAILED,
+        payload: errorMessageChannelDelete};
+
     const channelDelete = (authToken: AuthToken, deletedChannelId: Uuid) => {
-        console.log(authToken + deletedChannelId);
         return Promise.resolve({});
     };
 
-    const createTestDeleteDependencies = {
-        channelDeleteStarted,
-        channelDeleteFailed,
-        channelDeleteSuccess,
-        channelDelete
+    const channelDeleteRejected = (authToken: AuthToken, deletedChannelId: Uuid) => {
+        return Promise.reject({error: {}});
     };
 
-    test('Dispatch thunks in correct order: createChannel.', async done => {
-        await createChannelDeleteFactory(createTestDeleteDependencies)
+    const createTestDeleteDependencies = (promise: boolean) => {
+        return {
+            channelDeleteStarted,
+            channelDeleteFailed,
+            channelDeleteSuccess,
+            channelDelete: promise ? channelDelete : channelDeleteRejected,
+        };
+    };
+
+    test('Dispatch thunks in correct order, resolved: deleteChannel.', async done => {
+        const dispatch = jest.fn((action) => action);
+        await createChannelDeleteFactory(createTestDeleteDependencies(resolvedPromise))
             (authTokenHelper, channelHelper.id, userServerModelHelper)(dispatch);
 
         expect(dispatch.mock.calls[0][0]).toEqual(expectedDeleteChannelStarted);
         expect(dispatch.mock.calls[1][0]).toEqual(expectedDeleteChannelSuccess);
         expect(dispatch.mock.calls[2][0]).toEqual(expectedUserChannelStarted);
         expect(dispatch.mock.calls[3][0]).toEqual(expectedLoadingChannelsStarted);
+        done();
+    });
+
+    test('Dispatch thunks in correct order, rejected: deleteChannel.', async done => {
+        const dispatch = jest.fn((action) => action);
+        await createChannelDeleteFactory(createTestDeleteDependencies(rejectedPromise))
+        (authTokenHelper, channelHelper.id, userServerModelHelper)(dispatch);
+
+        expect(dispatch.mock.calls[0][0]).toEqual(expectedDeleteChannelStarted);
+        expect(dispatch.mock.calls[1][0]).toEqual(expectedDeleteChannelFailed);
         done();
     });
 });

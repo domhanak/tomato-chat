@@ -1,36 +1,48 @@
-import {userAuthentication} from "../../../reducers/users/userAuthentication";
+import {userAuthentication} from '../../../reducers/users/userAuthentication';
 import {
     TOMATO_APP_AUTHENTICATION_TOKEN_FAILED, TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED,
-    TOMATO_APP_AUTHENTICATION_TOKEN_STARTED,
+    TOMATO_APP_AUTHENTICATION_TOKEN_STARTED, TOMATO_APP_USER_LOGOUT_STARTED, TOMATO_APP_USER_LOGOUT_SUCCESS,
 
-} from "../../../constants/actionTypes";
+} from '../../../constants/actionTypes';
+
+const prevState = '123-456';
 
 describe('userAuthentication reducer tests', () => {
     it('should return the initial state', () => {
         expect(userAuthentication(null, {type: ''}))
-            .toEqual(null)
+            .toEqual(null);
     });
 
     it('should return the previous state', () => {
-        expect(userAuthentication('123-456', {type: ''}))
-            .toEqual('123-456')
+        expect(userAuthentication(prevState, {type: ''}))
+            .toEqual(prevState);
     });
 
     it('should handle TOMATO_APP_AUTHENTICATION_TOKEN_STARTED', () => {
-        expect(userAuthentication('123-456', {type: TOMATO_APP_AUTHENTICATION_TOKEN_STARTED}))
-            .toEqual(null)
+        expect(userAuthentication(prevState, {type: TOMATO_APP_AUTHENTICATION_TOKEN_STARTED}))
+            .toEqual(null);
     });
 
     it('should handle TOMATO_APP_AUTHENTICATION_TOKEN_FAILED', () => {
-        expect(userAuthentication('123-456', {type: TOMATO_APP_AUTHENTICATION_TOKEN_FAILED}))
-            .toEqual(null)
+        expect(userAuthentication(prevState, {type: TOMATO_APP_AUTHENTICATION_TOKEN_FAILED}))
+            .toEqual(null);
+    });
+
+    it('should handle TOMATO_APP_USER_LOGOUT_SUCCESS', () => {
+        expect(userAuthentication(prevState, {type: TOMATO_APP_USER_LOGOUT_SUCCESS}))
+            .toEqual(null);
+    });
+
+    it('should handle TOMATO_APP_USER_LOGOUT_STARTED', () => {
+        expect(userAuthentication(prevState, {type: TOMATO_APP_USER_LOGOUT_STARTED}))
+            .toEqual(prevState);
     });
 
     it('should handle TOMATO_APP_AUTHENTICATION_TOKEN_FAILED', () => {
         const authenticator = 'ahoj-ja-som-token';
-        expect(userAuthentication('123-456', {type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED, payload: {
+        expect(userAuthentication(prevState, {type: TOMATO_APP_AUTHENTICATION_TOKEN_RECEIVED, payload: {
             authenticator
             }}))
-            .toEqual(authenticator)
+            .toEqual(authenticator);
     });
 });

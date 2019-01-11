@@ -8,13 +8,15 @@ import axios from 'axios';
 import {BASE_CHANNEL_URI} from '../../constants/apiConstants';
 import {endpointConfigHeader, responseChannelMapper} from '../../common/utils/utilFunctions';
 import {IChannelServerModelResponse} from '../../models/IChannelServerModelResponse';
+import {errorMessageLoadingChannels} from '../../constants/errorMessages';
 
 export const loadingStarted = (): Action => ({
     type: TOMATO_APP_LOADING_CHANNELS_STARTED,
 });
 
-export const loadingFailed = (): Action => ({
+export const loadingFailed = (errorMessage: string | null): Action => ({
     type: TOMATO_APP_LOADING_CHANNELS_FAILED,
+    payload: errorMessage
 });
 
 export const loadingSuccess = (channels: ReadonlyArray<IChannel>): Action => ({
@@ -38,7 +40,7 @@ const createLoadAllChannelsFactoryDependencies = {
 export interface ILoadAllChannelFactoryDependencies {
     readonly loadingStarted: () => Action;
     readonly loadingSuccess: (channels: ReadonlyArray<IChannel>) => Action;
-    readonly loadingFailed: () => Action;
+    readonly loadingFailed: (errorMessage: string | null) => Action;
     readonly loadAllChannels: (authToken: AuthToken) => any;
 }
 
@@ -58,7 +60,7 @@ export const createLoadAllChannelFactory = (dependencies: ILoadAllChannelFactory
             })
             .catch((error: any) => {
                console.log(error);
-               dispatch(dependencies.loadingFailed());
+               dispatch(dependencies.loadingFailed(errorMessageLoadingChannels));
             });
     };
 
