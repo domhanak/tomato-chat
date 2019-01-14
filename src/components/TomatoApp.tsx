@@ -87,9 +87,9 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
                                 </h4>
                             </div>
                             <Navigation/>
-                            <div className="panel-footer">
-                                <h4> {this.props.errorMessage ? this.props.errorMessage : 'Tomato chat'} </h4>
-                                {this.props.errorMessage ? <a onClick={this.clearErrorMessage}>clear</a> : <div/>}
+                            <div className="panel-footer container">
+                                <div className="col-lg-10 col-md-10 col-sm-10 col-xs-10"><h4> {this.props.errorMessage ? this.props.errorMessage : 'Tomato chat'} </h4></div>
+                                {this.props.errorMessage ? <a className="col-lg-1 col-md-1 col-sm-1 col-xs-1" onClick={this.clearErrorMessage}>clear</a> : <div/>}
                             </div>
                         </header>
                     </div>
@@ -98,4 +98,3 @@ export class TomatoApp extends React.PureComponent<ITomatoAppStateProps & ITomat
             );
     }
 }
-// todo styling clear error message button

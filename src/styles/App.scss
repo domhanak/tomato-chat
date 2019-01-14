@@ -1,3 +1,4 @@
+@import 'variables';
 .App {
   text-align: center;
 }
@@ -22,6 +23,29 @@
   min-height: 700px;
   background: white;
   border-radius: 10px 10px 0px 0px;
+}
+
+.panel-footer {
+  color: $channel-name-colour;
+
+  & h4 {
+    width: 100%;
+    word-wrap: break-word
+  }
+
+  & a {
+    margin: 10px 20px 10px 30px;
+    letter-spacing: 1px;
+    padding: 5px 2px;
+    background: $tomato-colour;
+    border-radius: 4px;
+  }
+
+  & a:hover {
+    background: $profile-border-colour;
+    cursor: pointer;
+    border-radius: 4px;
+  }
 }
 
 @keyframes App-logo-spin {
