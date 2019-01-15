@@ -50,7 +50,7 @@ export class MessageForm extends React.PureComponent<IProps, IState> {
         const contentState = this.state.editorState.getCurrentContent();
         const rawContent = convertToRaw(contentState);
 
-        if (rawContent.blocks[0].text === '') {
+        if (rawContent.blocks[0].text === '' && rawContent.entityMap[0].data.src === '') {
             return;
         }
 
