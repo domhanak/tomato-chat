@@ -8,6 +8,10 @@
     margin: 15px 0px 15px 15px;
     text-align: center;
 
+    & a {
+      border-radius: 8px;
+    }
+
     & img {
       max-height: 100%;
       width: 100%;
@@ -20,7 +24,7 @@
   }
 
   & .profile-info {
-    margin: 15px 15px 0 0;
+    margin: 15px 15px 0 85px;
 
     & .profile-name input {
       border: solid 2px $profile-border-colour;
@@ -40,6 +44,19 @@
   }
 
 
+}
+
+.profile-view__image-preview {
+  color: $tomato-colour;
+  & a {
+    font-size: 25px;
+    margin-right: 20px;
+    padding: 5px;
+  }
+
+  & a:hover {
+    cursor: pointer;
+  }
 }
 
 @media only screen and (max-width: 992px) {
