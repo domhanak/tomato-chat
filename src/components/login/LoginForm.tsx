@@ -18,18 +18,12 @@ type IProps = ILoginFormOwnProps & ILoginFormDispatchProps;
 
 interface ILoginState {
     readonly username: string;
-    readonly password: string;
 }
 
 export class LoginForm extends React.Component<IProps, ILoginState> {
     handleLoginChange = (event: any) => {
         event.persist();
         this.setState(() => ({ username: event.target.value }));
-    };
-
-    handlePasswordChange = (event: any) => {
-        event.persist();
-        this.setState(() => ({ password: event.target.value }));
     };
 
     handleSubmit = (event: any) => {
@@ -41,7 +35,7 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
 
         this.props.onUserAuthentication(this.state.username);
 
-        this.setState(_ => ({ username: '', password: '' }));
+        this.setState(_ => ({ username: '' }));
     };
 
     constructor(props: IProps) {
@@ -49,7 +43,6 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
 
         this.state = {
             username: 'tomato@mailinator.com',
-            password: '',
         };
     }
 
@@ -70,17 +63,6 @@ export class LoginForm extends React.Component<IProps, ILoginState> {
                                name="username"
                                value={this.state.username}
                                onChange={this.handleLoginChange}
-                               className="form-control" />
-                    </div>
-                    <div className="form-group">
-                        <label placeholder="Password"
-                               className="text-white"> Password: </label>
-                        <br/>
-                        <input type="password"
-                               name="password"
-                               id="password"
-                               value={this.state.password}
-                               onChange={this.handlePasswordChange}
                                className="form-control" />
                     </div>
                     <div className="form-group">
