@@ -107,7 +107,7 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
         (
             <div className="profile-view__image-preview">
                 <a className="glyphicon glyphicon-arrow-left" onClick={this.onClickHideAvatar} />
-                <img className="aaaa" src={avatarLink} />
+                <img src={avatarLink} />
             </div>
 
         );
