@@ -16,6 +16,7 @@ export interface IProfileDispatchProps {
 interface IState {
     readonly nickname: string;
     readonly avatar: FileType;
+    readonly viewImage: boolean;
 }
 
 export class Profile extends React.Component<IProfileStateProps & IProfileDispatchProps, IState> {
@@ -24,6 +25,7 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
         this.state = {
             nickname: this.props.user!.nickname,
             avatar: null,
+            viewImage: false,
         };
     }
 
@@ -57,13 +59,31 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
         return this.props.user!.avatarUrl && this.props.user!.avatarUrl.length > 0 ? this.props.user!.avatarUrl : 'http://placehold.it/200x200';
     };
 
+    onClickPreviewAvatar = (event: any) => {
+        this.handleAvatarPreview(event, true);
+    }
+
+    onClickHideAvatar = (event: any) => {
+        this.handleAvatarPreview(event, false);
+    }
+
+    handleAvatarPreview = (event: any, isPreviewed: boolean) => {
+        event.preventDefault();
+        this.setState((_) => ({
+            viewImage: isPreviewed
+        }));
+    }
 
     render(): JSX.Element {
-        return (
+        const avatarLink = this.getAvatarLink();
+        return !this.state.viewImage ? (
             <form className="profile-view container" onSubmit={this.onSubmit}>
+                <div id="x" />
                 <div className="avatar col-lg-4 col-md-6 col-sm-6">
                     <div className="row">
-                        <img src={this.getAvatarLink()} alt="avatar" className="img-circle special-img"/>
+                        <a href={avatarLink} onClick={this.onClickPreviewAvatar}>
+                            <img src={avatarLink} alt="avatar" className="img-circle special-img"/>
+                        </a>
                     </div>
                     <div className="profile-avatar-btn row">
                         <input type="file" className="btn btn btn-primary" placeholder="Upload" onChange={this.avatarUpdate}/>
@@ -82,6 +102,14 @@ export class Profile extends React.Component<IProfileStateProps & IProfileDispat
                 </div>
 
             </form>
+        )
+            :
+        (
+            <div className="profile-view__image-preview">
+                <a className="glyphicon glyphicon-arrow-left" onClick={this.onClickHideAvatar} />
+                <img src={avatarLink} />
+            </div>
+
         );
     }
 }
